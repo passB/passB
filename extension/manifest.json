@@ -1,0 +1,24 @@
+{
+  "description": "passb",
+  "manifest_version": 2,
+  "name": "test-web-extension",
+  "version": "1.0",
+  "homepage_url": "https://github.com/phryneas/passb",
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+  "applications": {
+    "gecko": {
+      "id": "passb@phryneas.de",
+      "strict_min_version": "45.0"
+    }
+  },
+  "browser_action": {
+    "default_icon": "icons/icon-32.png"
+  },
+  "background": {
+    "scripts": [
+      "built/background-script.js"
+    ]
+  }
+}
