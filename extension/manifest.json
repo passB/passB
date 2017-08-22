@@ -20,5 +20,6 @@
     "scripts": [
       "built/background-script.js"
     ]
-  }
+  },
+  "permissions": ["nativeMessaging"]
 }

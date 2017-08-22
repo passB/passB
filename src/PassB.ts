@@ -1,50 +1,47 @@
 import deepExtend = require( "deep-extend");
-import {ActionMetaData, Extension, ListEntry as ExtensionListEntry} from "./Extensions/Extension";
+import {Extension, ListEntry as ExtensionListEntry} from "./Extensions/Extension";
 
 interface Options {
-    extensions: Extension[];
+  extensions: Extension[];
 }
 
 interface Action {
-    extension: string;
-    action: string;
+  extension: string;
+  action: string;
 }
 
-interface AvailableActions {
-    [action: string]: ActionMetaData;
-}
-
-interface ListEntry {
-    availableActions: AvailableActions;
+interface Entry {
+  [actionName: string]: Action;
 }
 
 export class PassB {
-    private readonly options: Options;
+  private readonly options: Options;
 
-    private entries: { [label: string]: ListEntry } = {};
+  private entries: { [label: string]: Entry } = {};
 
-    public constructor(options: Options) {
-        this.options = options;
+  public constructor(options: Options) {
+    this.options = options;
+  }
+
+  public async initialize() {
+    this.entries = {};
+    for (const extension of this.options.extensions) {
+      extension.initializeList((entry) => this.registerListEntry(extension.name, entry));
     }
+  }
 
-    public async initialize() {
-        this.entries = {};
-        for (const extension of this.options.extensions) {
-            extension.initializeList((entry) => this.registerListEntry(extension.name, entry));
-        }
-    }
+  public registerListEntry(extensionName: string, entry: ExtensionListEntry) {
+    const combinedEntry: Entry = entry.actions.reduce(
+      (flattened: Entry, action: string): Entry => ({
+        ...flattened,
+        [`${extensionName}/${action}`]: {
+          extension: extensionName,
+          action,
+        },
+      }),
+      {},
+    );
 
-    public registerListEntry(extensionName: string, entry: ExtensionListEntry) {
-        const combinedEntries = entry.actions.reduce((flattened: AvailableActions, action: string) => ({
-            ...flattened,
-            [`${extensionName}/${action}`]: {
-                extension: extensionName,
-                action,
-            },
-        }), {});
-
-        deepExtend(this.entries, {[entry.label]: combinedEntries});
-
-        console.log(this.entries);
-    }
+    deepExtend(this.entries, {[entry.label]: combinedEntry});
+  }
 }
