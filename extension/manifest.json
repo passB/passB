@@ -14,12 +14,12 @@
     }
   },
   "browser_action": {
-    "default_icon": "icons/icon-32.png"
+    "default_popup": "popup.html"
   },
   "background": {
     "scripts": [
       "built/background-script.js"
     ]
   },
-  "permissions": ["nativeMessaging"]
+  "permissions": ["nativeMessaging", "tabs"]
 }
