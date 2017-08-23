@@ -6,6 +6,10 @@
   version "0.4.30"
   resolved "https://registry.yarnpkg.com/@types/deep-extend/-/deep-extend-0.4.30.tgz#6faed486687ebc8480d130d9c9528885694af0e0"
 
+"@types/fuzzaldrin-plus@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@types/fuzzaldrin-plus/-/fuzzaldrin-plus-0.0.1.tgz#bfe5e25bc5b4066848171baf7a8aaf30e267d30a"
+
 "@types/fuzzaldrin@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@types/fuzzaldrin/-/fuzzaldrin-2.1.0.tgz#23fc4899d450d9cafc1ac6d0dea5dd792dba681f"
@@ -1698,6 +1702,10 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     inherits "~2.0.0"
     mkdirp ">=0.5 0"
     rimraf "2"
+
+fuzzaldrin-plus@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/fuzzaldrin-plus/-/fuzzaldrin-plus-0.4.1.tgz#979595024aab74184942307d631d7aa441eee379"
 
 fuzzaldrin@^2.1.0:
   version "2.1.0"

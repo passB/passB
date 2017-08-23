@@ -1,5 +1,5 @@
-import {ListEntry} from "../Extensions/Extension";
+import {Entry, LabeledEntries} from "../PassB";
 
 export abstract class Matcher {
-  public abstract filterEntries(url: string, entries: ListEntry[]): Promise<ListEntry[]>;
+  public abstract filterEntries(url: string, entries: Entry[]): Promise<Entry[]>;
 }

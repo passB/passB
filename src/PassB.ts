@@ -14,7 +14,8 @@ interface Action {
 }
 
 export interface Entry {
-  [actionName: string]: Action;
+  actions: { [actionName: string]: Action };
+  label: string;
 }
 
 export interface LabeledEntries {
@@ -42,18 +43,16 @@ export class PassB {
   }
 
   public registerListEntry(extensionName: string, entry: ListEntry) {
-    const combinedEntry: Entry = entry.actions.reduce(
-      (flattened: Entry, action: string): Entry => ({
-        ...flattened,
-        [`${extensionName}/${action}`]: {
-          extension: extensionName,
-          action,
-        },
-      }),
-      {},
-    );
 
-    deepExtend(this.entries, {[entry.label]: combinedEntry});
+    deepExtend(
+      this.entries,
+      {
+        [entry.label]: {
+          label: entry.label,
+          actions: entry.actions.map((action: string) => `${extensionName}/${action}`),
+        },
+      },
+    );
   }
 
   public getMatcher() {

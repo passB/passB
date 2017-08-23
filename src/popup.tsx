@@ -6,27 +6,30 @@ import {Entry, LabeledEntries} from "./PassB";
 
 interface State {
   activeTab?: Tab;
-  entries: LabeledEntries;
+  entries: Entry[];
+  filtered: Entry[];
 }
 
 class Popup extends React.Component<{}, State> {
   public state: State = {
     entries: [],
+    filtered: [],
   };
 
-  public async componentDidMount() {
-    const tabs = await browser.tabs.query({
+  public componentDidMount() {
+    browser.tabs.query({
       active: true,
       currentWindow: true,
-    });
-    this.setState({activeTab: tabs[0]});
-
-    passB.getEntries().then((entries: LabeledEntries) => this.setState({entries}));
+    }).then((tabs: Tab[]) => this.setState({activeTab: tabs[0]}, () => this.recalculateFilteredEntries()));
+    passB.getEntries()
+      .then((entries: LabeledEntries) =>
+        this.setState({entries: Object.values(entries)}, () => this.recalculateFilteredEntries()),
+      );
   }
 
   public render() {
-    const {activeTab, entries} = this.state;
-    console.log(this.state);
+    const {activeTab, filtered} = this.state;
+
     return (
       <div>
         <h1>PassB</h1>
@@ -36,11 +39,21 @@ class Popup extends React.Component<{}, State> {
             && <li>You are currently on {activeTab.url}</li>
             || <li>Could not determine active tab.</li>
             }
-            {Object.keys(entries).map((label: string) => <li>{label}</li>)}
+            {filtered && filtered.map((entry: Entry) => <li key={entry.label}>{entry.label}</li>)}
           </ul>
         </div>
       </div>
     );
+  }
+
+  private recalculateFilteredEntries() {
+    if (!this.state.activeTab || !this.state.entries) {
+      return;
+    }
+    console.log('filtering', this.state.entries);
+    passB.getMatcher()
+      .filterEntries(this.state.activeTab.url || '', this.state.entries)
+      .then((filtered: Entry[]) => this.setState({filtered}));
   }
 }
 

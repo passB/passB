@@ -1,11 +1,6 @@
-export interface ActionMetaData {
-  [key: string]: string;
-}
-
 export interface ListEntry {
   label: string;
   actions: string[];
-  metadata: ActionMetaData;
 }
 
 export interface Options {

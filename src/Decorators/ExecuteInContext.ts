@@ -50,14 +50,10 @@ export function AsynchronousCallable() {
       constructor(...args: any[]) {
         super(...args);
 
-        console.log("checking %s for asynchronous callbacks", constructor.name);
-
         for (let obj = this; obj != null; obj = Object.getPrototypeOf(obj)) {
           for (const propertyKey of Object.getOwnPropertyNames(obj)) {
             const executionContext = Reflect.getMetadata("executionContext", this, propertyKey);
-            console.log(propertyKey, executionContext, window.executionContext);
             if (executionContext && window.executionContext === executionContext) {
-              console.log("registering %s.%s as asynchronous callback", constructor.name, propertyKey);
 
               browser.runtime.onMessage.addListener(
                 (request: AsynchronousRequest, sender: object, sendResponse: Function) => {

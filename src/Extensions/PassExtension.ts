@@ -10,7 +10,6 @@ export class PassExtension extends Extension {
       registerEntryCallback({
         label,
         actions: this.actions,
-        metadata: {},
       });
     }
     return void 0;

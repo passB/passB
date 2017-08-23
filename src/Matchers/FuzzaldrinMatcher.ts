@@ -1,24 +1,39 @@
-import {score} from "fuzzaldrin";
-import {ListEntry} from "../Extensions/Extension";
+import {IScoringOptions, score} from "fuzzaldrin-plus";
+import {Entry} from "../PassB";
 import {Matcher} from "./Matcher";
 
 interface ScoredEntry {
-  entry: ListEntry;
+  entry: Entry;
   score: number;
 }
 
+/**
+ * these matches are not very good but it serves as a proof of concept
+ */
 export class FuzzaldrinMatcher extends Matcher {
   private options = {
-    cutoff: 0.1,
-    maxResults: 20,
+    fuzzOptions: {
+      pathSeparator: '/',
+      allowErrors: true,
+      isPath: true,
+    } as IScoringOptions,
   };
 
-  public async filterEntries(url: string, entries: ListEntry[]): Promise<ListEntry[]> {
+  public async filterEntries(url: string, entries: Entry[]): Promise<Entry[]> {
+    const URL_CLEAN_REGEX = /^(http|ftp)s?:\/\//;
+    url = url.replace(URL_CLEAN_REGEX, '');
+    console.log(url);
+
     return entries
-      .map((entry: ListEntry): ScoredEntry => ({entry, score: score(entry.label, url)}))
-      .filter((entry: ScoredEntry) => entry.score > this.options.cutoff)
-      .sort((a: ScoredEntry, b: ScoredEntry) => a.score - b.score)
-      .slice(0, this.options.maxResults)
+      .map((entry: Entry): ScoredEntry => {
+        let accumulatedScore = 0;
+        for (const part of entry.label.split('/')) {
+          accumulatedScore += score(url, part, void 0, this.options.fuzzOptions);
+        }
+
+        return {entry, score: accumulatedScore};
+      })
+      .sort((a: ScoredEntry, b: ScoredEntry) => b.score - a.score)
       .map((entry: ScoredEntry) => entry.entry);
   }
 }
