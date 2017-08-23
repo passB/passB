@@ -22,7 +22,6 @@ export class FuzzaldrinMatcher extends Matcher {
   public async filterEntries(url: string, entries: Entry[]): Promise<Entry[]> {
     const URL_CLEAN_REGEX = /^(http|ftp)s?:\/\//;
     url = url.replace(URL_CLEAN_REGEX, '');
-    console.log(url);
 
     return entries
       .map((entry: Entry): ScoredEntry => {

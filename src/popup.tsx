@@ -50,7 +50,6 @@ class Popup extends React.Component<{}, State> {
     if (!this.state.activeTab || !this.state.entries) {
       return;
     }
-    console.log('filtering', this.state.entries);
     passB.getMatcher()
       .filterEntries(this.state.activeTab.url || '', this.state.entries)
       .then((filtered: Entry[]) => this.setState({filtered}));
