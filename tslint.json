@@ -9,7 +9,9 @@
     "interface-name": false,
     "quotemark": "single",
     "object-literal-sort-keys": false,
-    "no-empty-interface": false
+    "no-empty-interface": false,
+    "no-namespace": false,
+    "ban-types": false
   },
   "rulesDirectory": []
 }

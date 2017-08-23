@@ -1,16 +1,7 @@
-import {PassExtension} from "./Extensions/PassExtension";
-import {PassB} from "./PassB";
+window.executionContext = "background";
+import {passB} from "./ConfiguredPassB";
 
-const passB = new PassB({
-  extensions: [
-    new PassExtension({}),
-  ],
-});
-
-passB.initialize();
-
-browser.browserAction.onClicked.addListener(
-  () => {
-    console.log(passB);
-  },
-);
+passB.initialize()
+  .then((x) => console.log('initialized', x))
+  .then(() => passB.getEntries())
+  .then((x) => console.log('returned', x));

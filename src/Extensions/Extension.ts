@@ -22,6 +22,6 @@ export abstract class Extension {
     this.options = options;
   }
 
-  public abstract initializeList(registerEntryCallback: RegisterEntryCallback): void;
+  public abstract initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void>;
   public abstract executeAction(action: string, entry: ListEntry): void;
 }

@@ -13,6 +13,7 @@ export class PassExtension extends Extension {
         metadata: {},
       });
     }
+    return void 0;
   }
 
   public executeAction(action: string, entry: ListEntry): void {

@@ -6,6 +6,10 @@
   version "0.4.30"
   resolved "https://registry.yarnpkg.com/@types/deep-extend/-/deep-extend-0.4.30.tgz#6faed486687ebc8480d130d9c9528885694af0e0"
 
+"@types/fuzzaldrin@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/fuzzaldrin/-/fuzzaldrin-2.1.0.tgz#23fc4899d450d9cafc1ac6d0dea5dd792dba681f"
+
 "@types/react-dom@^15.5.4":
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-15.5.4.tgz#3f75ba86a2ce9a7d1d9e7d1ee3f186f3a9652d8f"
@@ -15,6 +19,10 @@
 "@types/react@*", "@types/react@^16.0.4":
   version "16.0.4"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.4.tgz#5603e4820c5b00af80693feaedc5862a1d1f2dc1"
+
+"@types/reflect-metadata@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@types/reflect-metadata/-/reflect-metadata-0.0.5.tgz#9c042bfa9803d577aad4f57dfbca4b7cae4286fe"
 
 JSONSelect@0.2.1:
   version "0.2.1"
@@ -1691,6 +1699,10 @@ fstream@^1.0.0, fstream@^1.0.10, fstream@^1.0.2:
     mkdirp ">=0.5 0"
     rimraf "2"
 
+fuzzaldrin@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/fuzzaldrin/-/fuzzaldrin-2.1.0.tgz#90204c3e2fdaa6941bb28d16645d418063a90e9b"
+
 fx-runner@1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/fx-runner/-/fx-runner-1.0.7.tgz#c102cfdf21234c2dbd16723dccb1186f99c0b641"
@@ -3322,6 +3334,10 @@ rechoir@^0.6.2:
   resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
   dependencies:
     resolve "^1.1.6"
+
+reflect-metadata@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.10.tgz#b4f83704416acad89988c9b15635d47e03b9344a"
 
 regenerator-runtime@0.10.5, regenerator-runtime@^0.10.0:
   version "0.10.5"
