@@ -1,5 +1,5 @@
-import {ListView} from './Views/ListView';
 import {EntryView} from './Views/EntryView';
+import {ListView} from './Views/ListView';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -30,7 +30,11 @@ class Popup extends React.Component<{}, State> {
           <Switch>
             <Route
               path="/entry"
-              render={({history, location: {state: {entry}}}) => <EntryView entry={entry} />}
+              render={({history, location: {state: {entry}}}) =>
+                <EntryView
+                  navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
+                  entry={entry}
+                />}
             />
             <Route render={
               ({history}) => <ListView

@@ -35,6 +35,10 @@ export class PassCli {
     return list;
   }
 
+  public static async show(path: string): Promise<string[]> {
+    return (await PassCli.executeCommand('show', [path])).stdout;
+  }
+
   private static async executeCommand(command: string, args: string[] = []): Promise<PassReply> {
     const response = await browser.runtime.sendNativeMessage("passb", {command, args}) as PassReply;
     if (response.returnCode !== 0) {

@@ -6,6 +6,10 @@ export interface ListEntry {
 export interface Options {
 }
 
+export interface ExecutionOptions {
+  navigateTo: (newUrl: string, state: {}) => void;
+}
+
 export type RegisterEntryCallback = (entry: ListEntry) => void;
 
 export abstract class Extension {
@@ -18,5 +22,6 @@ export abstract class Extension {
   }
 
   public abstract initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void>;
-  public abstract executeAction(action: string, entry: ListEntry): void;
+  public abstract getLabelForAction(action: string): string;
+  public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 }

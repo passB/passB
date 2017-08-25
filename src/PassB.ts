@@ -8,13 +8,13 @@ interface Options {
   matchers: Matcher[];
 }
 
-interface Action {
+export interface Action {
   extension: string;
   action: string;
 }
 
 export interface Entry {
-  actions: { [actionName: string]: Action };
+  actions: Action[];
   label: string;
 }
 
@@ -49,10 +49,18 @@ export class PassB {
       {
         [entry.label]: {
           label: entry.label,
-          actions: entry.actions.map((action: string) => `${extensionName}/${action}`),
+          actions: entry.actions.map((action: string) => ({extension: extensionName, action})),
         },
       },
     );
+  }
+
+  public getExtension(name: string): Extension {
+    const extension = this.options.extensions.find((item: Extension) => item.name === name);
+    if (!extension) {
+      throw new Error('query for unknown extension ' + name);
+    }
+    return extension;
   }
 
   public getMatcher() {
