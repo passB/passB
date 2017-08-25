@@ -69,9 +69,13 @@ function executePassCommand(command, args) {
   return new Promise((resolve) => {
     try {
       const pass = spawn('pass', [command, ...args], {
-        env: {
-          TREE_CHARSET: "windows-1251", // see https://github.com/passff/passff/issues/59
-        }
+        env: Object.assign(
+          {},
+          process.env,
+          {
+            TREE_CHARSET: "windows-1251", // see https://github.com/passff/passff/issues/59
+          }
+        ),
       });
       let stdout = [], stderr = [];
 

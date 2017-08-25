@@ -96,6 +96,5 @@ EXIT /B
 ECHO Usage: %0 [OPTION] [chrome^|chromium^|firefox^|opera^|vivaldi]
 ECHO
 ECHO Options:
-ECHO   --local    Install files from disk instead of downloading them
 ECHO   --help     Show this message"
 EXIT /B
