@@ -1,11 +1,9 @@
 import {passB} from "ConfiguredPassB";
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 import {Entry, LabeledEntries} from "PassB";
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import Tab = browser.tabs.Tab;
-
-import {ListEntry} from './ListEntry';
-import "./style.scss";
 
 interface Props {
   url: string;
@@ -35,16 +33,15 @@ export class ListView extends React.Component<Props, State> {
     const {filtered} = this.state;
 
     return (
-      <div>
-        <div id="entry-list">
-          {filtered && filtered.map((entry: Entry) => (
-            <ListEntry
-              key={entry.label}
-              entry={entry}
-              onClick={(selectedEntry: Entry) => navigateTo(`entry`, {entry: selectedEntry})}/>
-          ))}
-        </div>
-      </div>
+      <Menu autoWidth={false} width={400} maxHeight={400}>
+        {filtered && filtered.map((entry: Entry) => (
+          <MenuItem
+            key={entry.label}
+            onClick={() => navigateTo(`entry`, {entry})}
+            primaryText={entry.label.replace(/\//g, "/\u200b")}
+          />
+        ))}
+      </Menu>
     );
   }
 

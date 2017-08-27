@@ -1,6 +1,5 @@
 import {PassCli} from "../PassCli";
 import {ExecutionOptions, Extension, ListEntry, RegisterEntryCallback} from "./Extension";
-import {passB} from "../ConfiguredPassB";
 
 export class PassExtension extends Extension {
   public name = 'Base';
