@@ -55,6 +55,10 @@ export class PassB {
     );
   }
 
+  public getExtensions(): Extension[] {
+    return this.options.extensions;
+  }
+
   public getExtension(name: string): Extension {
     const extension = this.options.extensions.find((item: Extension) => item.name === name);
     if (!extension) {

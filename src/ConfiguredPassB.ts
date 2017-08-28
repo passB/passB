@@ -1,4 +1,4 @@
-import {PassExtension} from "./Extensions/PassExtension";
+import {PassExtension} from "./Extensions/PassExtension/PassExtension";
 import {FuzzaldrinMatcher} from "./Matchers/FuzzaldrinMatcher";
 import {PassB} from "./PassB";
 

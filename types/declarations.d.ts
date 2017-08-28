@@ -4,6 +4,8 @@
 // web-ext-types is not a @types repo and needs to be referenced here
 /// <reference types="web-ext-types/global" />
 
+import * as React from "react";
+import {RouteComponentProps} from "react-router";
 import {ExecutionContext} from "../src/Decorators/ExecuteInContext";
 
 declare global {

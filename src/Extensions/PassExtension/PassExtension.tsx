@@ -1,8 +1,18 @@
-import {PassCli} from "../PassCli";
-import {ExecutionOptions, Extension, ListEntry, RegisterEntryCallback} from "./Extension";
+import {PassCli} from "PassCli";
+import {ExecutionOptions, Extension, RegisterEntryCallback} from "../Extension";
+import {Show} from "./Components";
+
+import * as React from 'react';
+import {RouteProps} from "react-router";
 
 export class PassExtension extends Extension {
-  public name = 'Base';
+  public static readonly routes: RouteProps[] = [
+    {
+      path: '/extension/Pass/Show',
+      render: ({location: {state: {entry}}}) => <Show entry={entry} />,
+    },
+  ];
+  public name = 'Pass';
   public actions = ['show'];
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
@@ -26,7 +36,7 @@ export class PassExtension extends Extension {
   public executeAction(action: string, entry: string, {navigateTo}: ExecutionOptions): void {
     switch (action) {
       case 'show':
-        PassCli.show(entry).then((contents: string[]) => alert(contents.join("\n")));
+        navigateTo('/extension/Pass/Show', {entry});
         break;
       default:
         console.error('unknown action:', action);

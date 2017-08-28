@@ -1,3 +1,5 @@
+import {passB} from 'ConfiguredPassB';
+import {Extension} from "../Extensions/Extension";
 import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 
@@ -5,7 +7,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Tab = browser.tabs.Tab;
-import {MemoryRouter, Route, Switch} from "react-router";
+import {MemoryRouter, Route, RouteProps, Switch} from "react-router";
 
 import "./style.scss";
 
@@ -15,6 +17,7 @@ interface State {
 
 class Popup extends React.Component<{}, State> {
   public state: State = {};
+  private gatheredRoutes = this.gatherRoutes();
 
   public componentDidMount() {
     browser.tabs.query({
@@ -32,6 +35,7 @@ class Popup extends React.Component<{}, State> {
           <div>
             <h1>PassB</h1>
             <Switch>
+              {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
               <Route
                 path="/entry"
                 render={({history, location: {state: {entry}}}) =>
@@ -45,13 +49,28 @@ class Popup extends React.Component<{}, State> {
                   navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
                   url={activeTab && activeTab.url ? activeTab.url : ''}
                 />
-
               }/>
             </Switch>
           </div>
         </MemoryRouter>
       </MuiThemeProvider>
     );
+  }
+
+  private gatherRoutes(): RouteProps[] {
+    const gatheredRoutes: RouteProps[] = [];
+    for (const extension of passB.getExtensions()) {
+      for (const route of (extension.constructor as typeof Extension).routes) {
+        if (!(route.path || '').startsWith(`/extension/${extension.name}/`)) {
+          throw Error(
+            `every route path for extension ${extension.name} has to start with "/extension/${extension.name}/"`,
+          );
+        }
+        gatheredRoutes.push(route);
+      }
+    }
+
+    return gatheredRoutes;
   }
 }
 

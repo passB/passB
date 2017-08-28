@@ -1,0 +1,1 @@
+export {PassExtension} from './PassExtension';
