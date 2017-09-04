@@ -4,7 +4,9 @@ import {Show} from "./Views";
 
 import * as React from 'react';
 import {RouteProps} from "react-router";
+import {AsynchronousCallable, executeInCorrectContext} from "../../Decorators/ExecuteInContext";
 
+@AsynchronousCallable()
 export class PassExtension extends Extension {
   public static readonly routes: RouteProps[] = [
     {
@@ -42,6 +44,7 @@ export class PassExtension extends Extension {
         break;
       case 'fill':
         this.executeFillAction(entry);
+        window.close();
         break;
       default:
         console.error('unknown action:', action);
@@ -52,7 +55,9 @@ export class PassExtension extends Extension {
     return (await browser.tabs.query({active: true, currentWindow: true}))[0];
   }
 
-  private async executeFillAction(entry: string): Promise<void> {
+  @executeInCorrectContext()
+  @Reflect.metadata("executionContext", "background")
+  private async executeFillAction(entry: string): Promise<{}> {
     const initialUrl = (await this.getCurrentTab()).url;
     const entryContents = await PassCli.show(entry);
     const activeTab = await this.getCurrentTab();
@@ -60,12 +65,12 @@ export class PassExtension extends Extension {
 
     if (typeof finalUrl !== "undefined" && initialUrl !== finalUrl) {
       console.info(`url changed from request to receive of password. not filling`);
-      return;
+      return {};
     }
 
     const fillPasswordInputs = (password: string) => {
       let i = 0;
-      for (const passwordInput of document.querySelectorAll('input[type="password"]')) {
+      for (const passwordInput of Array.from(document.querySelectorAll('input[type="password"]'))) {
         console.log('filling', passwordInput);
         (passwordInput as HTMLInputElement).value = password;
         i++;
@@ -76,8 +81,9 @@ export class PassExtension extends Extension {
     const args = [entryContents[0]];
     const code = `(${fillPasswordInputs.toString()}).apply(null, JSON.parse('${JSON.stringify(args)}')); `;
 
-    console.log('will execute', code, 'in', activeTab.id);
-    const ret: number[] = await browser.tabs.executeScript(activeTab.id, {code});
+    const ret: object[] = await browser.tabs.executeScript(activeTab.id, {code});
     console.log('filled out', ret, 'inputs');
+
+    return {};
   }
 }
