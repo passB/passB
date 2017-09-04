@@ -3,7 +3,7 @@ import "reflect-metadata";
 export type ExecutionContext = "background" | "popup" | undefined;
 const executionContexts = ["background", "popup"];
 
-function getActionName(constructor: Function, propertyKey: string) {
+function getActionName(constructor: Function, propertyKey: string): string {
   return `$(constructor.name).$(propertyKey)`;
 }
 
@@ -12,11 +12,13 @@ interface AsynchronousRequest {
   params: any[];
 }
 
-export function executeInCorrectContext() {
-  return <R, T extends (this: any, ...args: any[]) => Promise<R>>
-    (target: object,
-     propertyKey: string,
-     descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> => {
+export const executeInCorrectContext = () =>
+  <R, T extends (this: any, ...args: any[]) => Promise<R>>
+    (
+      target: object,
+      propertyKey: string,
+      descriptor: TypedPropertyDescriptor<T>,
+    ): TypedPropertyDescriptor<T> => {
 
     const executionContext = Reflect.getMetadata("executionContext", target, propertyKey);
     if (!executionContexts.includes(executionContext)) {
@@ -42,10 +44,9 @@ export function executeInCorrectContext() {
       }) as T,
     };
   };
-}
 
-export function AsynchronousCallable() {
-  return <T extends { new(...args: any[]): {} }>(constructor: T): T =>
+export const AsynchronousCallable = () =>
+  <T extends { new(...args: any[]): {} }>(constructor: T): T =>
     class extends constructor {
       constructor(...args: any[]) {
         super(...args);
@@ -72,4 +73,3 @@ export function AsynchronousCallable() {
         }
       }
     };
-}

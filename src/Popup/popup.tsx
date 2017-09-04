@@ -7,7 +7,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Tab = browser.tabs.Tab;
-import {MemoryRouter, Route, RouteProps, Switch} from "react-router";
+import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from "react-router";
 
 import "./style.scss";
 
@@ -17,16 +17,16 @@ interface State {
 
 class Popup extends React.Component<{}, State> {
   public state: State = {};
-  private gatheredRoutes = this.gatherRoutes();
+  private gatheredRoutes: RouteProps[] = this.gatherRoutes();
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     browser.tabs.query({
       active: true,
       currentWindow: true,
     }).then((tabs: Tab[]) => this.setState({activeTab: tabs[0]}));
   }
 
-  public render() {
+  public render(): JSX.Element {
     const {activeTab} = this.state;
 
     return (
@@ -38,14 +38,10 @@ class Popup extends React.Component<{}, State> {
               {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
               <Route
                 path="/entry"
-                render={({history, location: {state: {entry}}}) =>
-                  <EntryView
-                    navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
-                    entry={entry}
-                  />}
+                component={EntryView}
               />
               <Route render={
-                ({history}) => <ListView
+                ({history}: RouteComponentProps<{}>) => <ListView
                   navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
                   url={activeTab && activeTab.url ? activeTab.url : ''}
                 />

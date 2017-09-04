@@ -32,17 +32,17 @@ export class PassB {
     this.options = options;
   }
 
-  public async initialize() {
+  public async initialize(): Promise<this> {
     if (window.executionContext === "background") {
       this.entries = {};
       for (const extension of this.options.extensions) {
-        await extension.initializeList((entry) => this.registerListEntry(extension.name, entry));
+        await extension.initializeList((entry: ListEntry) => this.registerListEntry(extension.name, entry));
       }
     }
     return this;
   }
 
-  public registerListEntry(extensionName: string, entry: ListEntry) {
+  public registerListEntry(extensionName: string, entry: ListEntry): void {
 
     deepExtend(
       this.entries,
@@ -67,7 +67,7 @@ export class PassB {
     return extension;
   }
 
-  public getMatcher() {
+  public getMatcher(): Matcher {
     return this.options.matchers[0];
   }
 

@@ -7,16 +7,20 @@ interface ScoredEntry {
   score: number;
 }
 
+interface Options {
+  fuzzOptions: IScoringOptions;
+}
+
 /**
  * these matches are not very good but it serves as a proof of concept
  */
 export class FuzzaldrinMatcher extends Matcher {
-  private options = {
+  private options: Options = {
     fuzzOptions: {
       pathSeparator: '/',
       allowErrors: true,
       isPath: true,
-    } as IScoringOptions,
+    },
   };
 
   public async filterEntries(url: string, entries: Entry[]): Promise<Entry[]> {

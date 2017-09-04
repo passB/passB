@@ -21,14 +21,14 @@ export class ListView extends React.Component<Props, State> {
     filtered: [],
   };
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     passB.getEntries()
       .then((entries: LabeledEntries) =>
         this.setState({entries: Object.values(entries)}, () => this.recalculateFilteredEntries()),
       );
   }
 
-  public render() {
+  public render(): JSX.Element {
     const {navigateTo} = this.props;
     const {filtered} = this.state;
 
@@ -45,7 +45,7 @@ export class ListView extends React.Component<Props, State> {
     );
   }
 
-  private recalculateFilteredEntries() {
+  private recalculateFilteredEntries(): void {
     if (!this.props.url || !this.state.entries) {
       return;
     }

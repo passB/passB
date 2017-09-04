@@ -1,7 +1,8 @@
+import {LabeledEntries, PassB} from "./PassB";
 window.executionContext = "background";
 import {passB} from "./ConfiguredPassB";
 
 passB.initialize()
-  .then((x) => console.log('initialized', x))
+  .then((x: PassB) => console.log('initialized', x))
   .then(() => passB.getEntries())
-  .then((x) => console.log('returned', x));
+  .then((x: LabeledEntries) => console.log('returned', x));
