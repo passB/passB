@@ -48,7 +48,36 @@ export class PassExtension extends Extension {
     }
   }
 
+  private async getCurrentTab(): Promise<browser.tabs.Tab> {
+    return (await browser.tabs.query({active: true, currentWindow: true}))[0];
+  }
+
   private async executeFillAction(entry: string): Promise<void> {
-    // baz
+    const initialUrl = (await this.getCurrentTab()).url;
+    const entryContents = await PassCli.show(entry);
+    const activeTab = await this.getCurrentTab();
+    const finalUrl = activeTab.url;
+
+    if (typeof finalUrl !== "undefined" && initialUrl !== finalUrl) {
+      console.info(`url changed from request to receive of password. not filling`);
+      return;
+    }
+
+    const fillPasswordInputs = (password: string) => {
+      let i = 0;
+      for (const passwordInput of document.querySelectorAll('input[type="password"]')) {
+        console.log('filling', passwordInput);
+        (passwordInput as HTMLInputElement).value = password;
+        i++;
+      }
+      return i;
+    };
+
+    const args = [entryContents[0]];
+    const code = `(${fillPasswordInputs.toString()}).apply(null, JSON.parse('${JSON.stringify(args)}')); `;
+
+    console.log('will execute', code, 'in', activeTab.id);
+    const ret: number[] = await browser.tabs.executeScript(activeTab.id, {code});
+    console.log('filled out', ret, 'inputs');
   }
 }
