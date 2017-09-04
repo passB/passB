@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     'background-script': './src/background-script.ts',
     'popup': './src/Popup/popup.tsx',
+    'options': './src/Options/options.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'extension/built'),

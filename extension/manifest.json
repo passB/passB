@@ -17,10 +17,13 @@
   "browser_action": {
     "default_popup": "popup.html"
   },
+  "options_ui": {
+    "page": "options.html"
+  },
   "background": {
     "scripts": [
       "built/background-script.js"
     ]
   },
-  "permissions": ["nativeMessaging", "tabs", "activeTab"]
+  "permissions": ["nativeMessaging", "tabs", "activeTab", "storage"]
 }
