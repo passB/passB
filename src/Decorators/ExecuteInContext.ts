@@ -4,7 +4,7 @@ export type ExecutionContext = "background" | "popup" | undefined;
 const executionContexts = ["background", "popup"];
 
 function getActionName(constructor: Function, propertyKey: string): string {
-  return `$(constructor.name).$(propertyKey)`;
+  return `${constructor.name}.${propertyKey}`;
 }
 
 interface AsynchronousRequest {
@@ -33,7 +33,7 @@ export const executeInCorrectContext = () =>
       value: (async function wrapper(this: any, ...params: any[]): Promise<R> {
         if (window.executionContext === executionContext) {
           console.debug('executing synchonously %s.%s', target.constructor.name, propertyKey);
-          return await wrappedFunction.apply(this, ...params);
+          return await wrappedFunction.apply(this, params);
         }
 
         console.debug('executing asynchonously %s.%s', target.constructor.name, propertyKey);
@@ -63,7 +63,7 @@ export const AsynchronousCallable = () =>
                   }
 
                   const wrappedFn: ((...args: any[]) => Promise<any>) = (this as any)[propertyKey];
-                  wrappedFn.apply(this, ...request.params).then(sendResponse);
+                  wrappedFn.apply(this, request.params).then(sendResponse);
                   return true;
                 },
               );
