@@ -21,10 +21,14 @@
   },
   "options_tab_matchers": {
     "message": "Matching Strageties",
-    "description": "Label for 'Matching Strageties' Tab in the Option menu"
+    "description": "Label for 'Matching Strategies' Tab in the Option menu"
+  },
+  "options_tab_file_formats": {
+    "message": "File Format Strageties",
+    "description": "Label for 'File Format Strategies' Tab in the Option menu"
   },
   "options_tab_fillers": {
     "message": "Filling Strategy",
-    "description": "Label for 'Filling Strategy' Tab in the Option menu"
+    "description": "Label for 'Filling Strategies' Tab in the Option menu"
   }
 }

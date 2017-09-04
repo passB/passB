@@ -1,3 +1,4 @@
+import {passB} from "ConfiguredPassB";
 import {PassCli} from "PassCli";
 import {ExecutionOptions, Extension, RegisterEntryCallback} from "../Extension";
 import {Show} from "./Views";
@@ -68,22 +69,14 @@ export class PassExtension extends Extension {
       return {};
     }
 
-    const fillPasswordInputs = (password: string) => {
-      let i = 0;
-      for (const passwordInput of Array.from(document.querySelectorAll('input[type="password"]'))) {
-        console.log('filling', passwordInput);
-        (passwordInput as HTMLInputElement).value = password;
-        i++;
-      }
-      return i;
-    };
+    const filler = passB.getFiller();
+    const fileFormat = passB.getFileFormat();
 
-    const args = [entryContents[0]];
-    const code = `(${fillPasswordInputs.toString()}).apply(null, JSON.parse('${JSON.stringify(args)}')); `;
+    console.log(fileFormat.getPassword(entryContents, entry));
 
-    const ret: object[] = await browser.tabs.executeScript(activeTab.id, {code});
-    console.log('filled out', ret, 'inputs');
-
-    return {};
+    return Promise.all([
+      filler.fillPassword(activeTab, fileFormat.getPassword(entryContents, entry)),
+      filler.fillUsername(activeTab, fileFormat.getUsername(entryContents, entry)),
+    ]);
   }
 }

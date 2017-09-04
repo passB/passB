@@ -75,6 +75,18 @@ class Popup extends React.Component<{}, State> {
                 /><br />
               </div>
             </Tab>
+            <Tab label={browser.i18n.getMessage('options_tab_file_formats')}>
+              <div>
+                <h2>{browser.i18n.getMessage('options_tab_file_formats')}</h2>
+                <SelectField
+                  value={1}
+                  onChange={() => 0}
+                >
+                  <MenuItem value={1} primaryText="Password in First Line"/>
+                  <MenuItem value={2} primaryText="Labeled lines"/>
+                </SelectField><br />
+              </div>
+            </Tab>
             <Tab label={browser.i18n.getMessage('options_tab_fillers')}>
               <div>
                 <h2>{browser.i18n.getMessage('options_tab_fillers')}</h2>
@@ -82,8 +94,7 @@ class Popup extends React.Component<{}, State> {
                   value={1}
                   onChange={() => 0}
                 >
-                  <MenuItem value={1} primaryText="Password in First Line"/>
-                  <MenuItem value={2} primaryText="Labeled lines"/>
+                  <MenuItem value={1} primaryText="Fill all password inputs"/>
                 </SelectField><br />
               </div>
             </Tab>

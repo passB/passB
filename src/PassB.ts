@@ -1,11 +1,15 @@
+import {AsynchronousCallable, executeInCorrectContext} from "Decorators/ExecuteInContext";
 import deepExtend = require( "deep-extend");
-import {AsynchronousCallable, executeInCorrectContext, ExecutionContext} from "./Decorators/ExecuteInContext";
-import {Extension, ListEntry} from "./Extensions/Extension";
-import {Matcher} from "./Matchers/Matcher";
+import {Extension, ListEntry} from "Extensions/Extension";
+import {FileFormat} from "PluggableStrategies/FileFormats";
+import {Filler} from "PluggableStrategies/Fillers";
+import {Matcher} from "PluggableStrategies/Matchers";
 
 interface Options {
   extensions: Extension[];
   matchers: Matcher[];
+  fileFormats: FileFormat[];
+  fillers: Filler[];
 }
 
 export interface Action {
@@ -69,6 +73,14 @@ export class PassB {
 
   public getMatcher(): Matcher {
     return this.options.matchers[0];
+  }
+
+  public getFiller(): Filler {
+    return this.options.fillers[0];
+  }
+
+  public getFileFormat(): FileFormat {
+    return this.options.fileFormats[0];
   }
 
   @executeInCorrectContext()
