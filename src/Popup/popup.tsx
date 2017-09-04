@@ -3,7 +3,9 @@ import {Extension} from "../Extensions/Extension";
 import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 
+import {AppBar, IconButton} from "material-ui";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import Settings from 'material-ui/svg-icons/action/settings';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Tab = browser.tabs.Tab;
@@ -33,8 +35,17 @@ class Popup extends React.Component<{}, State> {
       <MuiThemeProvider>
         <MemoryRouter>
           <div>
-            <h1>PassB</h1>
-            <Switch>
+            <AppBar
+              title={<span>{browser.i18n.getMessage('extensionName')}</span>}
+              iconElementLeft={<span/>}
+              iconElementRight={<IconButton onClick={() => {
+                browser.runtime.openOptionsPage();
+                window.close();
+              }}>
+                <Settings />
+              </IconButton>}
+            />
+            < Switch >
               {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
               <Route
                 path="/entry"

@@ -1,0 +1,22 @@
+{
+  "extensionName": {
+    "message": "passB",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "browser addon for the passwordstore password manager",
+    "description": "Description of the extension."
+  },
+
+  "extension_pass_action_show": {
+    "message": "Show contents",
+    "description": "Label for the 'show password' menu entry"
+  },
+  "extension_pass_action_fill": {
+    "message": "Fill password",
+    "description": "Label for the 'fill password' menu entry"
+  }
+
+
+}
