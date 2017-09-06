@@ -9,7 +9,7 @@ import {FillPasswordInputs} from "./PluggableStrategies/Fillers/FillPasswordInpu
  */
 export const passB = new PassB({
   extensions: [
-    new PassExtension({}),
+    new PassExtension(),
   ],
   matchers: [
     new FuzzaldrinMatcher(),

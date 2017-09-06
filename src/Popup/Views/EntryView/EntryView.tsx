@@ -1,5 +1,5 @@
 import {passB} from "ConfiguredPassB";
-import {Menu, MenuItem, Subheader} from "material-ui";
+import {List, ListItem, ListItemText, ListSubheader} from "material-ui";
 import {Action, Entry} from 'PassB';
 import * as React from 'react';
 import {RouteComponentProps} from "react-router";
@@ -14,10 +14,9 @@ interface LocationStateProps {
 
 export const EntryView = ({location: {state: {entry}}, history}: RouteComponentProps<{}> & LocationStateProps) => (
   <div>
-    <Menu autoWidth={false} width={400} maxHeight={400}>
-      <Subheader>{entry.label}</Subheader >
+    <List subheader={<ListSubheader>{entry.label}</ListSubheader>}>
       {Object.values(entry.actions).map((action: Action) => (
-        <MenuItem
+        <ListItem
           key={`${action.extension}/${action.action}`}
           onClick={() =>
             passB.getExtension(action.extension).executeAction(
@@ -26,9 +25,12 @@ export const EntryView = ({location: {state: {entry}}, history}: RouteComponentP
               {navigateTo: (newUrl: string, state: {}) => history.push(newUrl, state)},
             )
           }
-          primaryText={browser.i18n.getMessage(passB.getExtension(action.extension).getLabelForAction(action.action))}
-        />
+        >
+          <ListItemText>
+            {browser.i18n.getMessage(passB.getExtension(action.extension).getLabelForAction(action.action))}
+          </ListItemText>
+        </ListItem>
       ))}
-    </Menu>
+    </List>
   </div>
 );

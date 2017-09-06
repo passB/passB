@@ -1,6 +1,9 @@
 import Tab = browser.tabs.Tab;
 import {Filler} from "./Filler";
 
+import * as React from 'react';
+import {OptionsPanelType} from "../../Options/OptionsReceiver";
+
 const fillPasswordInputs = (password: string) => {
   let i = 0;
   for (const passwordInput of Array.from(document.querySelectorAll('input[type="password"]'))) {
@@ -10,7 +13,10 @@ const fillPasswordInputs = (password: string) => {
   return i;
 };
 
-export class FillPasswordInputs extends Filler {
+export class FillPasswordInputs extends Filler<{}> {
+  public readonly defaultOptions: {} = {};
+  public readonly OptionsPanel: OptionsPanelType<{}> = () => <div/>;
+
   public fillUsername(activeTab: Tab, username: string): Promise<void> {
     // not supported by this filler, just skip it
     return Promise.resolve();

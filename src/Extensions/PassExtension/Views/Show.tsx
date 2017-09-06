@@ -26,8 +26,10 @@ export class Show extends React.Component<RouteComponentProps<{}> & LocationStat
   }
 
   public render(): JSX.Element {
-    return <div>
-      {this.state.contents.map((line: string, idx: number) => <div key={idx}>{line}</div>)}
-    </div>;
+    return (
+      <div>
+        {this.state.contents.map((line: string, idx: number) => <div key={idx}>{line}</div>)}
+      </div>
+    );
   }
 }

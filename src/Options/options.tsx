@@ -1,104 +1,134 @@
 import {passB} from 'ConfiguredPassB';
 
-import {Card, Checkbox, List, ListItem, MenuItem, SelectField, Slider, Tab, Tabs, TextField} from "material-ui";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {
+  Checkbox,
+  FormControlLabel,
+  List, ListItem, ListItemText,
+  MuiThemeProvider,
+  Tab,
+  Tabs,
+  TextField,
+} from "material-ui";
+import {default as Radio, RadioGroup} from 'material-ui/Radio';
+import {createMuiTheme} from "material-ui/styles";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 // theme generated using https://cimdalli.github.io/mui-theme-generator/
 // while the default theme looks good in the popup, it was a bit out of place in the options menu.
 // this should be more subtle.
-const getTheme = () => {
-  const overwrites = {
-    palette: {
-      primary1Color: "#616161",
-      primary2Color: "#9e9e9e",
-      accent1Color: "#263238",
-      pickerHeaderColor: "#9e9e9e",
-    },
-  };
-  return getMuiTheme(baseTheme, overwrites);
-};
+/*
+ TODO: figure out how to do in 1.0 beta
+
+ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+ import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+ const getTheme = () => {
+ const overwrites = {
+ palette: {
+ primary1Color: "#616161",
+ primary2Color: "#9e9e9e",
+ accent1Color: "#263238",
+ pickerHeaderColor: "#9e9e9e",
+ },
+ };
+ return getMuiTheme(baseTheme, overwrites);
+ };
+ */
+const theme = createMuiTheme();
 
 import "./style.scss";
 
+type TabValue = "Extensions" | "Matcher" | "Filler" | "FileFormat";
+
 interface State {
+  selectedTab: TabValue;
 }
 
+// TODO: 1.0 beta 8 does not support SelectField yet, update from radio once it's been updated
+// https://github.com/callemall/material-ui/issues/5716
+// maybe also look at https://material-ui-1dab0.firebaseapp.com/demos/menus/#selected-menus
+
 class Popup extends React.Component<{}, State> {
-  public state: State = {};
+  public state: State = {
+    selectedTab: "Extensions",
+  };
 
   public render(): JSX.Element {
 
+    const FillerOptionsPanel = passB.getFiller().OptionsPanel;
+    const MatcherOptionsPanel = passB.getMatcher().OptionsPanel;
+    const FileFormatOptionsPanel = passB.getFileFormat().OptionsPanel;
+
+    const {selectedTab} = this.state;
+
     return (
-      <MuiThemeProvider muiTheme={getTheme()}>
+      <MuiThemeProvider theme={theme}>
         <div>
-          <Tabs>
-            <Tab label={browser.i18n.getMessage('options_tab_extensions')}>
-              <div>
-                <h2>{browser.i18n.getMessage('options_tab_extensions')}</h2>
-                <List>
-                  <ListItem
-                    leftCheckbox={<Checkbox checked={true}/>}
-                    primaryText="Base Pass Functionality"
-                  />
-                  <ListItem
-                    leftCheckbox={<Checkbox checked={true}/>}
-                    primaryText="OTP Extension"
-                  />
-                  <ListItem
-                    leftCheckbox={<Checkbox />}
-                    primaryText="QRCode"
-                  />
-                </List>
-              </div>
-            </Tab>
-            <Tab label={browser.i18n.getMessage('options_tab_matchers')}>
-              <div>
-                <h2>{browser.i18n.getMessage('options_tab_matchers')}</h2>
-                <SelectField
-                  value={1}
-                  onChange={() => 0}
-                >
-                  <MenuItem value={1} primaryText="FuzzaldrinMatcher"/>
-                </SelectField><br />
-                <TextField
-                  floatingLabelText="minimum score"
-                  value="0"
-                /><br />
-                <TextField
-                  floatingLabelText="max. results"
-                  value="-1"
-                /><br />
-              </div>
-            </Tab>
-            <Tab label={browser.i18n.getMessage('options_tab_file_formats')}>
-              <div>
-                <h2>{browser.i18n.getMessage('options_tab_file_formats')}</h2>
-                <SelectField
-                  value={1}
-                  onChange={() => 0}
-                >
-                  <MenuItem value={1} primaryText="Password in First Line"/>
-                  <MenuItem value={2} primaryText="Labeled lines"/>
-                </SelectField><br />
-              </div>
-            </Tab>
-            <Tab label={browser.i18n.getMessage('options_tab_fillers')}>
-              <div>
-                <h2>{browser.i18n.getMessage('options_tab_fillers')}</h2>
-                <SelectField
-                  value={1}
-                  onChange={() => 0}
-                >
-                  <MenuItem value={1} primaryText="Fill all password inputs"/>
-                </SelectField><br />
-              </div>
-            </Tab>
+          <Tabs value={selectedTab} onChange={(event: object, value: TabValue) => this.setState({selectedTab: value})}>
+            <Tab value="Extensions" label={browser.i18n.getMessage('options_tab_extensions')}/>
+            <Tab value="Matcher" label={browser.i18n.getMessage('options_tab_matchers')}/>
+            <Tab value="Filler" label={browser.i18n.getMessage('options_tab_file_formats')}/>
+            <Tab value="FileFormat" label={browser.i18n.getMessage('options_tab_fillers')} />
           </Tabs>
+          {selectedTab === "Extensions" && <div>
+            <h2>{browser.i18n.getMessage('options_tab_extensions')}</h2>
+            <List>
+              <ListItem>
+                <Checkbox checked={true}/>
+                <ListItemText primary="Base Pass Functionality"/>
+              </ListItem>
+              <ListItem>
+                <Checkbox checked={true}/>
+                <ListItemText primary="OTP Extensio"/>
+              </ListItem>
+              <ListItem>
+                <Checkbox checked={true}/>
+                <ListItemText primary="QRCode"/>
+              </ListItem>
+            </List>
+          </div>}
+
+          {selectedTab === "Matcher" && <div>
+            <h2>{browser.i18n.getMessage('options_tab_matchers')}</h2>
+            <RadioGroup
+              selectedValue="1"
+              onChange={() => 0}
+            >
+              <FormControlLabel value="1" control={<Radio />} label="FuzzaldrinMatcher"/>
+            </RadioGroup><br />
+            <TextField
+              label="minimum score"
+              value="0"
+            /><br />
+            <TextField
+              label="max. results"
+              value="-1"
+            /><br />
+            <MatcherOptionsPanel options={passB.getMatcher().defaultOptions} updateOptions={() => 0}/>
+          </div>}
+          {selectedTab === "FileFormat" && <div>
+            <h2>{browser.i18n.getMessage('options_tab_file_formats')}</h2>
+            <RadioGroup
+              selectedValue="1"
+              onChange={() => 0}
+            >
+              <FormControlLabel value="1" control={<Radio />} label="Password in First Line"/>
+              <FormControlLabel value="2" control={<Radio />} label="Labeled lines"/>
+            </RadioGroup><br />
+            <FileFormatOptionsPanel options={passB.getFileFormat().defaultOptions} updateOptions={() => 0}/>
+          </div>}
+          {selectedTab === "Filler" && <div>
+            <h2>{browser.i18n.getMessage('options_tab_fillers')}</h2>
+            <RadioGroup
+              selectedValue="1"
+              onChange={() => 0}
+            >
+              <FormControlLabel value="1" control={<Radio />} label="Fill all password inputs"/>
+            </RadioGroup><br />
+            <FillerOptionsPanel options={passB.getFiller().defaultOptions} updateOptions={() => 0}/>
+          </div>}
+
         </div>
       </MuiThemeProvider>
     );

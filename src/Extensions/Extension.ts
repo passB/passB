@@ -1,11 +1,9 @@
+import {OptionsReceiver} from "Options/OptionsReceiver";
 import {RouteProps} from "react-router";
 
 export interface ListEntry {
   label: string;
   actions: string[];
-}
-
-export interface Options {
 }
 
 export interface ExecutionOptions {
@@ -14,16 +12,10 @@ export interface ExecutionOptions {
 
 export type RegisterEntryCallback = (entry: ListEntry) => void;
 
-export abstract class Extension {
+export abstract class Extension<OptionType> extends OptionsReceiver<OptionType> {
   public static readonly routes: RouteProps[] = [];
-
   public abstract readonly name: string;
   public abstract readonly actions: string[];
-  protected readonly options: Options;
-
-  public constructor(options: Options) {
-    this.options = options;
-  }
 
   public abstract initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void>;
 

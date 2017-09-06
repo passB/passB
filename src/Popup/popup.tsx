@@ -3,9 +3,9 @@ import {Extension} from "../Extensions/Extension";
 import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 
-import {AppBar, IconButton} from "material-ui";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import Settings from 'material-ui/svg-icons/action/settings';
+import {AppBar, Button, MuiThemeProvider, Toolbar, Typography} from "material-ui";
+import {createMuiTheme} from "material-ui/styles";
+// import Settings from 'material-ui/svg-icons/action/settings'; TODO: 1.0 beta
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Tab = browser.tabs.Tab;
@@ -16,6 +16,8 @@ import "./style.scss";
 interface State {
   activeTab?: Tab;
 }
+
+const theme = createMuiTheme();
 
 class Popup extends React.Component<{}, State> {
   public state: State = {};
@@ -32,31 +34,40 @@ class Popup extends React.Component<{}, State> {
     const {activeTab} = this.state;
 
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider theme={theme}>
         <MemoryRouter>
           <div>
-            <AppBar
-              title={<span>{browser.i18n.getMessage('extensionName')}</span>}
-              iconElementLeft={<span/>}
-              iconElementRight={<IconButton onClick={() => {
-                browser.runtime.openOptionsPage();
-                window.close();
-              }}>
-                <Settings />
-              </IconButton>}
-            />
-            < Switch >
+            <AppBar position="static">
+              <Toolbar disableGutters={true}>
+                <Typography type="title" color="inherit">
+                  {browser.i18n.getMessage('extensionName')}
+                </Typography>
+                <Button
+                  color="contrast"
+                  onClick={() => {
+                    browser.runtime.openOptionsPage();
+                    window.close();
+                  }}
+                >
+                  Settings
+                </Button>
+              </Toolbar>
+            </AppBar>
+            <Switch>
               {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
               <Route
                 path="/entry"
                 component={EntryView}
               />
-              <Route render={
-                ({history}: RouteComponentProps<{}>) => <ListView
-                  navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
-                  url={activeTab && activeTab.url ? activeTab.url : ''}
-                />
-              }/>
+              <Route
+                render={
+                  ({history}: RouteComponentProps<{}>) => (
+                    <ListView
+                      navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
+                      url={activeTab && activeTab.url ? activeTab.url : ''}
+                    />
+                  )}
+              />
             </Switch>
           </div>
         </MemoryRouter>

@@ -1,6 +1,5 @@
 import {passB} from "ConfiguredPassB";
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import {List, ListItem, ListItemText} from 'material-ui';
 import {Entry, LabeledEntries} from "PassB";
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
@@ -32,16 +31,20 @@ export class ListView extends React.Component<Props, State> {
     const {navigateTo} = this.props;
     const {filtered} = this.state;
 
+    console.log(this.state);
+
     return (
-      <Menu autoWidth={false} width={400} maxHeight={400}>
+      <List>
         {filtered && filtered.map((entry: Entry) => (
-          <MenuItem
+          <ListItem
+            button={true}
             key={entry.label}
             onClick={() => navigateTo(`entry`, {entry})}
-            primaryText={entry.label.replace(/\//g, "/\u200b")}
-          />
+          >
+            <ListItemText primary={entry.label.replace(/\//g, "/\u200b")}/>
+          </ListItem>
         ))}
-      </Menu>
+      </List>
     );
   }
 

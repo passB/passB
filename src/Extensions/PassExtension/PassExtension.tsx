@@ -1,22 +1,27 @@
 import {passB} from "ConfiguredPassB";
+import {AsynchronousCallable, executeInCorrectContext} from "Decorators/ExecuteInContext";
+import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
 import {PassCli} from "PassCli";
 import {ExecutionOptions, Extension, RegisterEntryCallback} from "../Extension";
 import {Show} from "./Views";
 
 import * as React from 'react';
 import {RouteProps} from "react-router";
-import {AsynchronousCallable, executeInCorrectContext} from "../../Decorators/ExecuteInContext";
+
+interface Options {}
 
 @AsynchronousCallable()
-export class PassExtension extends Extension {
+export class PassExtension extends Extension<Options> {
   public static readonly routes: RouteProps[] = [
     {
       path: '/extension/Pass/Show',
       component: Show,
     },
   ];
-  public name: string = 'Pass';
-  public actions: string[] = ['show', 'fill'];
+  public readonly name: string = 'Pass';
+  public readonly actions: string[] = ['show', 'fill'];
+  public readonly defaultOptions: Options = {};
+  public readonly OptionsPanel: OptionsPanelType<Options> = () => <div>no options for this extension</div>;
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
     for (const label of await PassCli.list()) {

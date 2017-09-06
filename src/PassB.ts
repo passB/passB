@@ -6,10 +6,10 @@ import {Filler} from "PluggableStrategies/Fillers";
 import {Matcher} from "PluggableStrategies/Matchers";
 
 interface Options {
-  extensions: Extension[];
-  matchers: Matcher[];
-  fileFormats: FileFormat[];
-  fillers: Filler[];
+  extensions: Array<Extension<{}>>;
+  matchers: Array<Matcher<{}>>;
+  fileFormats: Array<FileFormat<{}>>;
+  fillers: Array<Filler<{}>>;
 }
 
 export interface Action {
@@ -59,27 +59,27 @@ export class PassB {
     );
   }
 
-  public getExtensions(): Extension[] {
+  public getExtensions(): Array<Extension<{}>> {
     return this.options.extensions;
   }
 
-  public getExtension(name: string): Extension {
-    const extension = this.options.extensions.find((item: Extension) => item.name === name);
+  public getExtension(name: string): Extension<{}> {
+    const extension = this.options.extensions.find((item: Extension<{}>) => item.name === name);
     if (!extension) {
       throw new Error('query for unknown extension ' + name);
     }
     return extension;
   }
 
-  public getMatcher(): Matcher {
+  public getMatcher(): Matcher<{}> {
     return this.options.matchers[0];
   }
 
-  public getFiller(): Filler {
+  public getFiller(): Filler<{}> {
     return this.options.fillers[0];
   }
 
-  public getFileFormat(): FileFormat {
+  public getFileFormat(): FileFormat<{}> {
     return this.options.fileFormats[0];
   }
 
