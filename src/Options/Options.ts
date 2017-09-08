@@ -49,7 +49,7 @@ export class Options {
 
   private getDefaultOptions(passB: PassB): OptionsData {
     return {
-      enabledExtensions: [PassExtension.name],
+      enabledExtensions: ['Pass'],
       extensionsOptions: extractDefaultOptionsList(passB.getAllExtensions()),
       selectedMatcher: passB.getAllMatchers()[0].constructor.name,
       matchers: extractDefaultOptionsList(passB.getAllMatchers()),
