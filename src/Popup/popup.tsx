@@ -3,7 +3,7 @@ import {Extension} from "../Extensions/Extension";
 import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 
-import {AppBar, Button, MuiThemeProvider, Toolbar, Typography} from "material-ui";
+import {AppBar, Button, Card, CardContent, MuiThemeProvider, Toolbar, Typography} from "material-ui";
 import {createMuiTheme} from "material-ui/styles";
 // import Settings from 'material-ui/svg-icons/action/settings'; TODO: 1.0 beta
 import * as React from 'react';
@@ -37,9 +37,9 @@ class Popup extends React.Component<{}, State> {
       <MuiThemeProvider theme={theme}>
         <MemoryRouter>
           <div>
-            <AppBar position="static">
-              <Toolbar disableGutters={true}>
-                <Typography type="title" color="inherit">
+            <AppBar position="fixed">
+              <Toolbar>
+                <Typography type="title" color="inherit" style={{flex: 1, marginLeft: "15px"}}>
                   {browser.i18n.getMessage('extensionName')}
                 </Typography>
                 <Button
@@ -53,22 +53,26 @@ class Popup extends React.Component<{}, State> {
                 </Button>
               </Toolbar>
             </AppBar>
-            <Switch>
-              {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
-              <Route
-                path="/entry"
-                component={EntryView}
-              />
-              <Route
-                render={
-                  ({history}: RouteComponentProps<{}>) => (
-                    <ListView
-                      navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
-                      url={activeTab && activeTab.url ? activeTab.url : ''}
-                    />
-                  )}
-              />
-            </Switch>
+            <Card>
+              <CardContent style={{maxHeight: '390px', overflow: 'auto'}}>
+                <Switch>
+                  {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
+                  <Route
+                    path="/entry"
+                    component={EntryView}
+                  />
+                  <Route
+                    render={
+                      ({history}: RouteComponentProps<{}>) => (
+                        <ListView
+                          navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
+                          url={activeTab && activeTab.url ? activeTab.url : ''}
+                        />
+                      )}
+                  />
+                </Switch>
+              </CardContent>
+            </Card>
           </div>
         </MemoryRouter>
       </MuiThemeProvider>
@@ -77,7 +81,7 @@ class Popup extends React.Component<{}, State> {
 
   private gatherRoutes(): RouteProps[] {
     const gatheredRoutes: RouteProps[] = [];
-    for (const extension of passB.getExtensions()) {
+    for (const extension of passB.getAllExtensions()) {
       for (const route of (extension.constructor as typeof Extension).routes) {
         if (!(route.path || '').startsWith(`/extension/${extension.name}/`)) {
           throw Error(

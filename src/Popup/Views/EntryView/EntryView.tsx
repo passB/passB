@@ -17,6 +17,7 @@ export const EntryView = ({location: {state: {entry}}, history}: RouteComponentP
     <List subheader={<ListSubheader>{entry.label}</ListSubheader>}>
       {Object.values(entry.actions).map((action: Action) => (
         <ListItem
+          button={true}
           key={`${action.extension}/${action.action}`}
           onClick={() =>
             passB.getExtension(action.extension).executeAction(
@@ -26,9 +27,9 @@ export const EntryView = ({location: {state: {entry}}, history}: RouteComponentP
             )
           }
         >
-          <ListItemText>
-            {browser.i18n.getMessage(passB.getExtension(action.extension).getLabelForAction(action.action))}
-          </ListItemText>
+          <ListItemText
+            primary={browser.i18n.getMessage(passB.getExtension(action.extension).getLabelForAction(action.action))}
+          />
         </ListItem>
       ))}
     </List>

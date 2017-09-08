@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@types/deep-extend": "^0.4.30",
+    "@types/deep-freeze": "^0.1.1",
     "@types/fuzzaldrin": "^2.1.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
     "@types/react": "^16.0.4",
@@ -32,6 +33,7 @@
     "@types/react-router-dom": "^4.0.7",
     "@types/reflect-metadata": "^0.0.5",
     "deep-extend": "^0.5.0",
+    "deep-freeze": "^0.0.1",
     "fuzzaldrin": "^2.1.0",
     "fuzzaldrin-plus": "^0.4.1",
     "material-ui": "next",

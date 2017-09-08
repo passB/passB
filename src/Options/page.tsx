@@ -1,4 +1,8 @@
 import {passB} from 'ConfiguredPassB';
+import {FileFormat} from 'PluggableStrategies/FileFormats/FileFormat';
+import {DropDown} from './Components/DropDown';
+
+import "./style.scss";
 
 import {
   Checkbox,
@@ -37,8 +41,6 @@ import * as ReactDOM from 'react-dom';
  */
 const theme = createMuiTheme();
 
-import "./style.scss";
-
 type TabValue = "Extensions" | "Matcher" | "Filler" | "FileFormat";
 
 interface State {
@@ -56,9 +58,15 @@ class Popup extends React.Component<{}, State> {
 
   public render(): JSX.Element {
 
+    const Fillers = passB.getAllFillers();
+    const Matchers = passB.getAllMatchers();
+    const FileFormats = passB.getAllFileFormats();
+
     const FillerOptionsPanel = passB.getFiller().OptionsPanel;
     const MatcherOptionsPanel = passB.getMatcher().OptionsPanel;
     const FileFormatOptionsPanel = passB.getFileFormat().OptionsPanel;
+
+    passB.getOptions().then((options: any) => console.log(options));
 
     const {selectedTab} = this.state;
 
@@ -68,8 +76,8 @@ class Popup extends React.Component<{}, State> {
           <Tabs value={selectedTab} onChange={(event: object, value: TabValue) => this.setState({selectedTab: value})}>
             <Tab value="Extensions" label={browser.i18n.getMessage('options_tab_extensions')}/>
             <Tab value="Matcher" label={browser.i18n.getMessage('options_tab_matchers')}/>
-            <Tab value="Filler" label={browser.i18n.getMessage('options_tab_file_formats')}/>
-            <Tab value="FileFormat" label={browser.i18n.getMessage('options_tab_fillers')} />
+            <Tab value="FileFormat" label={browser.i18n.getMessage('options_tab_file_formats')}/>
+            <Tab value="Filler" label={browser.i18n.getMessage('options_tab_fillers')} />
           </Tabs>
           {selectedTab === "Extensions" && <div>
             <h2>{browser.i18n.getMessage('options_tab_extensions')}</h2>
@@ -80,7 +88,7 @@ class Popup extends React.Component<{}, State> {
               </ListItem>
               <ListItem>
                 <Checkbox checked={true}/>
-                <ListItemText primary="OTP Extensio"/>
+                <ListItemText primary="OTP Extension"/>
               </ListItem>
               <ListItem>
                 <Checkbox checked={true}/>
@@ -109,6 +117,12 @@ class Popup extends React.Component<{}, State> {
           </div>}
           {selectedTab === "FileFormat" && <div>
             <h2>{browser.i18n.getMessage('options_tab_file_formats')}</h2>
+            <DropDown
+              options={FileFormats.map((fileFormat: FileFormat<{}>) => fileFormat.constructor.name)}
+              label="select File Format Strategy"
+              selectedIndex={0}
+              onChange={() => 0}
+            />
             <RadioGroup
               selectedValue="1"
               onChange={() => 0}

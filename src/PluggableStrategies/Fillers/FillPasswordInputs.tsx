@@ -15,6 +15,7 @@ const fillPasswordInputs = (password: string) => {
 
 export class FillPasswordInputs extends Filler<{}> {
   public readonly defaultOptions: {} = {};
+  public readonly name: string = FillPasswordInputs.name;
   public readonly OptionsPanel: OptionsPanelType<{}> = () => <div/>;
 
   public fillUsername(activeTab: Tab, username: string): Promise<void> {

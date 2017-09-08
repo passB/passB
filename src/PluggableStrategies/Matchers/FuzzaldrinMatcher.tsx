@@ -25,6 +25,7 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
       isPath: true,
     },
   };
+  public readonly name: string = FuzzaldrinMatcher.name;
   public readonly OptionsPanel: OptionsPanelType<Options> = () => <div/>;
 
   public async filterEntries(url: string, entries: Entry[]): Promise<Entry[]> {

@@ -10,6 +10,7 @@ export type OptionsPanelType<OptionType> = ComponentType<OptionPanelProps<Option
 export interface OptionsReceiverInterface<OptionType> {
   readonly defaultOptions: OptionType;
   readonly OptionsPanel: OptionsPanelType<OptionType>;
+  readonly name: string;
 
   injectOptions(options: OptionType): void;
 }
@@ -17,6 +18,7 @@ export interface OptionsReceiverInterface<OptionType> {
 export abstract class OptionsReceiver<OptionType> implements OptionsReceiverInterface<OptionType> {
   public abstract readonly defaultOptions: OptionType;
   public abstract readonly OptionsPanel: OptionsPanelType<OptionType>;
+  public abstract readonly name: string;
 
   private _options: OptionType;
 

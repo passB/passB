@@ -1,9 +1,9 @@
 import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
 import {FileFormat} from "./FileFormat";
 
+import {FormControlLabel} from "material-ui";
 import {default as Radio, RadioGroup} from 'material-ui/Radio';
 import * as React from 'react';
-import  {FormControlLabel} from "material-ui";
 
 export type UsernameStyle = "None" | "SecondLine" | "LastPathPart";
 interface Options {
@@ -15,6 +15,7 @@ export class FirstLineFileFormat extends FileFormat<Options> {
     usernameStyle: "SecondLine",
   };
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
+  public readonly name: string = FirstLineFileFormat.name;
 
     public getPassword(lines: string[], entryName: string): string | undefined {
     return lines[0];
