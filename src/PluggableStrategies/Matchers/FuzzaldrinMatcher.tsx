@@ -26,7 +26,7 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
     },
   };
   public readonly name: string = FuzzaldrinMatcher.name;
-  public readonly OptionsPanel: OptionsPanelType<Options> = () => <div/>;
+  public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
 
   public async filterEntries(url: string, entries: Entry[]): Promise<Entry[]> {
     const URL_CLEAN_REGEX = /^(http|ftp)s?:\/\//;

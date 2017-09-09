@@ -73,5 +73,9 @@ module.exports = {
         NODE_ENV: JSON.stringify('web'),
       },
     }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "shared",
+      filename: "shared.js",
+    }),
   ],
 };
