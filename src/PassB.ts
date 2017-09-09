@@ -51,16 +51,14 @@ export class PassB {
   }
 
   public registerListEntry(extensionName: string, entry: ListEntry): void {
-
-    deepExtend(
-      this.entries,
-      {
-        [entry.label]: {
-          label: entry.label,
-          actions: entry.actions.map((action: string) => ({extension: extensionName, action})),
-        },
-      },
-    );
+    this.entries[entry.label] = {
+      label: entry.label,
+      actions: [
+        ...(this.entries[entry.label] ? this.entries[entry.label].actions : []),
+        ...entry.actions.map((action: string) => ({extension: extensionName, action})),
+      ],
+    };
+    console.log(this.entries);
   }
 
   public getAllExtensions(): Array<Extension<{}>> {

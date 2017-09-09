@@ -15,6 +15,10 @@
     "message": "Fill password",
     "description": "Label for the 'fill password' menu entry"
   },
+  "extension_qrcode_action_show": {
+    "message": "Show as QR code",
+    "description": "Label for the 'show password as QR Code' menu entry"
+  },
   "options_tab_extensions": {
     "message": "Extensions",
     "description": "Label for 'Extensions' Tab in the Option menu"

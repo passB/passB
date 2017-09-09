@@ -4142,6 +4142,10 @@ q@^1.1.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.0.tgz#dd01bac9d06d30e6f219aecb8253ee9ebdc308f1"
 
+qr.js@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
+
 qs@~6.3.0:
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.2.tgz#e75bd5f6e268122a2a0e0bda630b2550c166502c"
@@ -4235,6 +4239,13 @@ react-jss@^7.1.0:
     jss-preset-default "^3.0.0"
     prop-types "^15.5.8"
     theming "^1.1.0"
+
+react-qr-svg@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-qr-svg/-/react-qr-svg-2.0.2.tgz#88ae67fa0361edfcf4d594860c47ba1c7f0f4d4f"
+  dependencies:
+    prop-types "^15.5.8"
+    qr.js "0.0.0"
 
 react-router-dom@^4.2.2:
   version "4.2.2"
