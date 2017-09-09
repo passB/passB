@@ -1,7 +1,7 @@
 import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
 import {FileFormat} from "./FileFormat";
 
-import {FormControlLabel} from "material-ui";
+import {FormControl, FormControlLabel, FormLabel} from "material-ui";
 import {default as Radio, RadioGroup} from 'material-ui/Radio';
 import * as React from 'react';
 
@@ -17,7 +17,7 @@ export class FirstLineFileFormat extends FileFormat<Options> {
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
   public readonly name: string = FirstLineFileFormat.name;
 
-    public getPassword(lines: string[], entryName: string): string | undefined {
+  public getPassword(lines: string[], entryName: string): string | undefined {
     return lines[0];
   }
 
@@ -36,22 +36,21 @@ export class FirstLineFileFormat extends FileFormat<Options> {
 function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {
   return (
     <div>
-      <RadioGroup
-        name="FirstLineFileFormat_usernameStyle"
-        selectedValue={options.usernameStyle}
-        onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: UsernameStyle) => {
-          console.log(event, value, options.usernameStyle === value);
-          updateOptions({
+      <FormControl>
+        <FormLabel>Get username from:</FormLabel>
+        <RadioGroup
+          name="FirstLineFileFormat_usernameStyle"
+          value={options.usernameStyle}
+          onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: UsernameStyle) => updateOptions({
             ...options,
             usernameStyle: value,
-          });
-        }}
-      >
-        <FormControlLabel value="None" control={<Radio />} label="None"/>
-        <FormControlLabel value="SecondLine" control={<Radio />} label="SecondLine"/>
-        <FormControlLabel value="LastPathPart" control={<Radio />} label="LastPathPart"/>
-
-      </RadioGroup>
+          })}
+        >
+          <FormControlLabel value="None" control={<Radio />} label="None"/>
+          <FormControlLabel value="SecondLine" control={<Radio />} label="SecondLine"/>
+          <FormControlLabel value="LastPathPart" control={<Radio />} label="LastPathPart"/>
+        </RadioGroup>
+      </FormControl>
     </div>
   );
 }

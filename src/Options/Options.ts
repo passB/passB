@@ -1,10 +1,9 @@
-import {PassExtension} from "Extensions/PassExtension/PassExtension";
 import {PassB} from "PassB";
 import {OptionsReceiverInterface} from "./OptionsReceiver";
 
 import deepExtend = require("deep-extend");
 
-interface OptionsList {
+export interface OptionsList {
   [extensionName: string]: {};
 }
 

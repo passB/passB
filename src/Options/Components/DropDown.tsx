@@ -2,6 +2,8 @@ import {List, ListItem, ListItemText, Menu, MenuItem} from 'material-ui';
 import * as React from 'react';
 
 // see https://material-ui-1dab0.firebaseapp.com/demos/menus/
+// replace with a real DropDown component as soon as it becomes available
+// watching: https://github.com/callemall/material-ui/issues/5716
 
 interface Props {
   options: string[];
