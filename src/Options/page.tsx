@@ -86,7 +86,7 @@ class Popup extends React.Component<{}, State> {
                         <CardContent>
                           <OptionsPanel
                             options={options.extensionsOptions[extension.name]}
-                            updateOptions={(newOptions: {}) => ({
+                            updateOptions={(newOptions: {}) => this.updateOptions({
                               extensionsOptions: {...options.extensionsOptions, [extension.name]: newOptions},
                             })}
                           />
@@ -139,7 +139,7 @@ class Popup extends React.Component<{}, State> {
   private updateOptions(newOptions: Partial<OptionsData>): void {
     const fullNewOptions = {...this.state.options, ...newOptions} as OptionsData;
     this.setState({options: fullNewOptions});
-    passB.setOptions(fullNewOptions);
+    passB.setOptions(fullNewOptions).then(() => passB.reload());
   }
 }
 

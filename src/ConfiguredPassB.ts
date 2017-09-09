@@ -1,9 +1,9 @@
 import {PassExtension} from "Extensions/PassExtension/PassExtension";
 import {QRCodeExtension} from "Extensions/QRCodeExtension/QRCodeExtension";
 import {PassB} from "PassB";
-import {FuzzaldrinMatcher} from "PluggableStrategies/Matchers";
 import {FirstLineFileFormat} from "PluggableStrategies/FileFormats/FirstLineFileFormat";
 import {FillPasswordInputs} from "PluggableStrategies/Fillers/FillPasswordInputs";
+import {FuzzaldrinMatcher} from "PluggableStrategies/Matchers";
 
 /**
  * exports a passB instance for the current context, with all options set

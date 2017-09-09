@@ -1,6 +1,6 @@
 import {passB} from "ConfiguredPassB";
 import {AsynchronousCallable, executeInCorrectContext} from "Decorators/ExecuteInContext";
-import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
+import {OptionsPanelType} from "Options/OptionsReceiver";
 import {PassCli} from "PassCli";
 import {ExecutionOptions, Extension, RegisterEntryCallback} from "../Extension";
 import {Show} from "./Views";
@@ -21,7 +21,7 @@ export class PassExtension extends Extension<Options> {
   public readonly name: string = 'Pass';
   public readonly actions: string[] = ['show', 'fill'];
   public readonly defaultOptions: Options = {};
-  public readonly OptionsPanel: OptionsPanelType<Options> = () => <div>no options for this extension</div>;
+  public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
     for (const label of await PassCli.list()) {
@@ -74,10 +74,8 @@ export class PassExtension extends Extension<Options> {
       return {};
     }
 
-    const filler = passB.getFiller();
-    const fileFormat = passB.getFileFormat();
-
-    console.log(fileFormat.getPassword(entryContents, entry));
+    const filler = await passB.getFiller();
+    const fileFormat = await passB.getFileFormat();
 
     return Promise.all([
       filler.fillPassword(activeTab, fileFormat.getPassword(entryContents, entry)),

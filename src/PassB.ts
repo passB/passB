@@ -5,6 +5,7 @@ import {FileFormat} from "PluggableStrategies/FileFormats";
 import {Filler} from "PluggableStrategies/Fillers";
 import {Matcher} from "PluggableStrategies/Matchers";
 import {Options, OptionsData} from "./Options/Options";
+import {OptionsReceiverInterface} from "./Options/OptionsReceiver";
 
 interface Config {
   extensions: Array<Extension<{}>>;
@@ -38,15 +39,26 @@ export class PassB {
     this.config = config;
   }
 
-  public async initialize(): Promise<this> {
-    if (window.executionContext === "background") {
-      this.options = new Options(this);
+  public initialize(): Promise<this> {
+    this.options = new Options(this);
 
-      this.entries = {};
-      for (const extension of this.config.extensions) {
-        await extension.initializeList((entry: ListEntry) => this.registerListEntry(extension.name, entry));
-      }
-    }
+    return this.reload();
+  }
+
+  @executeInCorrectContext()
+  @Reflect.metadata("executionContext", "background")
+  public async reload(): Promise<this> {
+    const enabledExtensions = (await (this.getOptions())).enabledExtensions;
+
+    this.entries = {};
+
+    await Promise.all(this.config.extensions
+      .filter((extension: Extension<{}>) => enabledExtensions.includes(extension.name))
+      .map((extension: Extension<{}>) => extension.initializeList(
+        (entry: ListEntry) => this.registerListEntry(extension.name, entry)),
+      ),
+    );
+
     return this;
   }
 
@@ -58,7 +70,6 @@ export class PassB {
         ...entry.actions.map((action: string) => ({extension: extensionName, action})),
       ],
     };
-    console.log(this.entries);
   }
 
   public getAllExtensions(): Array<Extension<{}>> {
@@ -73,24 +84,30 @@ export class PassB {
     return extension;
   }
 
-  public getMatcher(): Matcher<{}> {
-    return this.config.matchers[0];
+  public async getMatcher(): Promise<Matcher<{}>> {
+    const selected = (await this.getOptions()).selectedMatcher;
+    return this.config.matchers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+      || this.config.matchers[0];
   }
 
   public getAllMatchers(): Array<Matcher<{}>> {
     return this.config.matchers;
   }
 
-  public getFiller(): Filler<{}> {
-    return this.config.fillers[0];
+  public async getFiller(): Promise<Filler<{}>> {
+    const selected = (await this.getOptions()).selectedFiller;
+    return this.config.fillers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+      || this.config.fillers[0];
   }
 
   public getAllFillers(): Array<Filler<{}>> {
     return this.config.fillers;
   }
 
-  public getFileFormat(): FileFormat<{}> {
-    return this.config.fileFormats[0];
+  public async getFileFormat(): Promise<FileFormat<{}>> {
+    const selected = (await this.getOptions()).selectedFileFormat;
+    return this.config.fileFormats.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+      || this.config.fileFormats[0];
   }
 
   public getAllFileFormats(): Array<FileFormat<{}>> {

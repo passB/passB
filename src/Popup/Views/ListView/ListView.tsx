@@ -31,8 +31,6 @@ export class ListView extends React.Component<Props, State> {
     const {navigateTo} = this.props;
     const {filtered} = this.state;
 
-    console.log(this.state);
-
     return (
       <List>
         {filtered && filtered.map((entry: Entry) => (
@@ -48,11 +46,11 @@ export class ListView extends React.Component<Props, State> {
     );
   }
 
-  private recalculateFilteredEntries(): void {
+  private async recalculateFilteredEntries(): Promise<void> {
     if (!this.props.url || !this.state.entries) {
       return;
     }
-    passB.getMatcher()
+    (await (passB.getMatcher()))
       .filterEntries(this.props.url || '', this.state.entries)
       .then((filtered: Entry[]) => this.setState({filtered}));
   }

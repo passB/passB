@@ -4,17 +4,19 @@ import {RouteComponentProps} from "react-router";
 
 import {passB} from "ConfiguredPassB";
 import {PassCli} from "PassCli";
+import {Options} from '../QRCodeExtension';
 
 interface LocationStateProps {
   location: {
     state: {
       entry: string;
+      options: Options;
     };
   };
 }
 
 interface State {
-  contents?: string[];
+  value?: string;
 }
 
 export class Show extends React.Component<RouteComponentProps<{}> & LocationStateProps, State> {
@@ -23,22 +25,21 @@ export class Show extends React.Component<RouteComponentProps<{}> & LocationStat
   public async componentDidMount(): Promise<void> {
     const {location: {state: {entry}}} = this.props;
     const contents = await PassCli.show(entry);
-    this.setState({contents});
+    const value = (await (passB.getFileFormat())).getPassword(contents, entry);
+    this.setState({value});
   }
 
   public render(): JSX.Element {
-    const {contents} = this.state;
-    const {location: {state: {entry}}} = this.props;
+    const {value} = this.state;
+    const {location: {state: {options}}} = this.props;
 
-    if (!contents) {
+    if (!value) {
       return <div>loading....</div>;
     }
-    const value = passB.getFileFormat().getPassword(contents, entry);
-    if (!value) {
-      return <div>file contains no password!</div>;
-    }
+
     return (
       <QRCode
+        {...options}
         value={value}
       />
     );
