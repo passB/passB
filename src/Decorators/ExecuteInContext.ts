@@ -32,11 +32,11 @@ export const executeInCorrectContext = () =>
     return {
       value: (async function wrapper(this: any, ...params: any[]): Promise<R> {
         if (window.executionContext === executionContext) {
-          console.debug('executing synchonously %s.%s', target.constructor.name, propertyKey);
+          // console.debug('executing synchonously %s.%s', target.constructor.name, propertyKey);
           return await wrappedFunction.apply(this, params);
         }
 
-        console.debug('executing asynchonously %s.%s', target.constructor.name, propertyKey);
+        // console.debug('executing asynchonously %s.%s', target.constructor.name, propertyKey);
         return await browser.runtime.sendMessage({
           action: getActionName(target.constructor, propertyKey),
           params: [...params],

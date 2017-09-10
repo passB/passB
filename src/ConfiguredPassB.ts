@@ -23,3 +23,5 @@ export const passB = new PassB({
     new FillPasswordInputs(),
   ],
 });
+
+passB.initialize();

@@ -4,7 +4,7 @@ import {Extension, ListEntry} from "Extensions/Extension";
 import {FileFormat} from "PluggableStrategies/FileFormats";
 import {Filler} from "PluggableStrategies/Fillers";
 import {Matcher} from "PluggableStrategies/Matchers";
-import {Options, OptionsData} from "./Options/Options";
+import {Options, OptionsData, OptionsList} from "./Options/Options";
 import {OptionsReceiverInterface} from "./Options/OptionsReceiver";
 
 interface Config {
@@ -39,37 +39,16 @@ export class PassB {
     this.config = config;
   }
 
-  public initialize(): Promise<this> {
-    this.options = new Options(this);
-
-    return this.reload();
-  }
-
-  @executeInCorrectContext()
-  @Reflect.metadata("executionContext", "background")
-  public async reload(): Promise<this> {
-    const enabledExtensions = (await (this.getOptions())).enabledExtensions;
-
-    this.entries = {};
-
-    await Promise.all(this.config.extensions
-      .filter((extension: Extension<{}>) => enabledExtensions.includes(extension.name))
-      .map((extension: Extension<{}>) => extension.initializeList(
-        (entry: ListEntry) => this.registerListEntry(extension.name, entry)),
-      ),
-    );
-
-    return this;
-  }
-
-  public registerListEntry(extensionName: string, entry: ListEntry): void {
-    this.entries[entry.label] = {
-      label: entry.label,
-      actions: [
-        ...(this.entries[entry.label] ? this.entries[entry.label].actions : []),
-        ...entry.actions.map((action: string) => ({extension: extensionName, action})),
-      ],
-    };
+  public async initialize(): Promise<this> {
+    if (window.executionContext === "background") {
+      this.options = new Options(this);
+      this.injectIntoChildren(await this.getOptions());
+      await this.reloadEntries();
+      return this;
+    } else {
+      this.injectIntoChildren(await this.getOptions());
+      return this;
+    }
   }
 
   public getAllExtensions(): Array<Extension<{}>> {
@@ -130,6 +109,41 @@ export class PassB {
   @Reflect.metadata("executionContext", "background")
   public async setOptions(newOptions: OptionsData): Promise<OptionsData> {
     await this.options.setOptions(newOptions);
+    this.injectIntoChildren(newOptions);
+    await this.reloadEntries();
     return newOptions;
+  }
+
+  @executeInCorrectContext()
+  @Reflect.metadata("executionContext", "background")
+  private async reloadEntries(): Promise<this> {
+    const enabledExtensionNames = (await (this.getOptions())).enabledExtensions;
+    const enabledExtensions = this.config.extensions
+      .filter((extension: Extension<{}>) => enabledExtensionNames.includes(extension.name));
+
+    this.entries = {};
+    const entries = this.entries; // keep reference to "current" entries to prevent potential timing issues
+    for (const extension of enabledExtensions) {
+      await (extension.initializeList((entry: ListEntry) =>
+        entries[entry.label] = {
+          label: entry.label,
+          actions: [
+            ...(entries[entry.label] ? entries[entry.label].actions : []),
+            ...entry.actions.map((action: string) => ({extension: extension.name, action})),
+          ],
+        }));
+    }
+
+    return this;
+  }
+
+  private injectIntoChildren(options: OptionsData): void {
+    const injectOptions = (optionsList: OptionsList) =>
+      (item: OptionsReceiverInterface<{}>) => item.injectOptions(optionsList[item.name]);
+
+    this.config.extensions.forEach(injectOptions(options.extensionsOptions));
+    this.config.fileFormats.forEach(injectOptions(options.fileFormats));
+    this.config.fillers.forEach(injectOptions(options.fillers));
+    this.config.matchers.forEach(injectOptions(options.matchers));
   }
 }

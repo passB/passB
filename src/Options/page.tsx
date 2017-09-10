@@ -139,10 +139,8 @@ class Popup extends React.Component<{}, State> {
   private updateOptions(newOptions: Partial<OptionsData>): void {
     const fullNewOptions = {...this.state.options, ...newOptions} as OptionsData;
     this.setState({options: fullNewOptions});
-    passB.setOptions(fullNewOptions).then(() => passB.reload());
+    passB.setOptions(fullNewOptions);
   }
 }
 
-ReactDOM.render(
-  <Popup/>
-  , document.getElementById('app'));
+ReactDOM.render(<Popup/> , document.getElementById('app'));
