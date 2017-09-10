@@ -1,3 +1,5 @@
+import {memoizeWithTTL} from "./Decorators/memoizeWithTTL";
+
 interface PassReply {
   stdout: string[];
   stderr: string[];
@@ -5,6 +7,7 @@ interface PassReply {
 }
 
 export class PassCli {
+  @memoizeWithTTL(5000) // cache list calls for 5 seconds
   public static async list(): Promise<string[]> {
     const REGEX_LINE = /^((?:(?:[|`]-{0,2})\s*)+)(.*$)/;
     const REGEX_TREENODE = /([|`]-{0,2})/g;

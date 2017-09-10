@@ -21,7 +21,6 @@ export class ListView extends React.Component<Props, State> {
   };
 
   public componentDidMount(): void {
-    console.time('get items');
     passB.getEntries()
       .then((entries: LabeledEntries) =>
         this.setState({entries: Object.values(entries)}, () => this.recalculateFilteredEntries()),
