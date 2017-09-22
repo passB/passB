@@ -1,8 +1,9 @@
 import {passB} from "ConfiguredPassB";
 import {List, ListItem, ListItemText} from 'material-ui';
+import {ClassProps, withStyles} from "material-ui/styles";
 import {Entry, LabeledEntries} from "PassB";
+import {MaterialIcon} from "Popup/Components/MaterialIcon";
 import * as React from 'react';
-import Tab = browser.tabs.Tab;
 
 interface Props {
   url: string;
@@ -11,13 +12,19 @@ interface Props {
 
 interface State {
   entries: Entry[];
-  filtered: Entry[];
+  filtered?: Entry[];
 }
 
-export class ListView extends React.Component<Props, State> {
+const styles = {
+  centered: {
+    width: '100%',
+    textAlign: 'center',
+  },
+};
+
+class ListViewComponent extends React.Component<Props & ClassProps<typeof styles>, State> {
   public state: State = {
     entries: [],
-    filtered: [],
   };
 
   public componentDidMount(): void {
@@ -28,11 +35,14 @@ export class ListView extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element {
-    const {navigateTo} = this.props;
+    const {navigateTo, classes} = this.props;
     const {filtered} = this.state;
 
     return (
       <List>
+        {!filtered && (
+          <div className={classes.centered}> <MaterialIcon icon="loading" size="36" spin={true}/></div>
+        )}
         {filtered && filtered.map((entry: Entry) => (
           <ListItem
             button={true}
@@ -55,3 +65,5 @@ export class ListView extends React.Component<Props, State> {
       .then((filtered: Entry[]) => this.setState({filtered}));
   }
 }
+
+export const ListView = withStyles<Props>(styles)(ListViewComponent);

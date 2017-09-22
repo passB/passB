@@ -9,6 +9,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'extension/built'),
+    publicPath: 'built/',
     filename: '[name].js'
   },
   target: "web",
@@ -65,6 +66,17 @@ module.exports = {
           },
         ]
       },
+      {
+        test: /\.(jpe?g|png|gif|svg|eot|woff2?|ttf)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: '[name].[ext]'
+            },
+          }
+        ],
+      }
     ],
   },
   plugins: [

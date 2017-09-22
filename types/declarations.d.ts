@@ -8,5 +8,18 @@ declare global {
     executionContext: ExecutionContext;
   }
 
-  export class InputEvent extends Event {}
+  export class InputEvent extends Event {
+  }
+}
+
+declare module "material-ui/styles" {
+  export interface Styles {
+    [key: string]: Partial<CSSStyleDeclaration>;
+  }
+
+  export interface ClassProps<T extends Styles> {
+    classes: {
+      [P in keyof T]: string;
+      };
+  }
 }

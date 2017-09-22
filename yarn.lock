@@ -57,6 +57,12 @@
   version "16.0.4"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.4.tgz#5603e4820c5b00af80693feaedc5862a1d1f2dc1"
 
+"@types/recompose@^0.24.1":
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/@types/recompose/-/recompose-0.24.1.tgz#330c7028ed48f482e6ae5a0a0665d53c59f54a73"
+  dependencies:
+    "@types/react" "*"
+
 "@types/reflect-metadata@^0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@types/reflect-metadata/-/reflect-metadata-0.0.5.tgz#9c042bfa9803d577aad4f57dfbca4b7cae4286fe"
@@ -1288,8 +1294,8 @@ deepcopy@0.6.3:
   resolved "https://registry.yarnpkg.com/deepcopy/-/deepcopy-0.6.3.tgz#634780f2f8656ab771af8fa8431ed1ccee55c7b0"
 
 deepmerge@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.1.tgz#c053bf06fd7276f1994f70c09a0760cb61a56237"
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-1.5.2.tgz#10499d868844cdad4fee0842df8c7f6f0c95a753"
 
 defaults@^1.0.3:
   version "1.0.3"
@@ -1814,9 +1820,21 @@ fastparse@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
 
-fbjs@^0.8.1, fbjs@^0.8.14, fbjs@^0.8.4, fbjs@^0.8.9:
+fbjs@^0.8.1, fbjs@^0.8.9:
   version "0.8.14"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.14.tgz#d1dbe2be254c35a91e09f31f9cd50a40b2a0ed1c"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
+
+fbjs@^0.8.14:
+  version "0.8.15"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.15.tgz#4f0695fdfcc16c37c0b07facec8cb4c4091685b9"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -1845,6 +1863,12 @@ file-entry-cache@^2.0.0:
   dependencies:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
+
+file-loader@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-0.11.2.tgz#4ff1df28af38719a6098093b88c82c71d1794a34"
+  dependencies:
+    loader-utils "^1.0.2"
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -3136,8 +3160,8 @@ map-visit@^0.1.5:
     object-visit "^0.3.4"
 
 material-ui@next:
-  version "1.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.8.tgz#2e9fce6fa6b77e78abb51ea9417264e7f8057aee"
+  version "1.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.11.tgz#f05c475e0e9a1818f1414c5878e4da110b4e9ef4"
   dependencies:
     babel-runtime "^6.26.0"
     brcast "^3.0.1"
@@ -3152,6 +3176,7 @@ material-ui@next:
     prop-types "^15.5.10"
     react-event-listener "^0.5.0"
     react-jss "^7.1.0"
+    react-popper "^0.7.2"
     react-scrollbar-size "^2.0.0"
     react-transition-group "^2.2.0"
     recompose "^0.24.0"
@@ -3168,6 +3193,10 @@ md5.js@^1.3.4:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+mdi@^2.0.46:
+  version "2.0.46"
+  resolved "https://registry.yarnpkg.com/mdi/-/mdi-2.0.46.tgz#65e07a7c622eda06e871cd6a336c60db8393e27a"
 
 mem@^1.1.0:
   version "1.1.0"
@@ -3816,6 +3845,10 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
+popper.js@^1.10.8:
+  version "1.12.5"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.5.tgz#229e4dea01629e1f1a1e26991ffade5024220fa6"
+
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -4222,15 +4255,6 @@ react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-event-listener@^0.4.5:
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.4.5.tgz#e3e895a0970cf14ee8f890113af68197abf3d0b1"
-  dependencies:
-    babel-runtime "^6.20.0"
-    fbjs "^0.8.4"
-    prop-types "^15.5.4"
-    warning "^3.0.0"
-
 react-event-listener@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.5.0.tgz#d82105135573e187e3d900d18150a5882304b8d1"
@@ -4249,6 +4273,14 @@ react-jss@^7.1.0:
     jss-preset-default "^3.0.0"
     prop-types "^15.5.8"
     theming "^1.1.0"
+
+react-popper@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.7.2.tgz#5daa821eadc6f2ca802176d7be271d0f03f25f58"
+  dependencies:
+    is-equal-shallow "^0.1.3"
+    popper.js "^1.10.8"
+    prop-types "^15.5.10"
 
 react-qr-svg@^2.0.2:
   version "2.0.2"
@@ -4281,12 +4313,12 @@ react-router@^4.2.0:
     warning "^3.0.0"
 
 react-scrollbar-size@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-scrollbar-size/-/react-scrollbar-size-2.0.0.tgz#611215f4105db28f1f56ccace627c3fce137a2f3"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-scrollbar-size/-/react-scrollbar-size-2.0.1.tgz#fc13631d27efc93d7a1f40383b375dc449ebfac4"
   dependencies:
     babel-runtime "^6.23.0"
     prop-types "^15.5.10"
-    react-event-listener "^0.4.5"
+    react-event-listener "^0.5.0"
 
 react-transition-group@^2.2.0:
   version "2.2.0"
@@ -4662,8 +4694,8 @@ schema-utils@^0.3.0:
     ajv "^5.0.0"
 
 scroll@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/scroll/-/scroll-2.0.0.tgz#55cba0d84eb845d98fe3579a801e5722a6a3a81f"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/scroll/-/scroll-2.0.1.tgz#b4c7d27e8bcf3ae8a58a042f27268ae3f55f9ccd"
   dependencies:
     rafl "~1.2.1"
 
