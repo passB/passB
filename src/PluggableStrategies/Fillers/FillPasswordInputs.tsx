@@ -8,6 +8,12 @@ const fillPasswordInputs = (password: string) => {
   let i = 0;
   for (const passwordInput of Array.from(document.querySelectorAll('input[type="password"]'))) {
     (passwordInput as HTMLInputElement).value = password;
+    passwordInput.dispatchEvent(new Event('change'));
+    passwordInput.dispatchEvent(new KeyboardEvent('keyup'));
+    // may not be supported by every browser: https://developer.mozilla.org/en-US/docs/Web/API/InputEvent
+    if (typeof InputEvent === "function") {
+      passwordInput.dispatchEvent(new InputEvent('input'));
+    }
     i++;
   }
   return i;

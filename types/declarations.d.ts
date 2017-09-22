@@ -7,4 +7,6 @@ declare global {
   export interface Window {
     executionContext: ExecutionContext;
   }
+
+  export class InputEvent extends Event {}
 }
