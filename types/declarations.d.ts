@@ -23,3 +23,11 @@ declare module "material-ui/styles" {
       };
   }
 }
+
+import {ListItemProps} from "material-ui/List";
+declare module "material-ui/Menu/MenuItem" {
+  export interface MenuItemProps extends ListItemProps {
+    // value is missing in material-ui 1.0 beta 11 - fix it up
+    value?: string;
+  }
+}

@@ -1,7 +1,7 @@
+import {FormControl, InputLabel, MenuItem, Select} from "material-ui";
 import * as React from 'react';
 import {OptionsList} from "../Options";
 import {OptionsReceiverInterface} from "../OptionsReceiver";
-import {DropDown} from "./DropDown";
 
 interface Props {
   label: string;
@@ -19,29 +19,35 @@ export class StrategyTab extends React.Component<Props> {
       strategies,
       selectedStrategyName,
       strategyOptions,
+      updateOptions,
+      updateSelectedStrategyName,
     } = this.props;
 
     const selectedStrategy = strategies.find(
       (strategy: OptionsReceiverInterface<{}>) => strategy.name === selectedStrategyName,
     ) as OptionsReceiverInterface<{}>;
 
-    const selectedStrategyIndex = strategies.indexOf(selectedStrategy);
-
     const {OptionsPanel} = selectedStrategy;
 
     return (
       <div>
         <h2>{browser.i18n.getMessage(label)}</h2>
-        <DropDown
-          options={strategies.map((strategy: OptionsReceiverInterface<{}>) => strategy.name)}
-          label="select..."
-          selectedIndex={selectedStrategyIndex}
-          onChange={() => 0}
-        /> <br/>
+        <FormControl>
+          <InputLabel>Selected Strategy:</InputLabel>
+          <Select
+            value={selectedStrategyName}
+            onChange={(e: any) => updateSelectedStrategyName(e.target.value)}
+          >
+            {strategies.map((strategy: OptionsReceiverInterface<{}>, index: number) =>
+              <MenuItem key={index} value={strategy.name}>{strategy.name}</MenuItem>,
+            )}
+          </Select>
+        </FormControl>
+        <br/>
         {OptionsPanel && (
           <OptionsPanel
             options={strategyOptions[selectedStrategyName]}
-            updateOptions={(newOptions: {}) => this.props.updateOptions({
+            updateOptions={(newOptions: {}) => updateOptions({
               ...strategyOptions,
               [selectedStrategyName]: newOptions,
             })}
