@@ -1,4 +1,5 @@
 import {FormControl, InputLabel, MenuItem, Select} from "material-ui";
+import {ClassProps, withStyles} from "material-ui/styles";
 import * as React from 'react';
 import {OptionsList} from "../Options";
 import {OptionsReceiverInterface} from "../OptionsReceiver";
@@ -12,48 +13,58 @@ interface Props {
   updateSelectedStrategyName: (selectedStrategyName: string) => void;
 }
 
-export class StrategyTab extends React.Component<Props> {
-  public render(): JSX.Element {
-    const {
-      label,
-      strategies,
-      selectedStrategyName,
-      strategyOptions,
-      updateOptions,
-      updateSelectedStrategyName,
-    } = this.props;
+const styles = {
+  fullWidth: {
+    width: '100%',
+  },
+};
 
-    const selectedStrategy = strategies.find(
-      (strategy: OptionsReceiverInterface<{}>) => strategy.name === selectedStrategyName,
-    ) as OptionsReceiverInterface<{}>;
+export const StrategyTab = withStyles<Props>(styles)(
+  class extends React.Component<Props & ClassProps<typeof styles>> {
+    public render(): JSX.Element {
+      const {
+        label,
+        strategies,
+        selectedStrategyName,
+        strategyOptions,
+        updateOptions,
+        updateSelectedStrategyName,
+        classes,
+      } = this.props;
 
-    const {OptionsPanel} = selectedStrategy;
+      const selectedStrategy = strategies.find(
+        (strategy: OptionsReceiverInterface<{}>) => strategy.name === selectedStrategyName,
+      ) as OptionsReceiverInterface<{}>;
 
-    return (
-      <div>
-        <h2>{browser.i18n.getMessage(label)}</h2>
-        <FormControl>
-          <InputLabel>Selected Strategy:</InputLabel>
-          <Select
-            value={selectedStrategyName}
-            onChange={(e: any) => updateSelectedStrategyName(e.target.value)}
-          >
-            {strategies.map((strategy: OptionsReceiverInterface<{}>, index: number) =>
-              <MenuItem key={index} value={strategy.name}>{strategy.name}</MenuItem>,
-            )}
-          </Select>
-        </FormControl>
-        <br/>
-        {OptionsPanel && (
-          <OptionsPanel
-            options={strategyOptions[selectedStrategyName]}
-            updateOptions={(newOptions: {}) => updateOptions({
-              ...strategyOptions,
-              [selectedStrategyName]: newOptions,
-            })}
-          />
-        )}
-      </div>
-    );
-  }
-}
+      const {OptionsPanel} = selectedStrategy;
+
+      return (
+        <div>
+          <FormControl className={classes.fullWidth}>
+            <InputLabel>Selected Strategy:</InputLabel>
+            <Select
+              value={selectedStrategyName}
+              onChange={(e: any) => updateSelectedStrategyName(e.target.value)}
+            >
+              {strategies.map((strategy: OptionsReceiverInterface<{}>, index: number) => (
+                <MenuItem key={index} value={strategy.name}>
+                  {browser.i18n.getMessage('label_' + strategy.name) || strategy.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <br/>
+          {OptionsPanel && (
+            <OptionsPanel
+              options={strategyOptions[selectedStrategyName]}
+              updateOptions={(newOptions: {}) => updateOptions({
+                ...strategyOptions,
+                [selectedStrategyName]: newOptions,
+              })}
+            />
+          )}
+        </div>
+      );
+    }
+  },
+);

@@ -20,7 +20,15 @@ import * as ReactDOM from 'react-dom';
 import {Extension} from "Extensions/Extension";
 import {OptionsData, OptionsList} from "./Options";
 
-const theme = createMuiTheme();
+const theme = createMuiTheme({
+  overrides: {
+    MuiFormControl: {
+      root: {
+        marginBottom: '20px',
+      },
+    },
+  },
+});
 
 type TabValue = "Extensions" | "Matcher" | "Filler" | "FileFormat";
 
@@ -56,7 +64,6 @@ class Popup extends React.Component<{}, State> {
             <Tab value="Filler" label={browser.i18n.getMessage('options_tab_fillers')}/>
           </Tabs>
           {selectedTab === "Extensions" && <div>
-            <h2>{browser.i18n.getMessage('options_tab_extensions')}</h2>
             <List>
               {passB.getAllExtensions().map((extension: Extension<{}>) => {
                 const enabled = options.enabledExtensions.includes(extension.name);
