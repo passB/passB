@@ -1,2 +1,2 @@
-export {FileFormat} from './FileFormat';
-export {FirstLineFileFormat} from './FirstLineFileFormat';
+export {FileFormat, FileFormatTag} from './FileFormat';
+import './FirstLineFileFormat';

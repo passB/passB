@@ -1,12 +1,13 @@
 import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
 import {PassCli} from "PassCli";
-import {ExecutionOptions, Extension, RegisterEntryCallback} from "../Extension";
+import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
 import {Show} from "./Views/Show";
 
 import {FormControl, FormControlLabel, FormLabel, Grid, Input, List, ListItem, Radio, RadioGroup} from "material-ui";
 import * as React from 'react';
 import {QRCode} from "react-qr-svg";
 import {RouteProps} from "react-router";
+import {Service} from 'typedi';
 
 type Level = "L" | "M" | "Q" | "H";
 export interface Options {
@@ -15,6 +16,7 @@ export interface Options {
   level: Level;
 }
 
+@Service({tags: [ExtensionTag]})
 export class QRCodeExtension extends Extension<Options> {
   public static readonly routes: RouteProps[] = [
     {

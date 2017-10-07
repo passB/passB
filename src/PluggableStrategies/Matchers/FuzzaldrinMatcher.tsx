@@ -1,10 +1,11 @@
 import {IScoringOptions, score} from "fuzzaldrin-plus";
 import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
 import {Entry} from "PassB";
-import {Matcher} from "./Matcher";
+import {Matcher, MatcherTag} from ".";
 
 import {TextField} from "material-ui";
 import * as React from 'react';
+import {Service} from 'typedi';
 
 interface ScoredEntry {
   entry: Entry;
@@ -20,6 +21,7 @@ interface Options {
 /**
  * these matches are not very good but it serves as a proof of concept
  */
+@Service({tags: [MatcherTag]})
 export class FuzzaldrinMatcher extends Matcher<Options> {
   public static readonly URL_CLEAN_REGEX: RegExp = /^(http|ftp)s?:\/\//;
 

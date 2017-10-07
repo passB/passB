@@ -45,6 +45,10 @@ export const executeInCorrectContext = () =>
     };
   };
 
+export const AsynchronousCallableServiceFactory =
+  <X, T extends { new(...args: any[]): X }>(type: T): ((...args: any[]) => X) =>
+    ((...args: any[]): X => (new (AsynchronousCallable()(type))(...args)));
+
 export const AsynchronousCallable = () =>
   <T extends { new(...args: any[]): {} }>(constructor: T): T =>
     class extends constructor {

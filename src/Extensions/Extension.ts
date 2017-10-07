@@ -1,5 +1,6 @@
 import {OptionsReceiver} from "Options/OptionsReceiver";
 import {RouteProps} from "react-router";
+import {Token} from 'typedi';
 
 export interface ListEntry {
   label: string;
@@ -23,3 +24,5 @@ export abstract class Extension<OptionType> extends OptionsReceiver<OptionType> 
 
   public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 }
+
+export const ExtensionTag = new Token<Extension<{}>>();

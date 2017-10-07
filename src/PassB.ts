@@ -1,18 +1,16 @@
-import {AsynchronousCallable, executeInCorrectContext} from "Decorators/ExecuteInContext";
-import deepExtend = require( "deep-extend");
-import {Extension, ListEntry} from "Extensions/Extension";
-import {FileFormat} from "PluggableStrategies/FileFormats";
-import {Filler} from "PluggableStrategies/Fillers";
-import {Matcher} from "PluggableStrategies/Matchers";
+import {
+   AsynchronousCallableServiceFactory,
+  executeInCorrectContext,
+} from "Decorators/ExecuteInContext";
+import {Extension, ExtensionTag, ListEntry} from "Extensions";
+import {FileFormat, FileFormatTag} from "PluggableStrategies/FileFormats";
+import {Filler, FillerTag} from "PluggableStrategies/Fillers";
+import {Matcher, MatcherTag} from "PluggableStrategies/Matchers";
 import {Options, OptionsData, OptionsList} from "./Options/Options";
 import {OptionsReceiverInterface} from "./Options/OptionsReceiver";
 
-interface Config {
-  extensions: Array<Extension<{}>>;
-  matchers: Array<Matcher<{}>>;
-  fileFormats: Array<FileFormat<{}>>;
-  fillers: Array<Filler<{}>>;
-}
+import deepExtend = require( "deep-extend");
+import {InjectTagged, Service} from 'typedi';
 
 export interface Action {
   extension: string;
@@ -28,20 +26,36 @@ export interface LabeledEntries {
   [label: string]: Entry;
 }
 
-@AsynchronousCallable()
+@Service({factory: AsynchronousCallableServiceFactory(PassB)})
 export class PassB {
-  private readonly config: Config;
-  private options: Options;
+  private options: Options = new Options(this);
 
   private entries: LabeledEntries = {};
 
-  public constructor(config: Config) {
-    this.config = config;
+  private extensions: Array<Extension<{}>>;
+  private fileFormats: Array<FileFormat<{}>>;
+  private matchers: Array<Matcher<{}>>;
+  private fillers: Array<Filler<{}>>;
+
+  constructor(
+    @InjectTagged(ExtensionTag)
+      extensions: Array<Extension<{}>>,
+    @InjectTagged(FileFormatTag)
+      fileFormats: Array<FileFormat<{}>>,
+    @InjectTagged(MatcherTag)
+      matchers: Array<Matcher<{}>>,
+    @InjectTagged(FillerTag)
+      fillers: Array<Filler<{}>>,
+  ) {
+    this.extensions = extensions;
+    this.fileFormats = fileFormats;
+    this.matchers = matchers;
+    this.fillers = fillers;
+    this.initialize();
   }
 
   public async initialize(): Promise<this> {
     if (window.executionContext === "background") {
-      this.options = new Options(this);
       this.injectIntoChildren(await this.getOptions());
       await this.reloadEntries();
       return this;
@@ -52,11 +66,11 @@ export class PassB {
   }
 
   public getAllExtensions(): Array<Extension<{}>> {
-    return this.config.extensions;
+    return this.extensions;
   }
 
   public getExtension(name: string): Extension<{}> {
-    const extension = this.config.extensions.find((item: Extension<{}>) => item.name === name);
+    const extension = this.extensions.find((item: Extension<{}>) => item.name === name);
     if (!extension) {
       throw new Error('query for unknown extension ' + name);
     }
@@ -65,32 +79,32 @@ export class PassB {
 
   public async getMatcher(): Promise<Matcher<{}>> {
     const selected = (await this.getOptions()).selectedMatcher;
-    return this.config.matchers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
-      || this.config.matchers[0];
+    return this.matchers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+      || this.matchers[0];
   }
 
   public getAllMatchers(): Array<Matcher<{}>> {
-    return this.config.matchers;
+    return this.matchers;
   }
 
   public async getFiller(): Promise<Filler<{}>> {
     const selected = (await this.getOptions()).selectedFiller;
-    return this.config.fillers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
-      || this.config.fillers[0];
+    return this.fillers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+      || this.fillers[0];
   }
 
   public getAllFillers(): Array<Filler<{}>> {
-    return this.config.fillers;
+    return this.fillers;
   }
 
   public async getFileFormat(): Promise<FileFormat<{}>> {
     const selected = (await this.getOptions()).selectedFileFormat;
-    return this.config.fileFormats.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
-      || this.config.fileFormats[0];
+    return this.fileFormats.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+      || this.fileFormats[0];
   }
 
   public getAllFileFormats(): Array<FileFormat<{}>> {
-    return this.config.fileFormats;
+    return this.fileFormats;
   }
 
   @executeInCorrectContext()
@@ -118,7 +132,7 @@ export class PassB {
   @Reflect.metadata("executionContext", "background")
   private async reloadEntries(): Promise<this> {
     const enabledExtensionNames = (await (this.getOptions())).enabledExtensions;
-    const enabledExtensions = this.config.extensions
+    const enabledExtensions = this.extensions
       .filter((extension: Extension<{}>) => enabledExtensionNames.includes(extension.name));
 
     this.entries = {};
@@ -133,7 +147,6 @@ export class PassB {
           ],
         }));
     }
-
     return this;
   }
 
@@ -141,9 +154,9 @@ export class PassB {
     const injectOptions = (optionsList: OptionsList) =>
       (item: OptionsReceiverInterface<{}>) => item.injectOptions(optionsList[item.name]);
 
-    this.config.extensions.forEach(injectOptions(options.extensionsOptions));
-    this.config.fileFormats.forEach(injectOptions(options.fileFormats));
-    this.config.fillers.forEach(injectOptions(options.fillers));
-    this.config.matchers.forEach(injectOptions(options.matchers));
+    this.extensions.forEach(injectOptions(options.extensionsOptions));
+    this.fileFormats.forEach(injectOptions(options.fileFormats));
+    this.fillers.forEach(injectOptions(options.fillers));
+    this.matchers.forEach(injectOptions(options.matchers));
   }
 }

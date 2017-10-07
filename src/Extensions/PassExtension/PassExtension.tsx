@@ -2,15 +2,18 @@ import {passB} from "ConfiguredPassB";
 import {AsynchronousCallable, executeInCorrectContext} from "Decorators/ExecuteInContext";
 import {OptionsPanelType} from "Options/OptionsReceiver";
 import {PassCli} from "PassCli";
-import {ExecutionOptions, Extension, RegisterEntryCallback} from "../Extension";
+import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
 import {Show} from "./Views";
 
 import * as React from 'react';
 import {RouteProps} from "react-router";
+import {Service} from 'typedi';
 
-interface Options {}
+interface Options {
+}
 
 @AsynchronousCallable()
+@Service({tags: [ExtensionTag]})
 export class PassExtension extends Extension<Options> {
   public static readonly routes: RouteProps[] = [
     {

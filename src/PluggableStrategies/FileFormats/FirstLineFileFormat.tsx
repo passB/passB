@@ -1,15 +1,17 @@
 import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
-import {FileFormat} from "./FileFormat";
+import {FileFormat, FileFormatTag} from ".";
 
 import {FormControl, FormControlLabel, FormLabel} from "material-ui";
 import {default as Radio, RadioGroup} from 'material-ui/Radio';
 import * as React from 'react';
+import {Service} from 'typedi';
 
 export type UsernameStyle = "None" | "SecondLine" | "LastPathPart";
 interface Options {
   usernameStyle: UsernameStyle;
 }
 
+@Service({tags: [FileFormatTag]})
 export class FirstLineFileFormat extends FileFormat<Options> {
   public readonly defaultOptions: Options = {
     usernameStyle: "SecondLine",

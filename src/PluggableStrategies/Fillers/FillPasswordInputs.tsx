@@ -1,8 +1,9 @@
-import Tab = browser.tabs.Tab;
-import {Filler} from "./Filler";
-
-import * as React from 'react';
 import {OptionsPanelType} from "../../Options/OptionsReceiver";
+import {Filler, FillerTag} from "./Filler";
+
+import Tab = browser.tabs.Tab;
+import * as React from 'react';
+import {Service} from 'typedi';
 
 const fillPasswordInputs = (password: string) => {
   let i = 0;
@@ -19,6 +20,7 @@ const fillPasswordInputs = (password: string) => {
   return i;
 };
 
+@Service({tags: [FillerTag]})
 export class FillPasswordInputs extends Filler<{}> {
   public readonly defaultOptions: {} = {};
   public readonly name: string = FillPasswordInputs.name;
