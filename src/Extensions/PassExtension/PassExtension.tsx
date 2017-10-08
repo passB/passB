@@ -1,19 +1,21 @@
-import {passB} from "ConfiguredPassB";
-import {AsynchronousCallable, executeInCorrectContext} from "Decorators/ExecuteInContext";
+import {AsynchronousCallableServiceFactory, executeInCorrectContext} from "Decorators/ExecuteInContext";
 import {OptionsPanelType} from "Options/OptionsReceiver";
+import {PassB} from "PassB";
 import {PassCli} from "PassCli";
 import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
 import {Show} from "./Views";
 
 import * as React from 'react';
 import {RouteProps} from "react-router";
-import {Service} from 'typedi';
+import {Inject, Service} from 'typedi';
 
 interface Options {
 }
 
-@AsynchronousCallable()
-@Service({tags: [ExtensionTag]})
+@Service({
+  tags: [ExtensionTag],
+  factory: AsynchronousCallableServiceFactory(PassExtension),
+})
 export class PassExtension extends Extension<Options> {
   public static readonly routes: RouteProps[] = [
     {
@@ -25,6 +27,9 @@ export class PassExtension extends Extension<Options> {
   public readonly actions: string[] = ['show', 'fill'];
   public readonly defaultOptions: Options = {};
   public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
+
+  @Inject(() => PassB)
+  protected passB: PassB;
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
     for (const label of await PassCli.list()) {
@@ -77,8 +82,8 @@ export class PassExtension extends Extension<Options> {
       return {};
     }
 
-    const filler = await passB.getFiller();
-    const fileFormat = await passB.getFileFormat();
+    const filler = await this.passB.getFiller();
+    const fileFormat = await this.passB.getFileFormat();
 
     return Promise.all([
       filler.fillPassword(activeTab, fileFormat.getPassword(entryContents, entry)),

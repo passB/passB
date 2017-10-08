@@ -1,7 +1,4 @@
-import {
-   AsynchronousCallableServiceFactory,
-  executeInCorrectContext,
-} from "Decorators/ExecuteInContext";
+import {AsynchronousCallableServiceFactory, executeInCorrectContext} from "Decorators/ExecuteInContext";
 import {Extension, ExtensionTag, ListEntry} from "Extensions";
 import {FileFormat, FileFormatTag} from "PluggableStrategies/FileFormats";
 import {Filler, FillerTag} from "PluggableStrategies/Fillers";
@@ -9,8 +6,7 @@ import {Matcher, MatcherTag} from "PluggableStrategies/Matchers";
 import {Options, OptionsData, OptionsList} from "./Options/Options";
 import {OptionsReceiverInterface} from "./Options/OptionsReceiver";
 
-import deepExtend = require( "deep-extend");
-import {InjectTagged, Service} from 'typedi';
+import {Inject, InjectTagged, Service} from 'typedi';
 
 export interface Action {
   extension: string;
@@ -28,30 +24,23 @@ export interface LabeledEntries {
 
 @Service({factory: AsynchronousCallableServiceFactory(PassB)})
 export class PassB {
-  private options: Options = new Options(this);
-
   private entries: LabeledEntries = {};
-
-  private extensions: Array<Extension<{}>>;
-  private fileFormats: Array<FileFormat<{}>>;
-  private matchers: Array<Matcher<{}>>;
-  private fillers: Array<Filler<{}>>;
 
   constructor(
     @InjectTagged(ExtensionTag)
-      extensions: Array<Extension<{}>>,
+    protected extensions: Array<Extension<{}>>,
     @InjectTagged(FileFormatTag)
-      fileFormats: Array<FileFormat<{}>>,
+    protected fileFormats: Array<FileFormat<{}>>,
     @InjectTagged(MatcherTag)
-      matchers: Array<Matcher<{}>>,
+    protected matchers: Array<Matcher<{}>>,
     @InjectTagged(FillerTag)
-      fillers: Array<Filler<{}>>,
+    protected fillers: Array<Filler<{}>>,
+    @Inject(() => Options)
+    protected options: Options,
   ) {
-    this.extensions = extensions;
-    this.fileFormats = fileFormats;
-    this.matchers = matchers;
-    this.fillers = fillers;
-    this.initialize();
+    // initialize calls Options.getOptions which requires an injected instance of this service
+    // to deal with that circularity, wait for the next tick to wait for the injection to be completed
+    setTimeout(() => this.initialize(), 0);
   }
 
   public async initialize(): Promise<this> {

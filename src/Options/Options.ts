@@ -1,4 +1,5 @@
 import {PassB} from "PassB";
+import {Inject, Service} from 'typedi';
 import {OptionsReceiverInterface} from "./OptionsReceiver";
 
 import deepExtend = require("deep-extend");
@@ -25,16 +26,17 @@ function extractDefaultOptionsList(receivers: Array<OptionsReceiverInterface<{}>
   }), {} as OptionsList);
 }
 
+@Service()
 export class Options {
-  private _options: OptionsData;
+  @Inject(() => PassB)
+  protected passB: PassB;
 
-  public constructor(private passB: PassB) {
-  }
+  private _options: OptionsData;
 
   public async getOptions(): Promise<OptionsData> {
     if (!this._options) {
       this._options = deepExtend(
-        this.getDefaultOptions(this.passB),
+        this.getDefaultOptions(),
         (await browser.storage.local.get('options')) as OptionsData,
       );
     }
@@ -46,16 +48,16 @@ export class Options {
     return browser.storage.local.set({options: newOptions});
   }
 
-  private getDefaultOptions(passB: PassB): OptionsData {
+  private getDefaultOptions(): OptionsData {
     return {
       enabledExtensions: ['Pass'],
-      extensionsOptions: extractDefaultOptionsList(passB.getAllExtensions()),
-      selectedMatcher: passB.getAllMatchers()[0].constructor.name,
-      matchers: extractDefaultOptionsList(passB.getAllMatchers()),
-      selectedFileFormat: passB.getAllFileFormats()[0].constructor.name,
-      fileFormats: extractDefaultOptionsList(passB.getAllFileFormats()),
-      selectedFiller: passB.getAllFillers()[0].constructor.name,
-      fillers: extractDefaultOptionsList(passB.getAllFillers()),
+      extensionsOptions: extractDefaultOptionsList(this.passB.getAllExtensions()),
+      selectedMatcher: this.passB.getAllMatchers()[0].constructor.name,
+      matchers: extractDefaultOptionsList(this.passB.getAllMatchers()),
+      selectedFileFormat: this.passB.getAllFileFormats()[0].constructor.name,
+      fileFormats: extractDefaultOptionsList(this.passB.getAllFileFormats()),
+      selectedFiller: this.passB.getAllFillers()[0].constructor.name,
+      fillers: extractDefaultOptionsList(this.passB.getAllFillers()),
     };
   }
 }
