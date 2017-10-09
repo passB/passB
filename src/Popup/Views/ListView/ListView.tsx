@@ -1,9 +1,9 @@
-import {passB} from "ConfiguredPassB";
 import {List, ListItem, ListItemText} from 'material-ui';
 import {ClassProps, withStyles} from "material-ui/styles";
-import {Entry, LabeledEntries} from "PassB";
+import {Entry, LabeledEntries, PassB} from "PassB";
 import {MaterialIcon} from "Popup/Components/MaterialIcon";
 import * as React from 'react';
+import {LazyInject} from "../../../Decorators/LazyInject";
 
 interface Props {
   url: string;
@@ -27,8 +27,11 @@ class ListViewComponent extends React.Component<Props & ClassProps<typeof styles
     entries: [],
   };
 
+  @LazyInject(() => PassB)
+  private passB: PassB;
+
   public componentDidMount(): void {
-    passB.getEntries()
+    this.passB.getEntries()
       .then((entries: LabeledEntries) =>
         this.setState({entries: Object.values(entries)}, () => this.recalculateFilteredEntries()),
       );
@@ -60,7 +63,7 @@ class ListViewComponent extends React.Component<Props & ClassProps<typeof styles
     if (!this.props.url || !this.state.entries) {
       return;
     }
-    (await (passB.getMatcher()))
+    (await (this.passB.getMatcher()))
       .filterEntries(this.props.url || '', this.state.entries)
       .then((filtered: Entry[]) => this.setState({filtered}));
   }

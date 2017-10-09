@@ -1,4 +1,5 @@
-import {passB} from 'ConfiguredPassB';
+import 'ConfiguredPassB';
+import {PassB} from 'PassB';
 import {FileFormat} from 'PluggableStrategies/FileFormats/FileFormat';
 import {StrategyTab} from './Components/StrategyTab';
 
@@ -17,6 +18,7 @@ import {createMuiTheme} from "material-ui/styles";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import {LazyInject} from "Decorators/LazyInject";
 import {Extension} from "Extensions/Extension";
 import {OptionsData, OptionsList} from "./Options";
 
@@ -37,18 +39,22 @@ interface State {
   options?: OptionsData;
 }
 
-class Popup extends React.Component<{}, State> {
+class AddonOptions extends React.Component<{}, State> {
   public state: State = {
     selectedTab: "Extensions",
     options: void 0,
   };
 
+  @LazyInject(() => PassB)
+  private passB: PassB;
+
   public async componentDidMount(): Promise<void> {
-    this.setState({options: await passB.getOptions()});
+    this.setState({options: await this.passB.getOptions()});
   }
 
   public render(): JSX.Element {
     const {selectedTab, options} = this.state;
+    const passB = this.passB;
 
     if (!options) {
       return <div>please wait, loading...</div>;
@@ -146,8 +152,8 @@ class Popup extends React.Component<{}, State> {
   private updateOptions(newOptions: Partial<OptionsData>): void {
     const fullNewOptions = {...this.state.options, ...newOptions} as OptionsData;
     this.setState({options: fullNewOptions});
-    passB.setOptions(fullNewOptions);
+    this.passB.setOptions(fullNewOptions);
   }
 }
 
-ReactDOM.render(<Popup/> , document.getElementById('app'));
+ReactDOM.render(<AddonOptions/> , document.getElementById('app'));

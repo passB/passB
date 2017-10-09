@@ -2,7 +2,8 @@ import * as React from 'react';
 import {QRCode} from 'react-qr-svg';
 import {RouteComponentProps} from "react-router";
 
-import {passB} from "ConfiguredPassB";
+import {LazyInject} from "Decorators/LazyInject";
+import {PassB} from "PassB";
 import {PassCli} from "PassCli";
 import {Options} from '../QRCodeExtension';
 
@@ -22,10 +23,13 @@ interface State {
 export class Show extends React.Component<RouteComponentProps<{}> & LocationStateProps, State> {
   public state: State = {};
 
+  @LazyInject(() => PassB)
+  private passB: PassB;
+
   public async componentDidMount(): Promise<void> {
     const {location: {state: {entry}}} = this.props;
     const contents = await PassCli.show(entry);
-    const value = (await (passB.getFileFormat())).getPassword(contents, entry);
+    const value = (await (this.passB.getFileFormat())).getPassword(contents, entry);
     this.setState({value});
   }
 

@@ -1,2 +1,2 @@
 window.executionContext = "background";
-import "./ConfiguredPassB";
+import "ConfiguredPassB";

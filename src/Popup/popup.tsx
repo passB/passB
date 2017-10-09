@@ -1,5 +1,7 @@
-import {passB} from 'ConfiguredPassB';
-import {Extension} from "../Extensions/Extension";
+import 'ConfiguredPassB';
+import {LazyInject} from "Decorators/LazyInject";
+import {Extension} from "Extensions";
+import {PassB} from "PassB";
 import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 
@@ -22,6 +24,9 @@ const theme = createMuiTheme();
 class Popup extends React.Component<{}, State> {
   public state: State = {};
   private gatheredRoutes: RouteProps[] = this.gatherRoutes();
+
+  @LazyInject(() => PassB)
+  private passB: PassB;
 
   public componentDidMount(): void {
     browser.tabs.query({
@@ -81,7 +86,7 @@ class Popup extends React.Component<{}, State> {
 
   private gatherRoutes(): RouteProps[] {
     const gatheredRoutes: RouteProps[] = [];
-    for (const extension of passB.getAllExtensions()) {
+    for (const extension of this.passB.getAllExtensions()) {
       for (const route of (extension.constructor as typeof Extension).routes) {
         if (!(route.path || '').startsWith(`/extension/${extension.name}/`)) {
           throw Error(
