@@ -1,9 +1,9 @@
+import {LazyInject} from "Decorators/LazyInject";
 import {List, ListItem, ListItemText} from 'material-ui';
 import {ClassProps, withStyles} from "material-ui/styles";
 import {Entry, LabeledEntries, PassB} from "PassB";
 import {MaterialIcon} from "Popup/Components/MaterialIcon";
 import * as React from 'react';
-import {LazyInject} from "../../../Decorators/LazyInject";
 
 interface Props {
   url: string;

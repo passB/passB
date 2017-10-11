@@ -1,8 +1,8 @@
+import {LazyInject} from "Decorators/LazyInject";
 import {List, ListItem, ListItemText, ListSubheader} from "material-ui";
 import {Action, Entry, PassB} from 'PassB';
 import * as React from 'react';
 import {RouteComponentProps} from "react-router";
-import {LazyInject} from "../../../Decorators/LazyInject";
 
 interface LocationStateProps {
   location: {
