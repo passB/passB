@@ -7,7 +7,7 @@ import {FormControl, FormControlLabel, FormLabel, Grid, Input, List, ListItem, R
 import * as React from 'react';
 import {QRCode} from "react-qr-svg";
 import {RouteProps} from "react-router";
-import {Service} from 'typedi';
+import {Inject, Service} from 'typedi';
 
 type Level = "L" | "M" | "Q" | "H";
 export interface Options {
@@ -33,8 +33,11 @@ export class QRCodeExtension extends Extension<Options> {
   };
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 
+  @Inject(() => PassCli)
+  private passCli: PassCli;
+
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
-    for (const label of await PassCli.list()) {
+    for (const label of await this.passCli.list()) {
       registerEntryCallback({
         label,
         actions: this.actions,

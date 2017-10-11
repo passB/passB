@@ -26,9 +26,12 @@ export class Show extends React.Component<RouteComponentProps<{}> & LocationStat
   @LazyInject(() => PassB)
   private passB: PassB;
 
+  @LazyInject(() => PassCli)
+  private passCli: PassCli;
+
   public async componentDidMount(): Promise<void> {
     const {location: {state: {entry}}} = this.props;
-    const contents = await PassCli.show(entry);
+    const contents = await this.passCli.show(entry);
     const value = (await (this.passB.getFileFormat())).getPassword(contents, entry);
     this.setState({value});
   }

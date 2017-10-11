@@ -1,4 +1,5 @@
-import {memoizeWithTTL} from "./Decorators/memoizeWithTTL";
+import {memoizeWithTTL} from "Decorators/memoizeWithTTL";
+import {Service} from 'typedi';
 
 interface PassReply {
   stdout: string[];
@@ -6,12 +7,13 @@ interface PassReply {
   returnCode: number;
 }
 
+@Service()
 export class PassCli {
   @memoizeWithTTL(5000) // cache list calls for 5 seconds
-  public static async list(): Promise<string[]> {
+  public async list(): Promise<string[]> {
     const REGEX_LINE = /^((?:(?:[|`]-{0,2})\s*)+)(.*$)/;
     const REGEX_TREENODE = /([|`]-{0,2})/g;
-    const response = await PassCli.executeCommand('list');
+    const response = await this.executeCommand('list');
     const list = [];
     const stack = [];
 
@@ -38,11 +40,11 @@ export class PassCli {
     return list;
   }
 
-  public static async show(path: string): Promise<string[]> {
-    return (await PassCli.executeCommand('show', [path])).stdout;
+  public async show(path: string): Promise<string[]> {
+    return (await this.executeCommand('show', [path])).stdout;
   }
 
-  private static async executeCommand(command: string, args: string[] = []): Promise<PassReply> {
+  private async executeCommand(command: string, args: string[] = []): Promise<PassReply> {
     const response = await browser.runtime.sendNativeMessage("passb", {command, args}) as PassReply;
     if (response.returnCode !== 0) {
       throw new Error(response.stderr.join("\n"));

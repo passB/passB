@@ -29,10 +29,13 @@ export class PassExtension extends Extension<Options> {
   public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
 
   @Inject(() => PassB)
-  protected passB: PassB;
+  private passB: PassB;
+
+  @Inject(() => PassCli)
+  private passCli: PassCli;
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
-    for (const label of await PassCli.list()) {
+    for (const label of await this.passCli.list()) {
       registerEntryCallback({
         label,
         actions: this.actions,
@@ -73,7 +76,7 @@ export class PassExtension extends Extension<Options> {
   @Reflect.metadata("executionContext", "background")
   private async executeFillAction(entry: string): Promise<{}> {
     const initialUrl = (await this.getCurrentTab()).url;
-    const entryContents = await PassCli.show(entry);
+    const entryContents = await this.passCli.show(entry);
     const activeTab = await this.getCurrentTab();
     const finalUrl = activeTab.url;
 
