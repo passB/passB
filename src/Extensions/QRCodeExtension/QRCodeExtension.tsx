@@ -5,12 +5,14 @@ import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "
 import {Show} from "./Views/Show";
 
 import {FormControl, FormControlLabel, FormLabel, Grid, Input, List, ListItem, Radio, RadioGroup} from "material-ui";
+import {ClassProps, withStyles} from "material-ui/styles";
 import * as React from 'react';
 import {QRCode} from "react-qr-svg";
 import {RouteProps} from "react-router";
 import {Service} from 'typedi';
 
 type Level = "L" | "M" | "Q" | "H";
+
 export interface Options {
   bgColor: string;
   fgColor: string;
@@ -66,8 +68,14 @@ export class QRCodeExtension extends Extension<Options> {
   }
 }
 
-function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {
-  return (
+const styles = {
+  qrcode: {
+    height: '150px',
+  },
+};
+
+const OptionsPanel = withStyles<OptionPanelProps<Options>>(styles)(
+  ({options, updateOptions, classes}: OptionPanelProps<Options> & ClassProps<typeof styles>): JSX.Element => (
     <Grid container={true} direction="row" justify="space-between" align="center" spacing={0}>
       <Grid item={true}>
         <List>
@@ -83,10 +91,10 @@ function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.
                 })}
               >
 
-                <FormControlLabel value="L" control={<Radio />} label="L"/>
-                <FormControlLabel value="M" control={<Radio />} label="M"/>
-                <FormControlLabel value="Q" control={<Radio />} label="Q"/>
-                <FormControlLabel value="H" control={<Radio />} label="H"/>
+                <FormControlLabel value="L" control={<Radio/>} label="L"/>
+                <FormControlLabel value="M" control={<Radio/>} label="M"/>
+                <FormControlLabel value="Q" control={<Radio/>} label="Q"/>
+                <FormControlLabel value="H" control={<Radio/>} label="H"/>
 
               </RadioGroup>
             </FormControl>
@@ -124,10 +132,9 @@ function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.
         </List>
       </Grid>
       <QRCode
-        style={{height: 150}}
+        className={classes.qrcode}
         {...options}
         value="example. happy testing 😀"
       />
     </Grid>
-  );
-}
+  ));

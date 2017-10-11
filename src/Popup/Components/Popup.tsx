@@ -5,7 +5,7 @@ import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 
 import {AppBar, Button, Card, CardContent, Toolbar, Typography} from "material-ui";
-// import Settings from 'material-ui/svg-icons/action/settings'; TODO: 1.0 beta
+import {ClassProps, StyleRules, withStyles} from "material-ui/styles";
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
 import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from "react-router";
@@ -14,7 +14,18 @@ interface State {
   activeTab?: Tab;
 }
 
-export class Popup extends React.Component<{}, State> {
+const styles: StyleRules = {
+  flexLeft: {
+    flex: 1,
+    marginLeft: '15px',
+  },
+  cardSize: {
+    maxHeight: '390px',
+    overflow: 'auto',
+  },
+};
+
+class ClassLessPopup extends React.Component<ClassProps<typeof styles>, State> {
   public state: State = {};
   private gatheredRoutes: RouteProps[] = this.gatherRoutes();
 
@@ -30,13 +41,14 @@ export class Popup extends React.Component<{}, State> {
 
   public render(): JSX.Element {
     const {activeTab} = this.state;
+    const {classes} = this.props;
 
     return (
       <MemoryRouter>
         <div>
           <AppBar position="fixed">
             <Toolbar>
-              <Typography type="title" color="inherit" style={{flex: 1, marginLeft: "15px"}}>
+              <Typography type="title" color="inherit" className={classes.flexLeft}>
                 {browser.i18n.getMessage('extensionName')}
               </Typography>
               <Button
@@ -51,7 +63,7 @@ export class Popup extends React.Component<{}, State> {
             </Toolbar>
           </AppBar>
           <Card>
-            <CardContent style={{maxHeight: '390px', overflow: 'auto'}}>
+            <CardContent className={classes.cardSize}>
               <Switch>
                 {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
                 <Route
@@ -91,3 +103,5 @@ export class Popup extends React.Component<{}, State> {
     return gatheredRoutes;
   }
 }
+
+export const Popup = withStyles(styles)(ClassLessPopup);
