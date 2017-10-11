@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-export type ExecutionContext = "background" | "popup" | undefined;
+export type ExecutionContext = "background" | "popup" | "options" | undefined;
 const executionContexts = ["background", "popup"];
 
 function getActionName(constructor: Function, propertyKey: string): string {

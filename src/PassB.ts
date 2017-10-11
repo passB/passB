@@ -1,4 +1,5 @@
 import {AsynchronousCallableServiceFactory, executeInCorrectContext} from "Decorators/ExecuteInContext";
+import {LazyInject} from "Decorators/LazyInject";
 import {Extension, ExtensionTag, ListEntry} from "Extensions";
 import {FileFormat, FileFormatTag} from "PluggableStrategies/FileFormats";
 import {Filler, FillerTag} from "PluggableStrategies/Fillers";
@@ -24,24 +25,18 @@ export interface LabeledEntries {
 
 @Service({factory: AsynchronousCallableServiceFactory(PassB)})
 export class PassB {
-  private entries: LabeledEntries = {};
+  @InjectTagged(ExtensionTag)
+  protected extensions: Array<Extension<{}>>;
+  @InjectTagged(FileFormatTag)
+  protected fileFormats: Array<FileFormat<{}>>;
+  @InjectTagged(MatcherTag)
+  protected matchers: Array<Matcher<{}>>;
+  @InjectTagged(FillerTag)
+  protected fillers: Array<Filler<{}>>;
+  @LazyInject(() => Options)
+  protected options: Options;
 
-  constructor(
-    @InjectTagged(ExtensionTag)
-    protected extensions: Array<Extension<{}>>,
-    @InjectTagged(FileFormatTag)
-    protected fileFormats: Array<FileFormat<{}>>,
-    @InjectTagged(MatcherTag)
-    protected matchers: Array<Matcher<{}>>,
-    @InjectTagged(FillerTag)
-    protected fillers: Array<Filler<{}>>,
-    @Inject(() => Options)
-    protected options: Options,
-  ) {
-    // initialize calls Options.getOptions which requires an injected instance of this service
-    // to deal with that circularity, wait for the next tick to wait for the injection to be completed
-    setTimeout(() => this.initialize(), 0);
-  }
+  private entries: LabeledEntries = {};
 
   public async initialize(): Promise<this> {
     if (window.executionContext === "background") {

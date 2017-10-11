@@ -1,5 +1,6 @@
+import {LazyInject} from "Decorators/LazyInject";
 import {PassB} from "PassB";
-import {Inject, Service} from 'typedi';
+import {Service} from 'typedi';
 import {OptionsReceiverInterface} from "./OptionsReceiver";
 
 import deepExtend = require("deep-extend");
@@ -28,7 +29,7 @@ function extractDefaultOptionsList(receivers: Array<OptionsReceiverInterface<{}>
 
 @Service()
 export class Options {
-  @Inject(() => PassB)
+  @LazyInject(() => PassB)
   protected passB: PassB;
 
   private _options: OptionsData;

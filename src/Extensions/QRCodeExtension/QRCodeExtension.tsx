@@ -1,3 +1,4 @@
+import {LazyInject} from "Decorators/LazyInject";
 import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
 import {PassCli} from "PassCli";
 import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
@@ -7,7 +8,7 @@ import {FormControl, FormControlLabel, FormLabel, Grid, Input, List, ListItem, R
 import * as React from 'react';
 import {QRCode} from "react-qr-svg";
 import {RouteProps} from "react-router";
-import {Inject, Service} from 'typedi';
+import {Service} from 'typedi';
 
 type Level = "L" | "M" | "Q" | "H";
 export interface Options {
@@ -33,7 +34,7 @@ export class QRCodeExtension extends Extension<Options> {
   };
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 
-  @Inject(() => PassCli)
+  @LazyInject(() => PassCli)
   private passCli: PassCli;
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {

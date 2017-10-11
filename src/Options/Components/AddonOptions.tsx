@@ -1,4 +1,3 @@
-import 'ConfiguredPassB';
 import {PassB} from 'PassB';
 import {FileFormat} from 'PluggableStrategies/FileFormats/FileFormat';
 import {StrategyTab} from './StrategyTab';

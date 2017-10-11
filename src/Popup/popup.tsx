@@ -1,13 +1,14 @@
-import 'ConfiguredPassB';
+import {PassB} from 'PassB';
 import {Popup} from "./Components/Popup";
+import "./style.scss";
 
 import {MuiThemeProvider} from "material-ui";
 import {createMuiTheme} from "material-ui/styles";
-// import Settings from 'material-ui/svg-icons/action/settings'; TODO: 1.0 beta
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {Container} from 'typedi';
 
-import "./style.scss";
+Container.get(PassB).initialize();
 
 const theme = createMuiTheme();
 

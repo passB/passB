@@ -1,4 +1,4 @@
-import 'ConfiguredPassB';
+import {PassB} from 'PassB';
 import {AddonOptions} from './Components/AddonOptions';
 import "./style.scss";
 
@@ -6,6 +6,9 @@ import {MuiThemeProvider} from "material-ui";
 import {createMuiTheme} from "material-ui/styles";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {Container} from 'typedi';
+
+Container.get(PassB).initialize();
 
 const theme = createMuiTheme({
   overrides: {

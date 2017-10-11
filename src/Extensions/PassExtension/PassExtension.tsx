@@ -1,4 +1,5 @@
 import {AsynchronousCallableServiceFactory, executeInCorrectContext} from "Decorators/ExecuteInContext";
+import {LazyInject} from "Decorators/LazyInject";
 import {OptionsPanelType} from "Options/OptionsReceiver";
 import {PassB} from "PassB";
 import {PassCli} from "PassCli";
@@ -7,7 +8,7 @@ import {Show} from "./Views";
 
 import * as React from 'react';
 import {RouteProps} from "react-router";
-import {Inject, Service} from 'typedi';
+import {Service} from 'typedi';
 
 interface Options {
 }
@@ -28,10 +29,10 @@ export class PassExtension extends Extension<Options> {
   public readonly defaultOptions: Options = {};
   public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
 
-  @Inject(() => PassB)
+  @LazyInject(() => PassB)
   private passB: PassB;
 
-  @Inject(() => PassCli)
+  @LazyInject(() => PassCli)
   private passCli: PassCli;
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
