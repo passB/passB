@@ -1,3 +1,5 @@
+// tslint:disable:no-any
+
 import memoize = require('lodash.memoize');
 
 export const memoizeWithTTL = (ttl: number) =>

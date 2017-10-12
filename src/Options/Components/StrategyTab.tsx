@@ -44,7 +44,7 @@ export const StrategyTab = withStyles<Props>(styles)(
             <InputLabel>Selected Strategy:</InputLabel>
             <Select
               value={selectedStrategyName}
-              onChange={(e: any) => updateSelectedStrategyName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateSelectedStrategyName(e.target.value)}
             >
               {strategies.map((strategy: OptionsReceiverInterface<{}>, index: number) => (
                 <MenuItem key={index} value={strategy.name}>

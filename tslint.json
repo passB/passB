@@ -12,6 +12,7 @@
     "no-empty-interface": false,
     "no-namespace": false,
     "ban-types": false,
+    "no-any": true,
     "typedef": [
       true,
       "call-signature",

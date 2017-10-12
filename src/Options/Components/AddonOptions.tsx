@@ -76,7 +76,7 @@ class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, S
                 >
                   <Checkbox
                     checked={enabled}
-                    onChange={(event: any, newValue: boolean) => {
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>, newValue: boolean) => {
                       this.updateOptions({
                         enabledExtensions: [
                           ...(newValue ?

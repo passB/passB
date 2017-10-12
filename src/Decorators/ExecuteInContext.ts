@@ -1,3 +1,5 @@
+// tslint:disable:no-any
+
 import 'reflect-metadata';
 
 export type ExecutionContext = 'background' | 'popup' | 'options' | undefined;

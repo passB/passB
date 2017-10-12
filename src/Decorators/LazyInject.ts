@@ -1,3 +1,5 @@
+// tslint:disable:no-any
+
 import {Container, Token} from 'typedi';
 
 export function LazyInject(typeOrName?: ((type?: any) => Function) | string | Token<any>): Function {
