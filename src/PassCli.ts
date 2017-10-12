@@ -1,5 +1,5 @@
-import {memoizeWithTTL} from "Decorators/memoizeWithTTL";
 import {Service} from 'typedi';
+import {memoizeWithTTL} from "Decorators/memoizeWithTTL";
 
 interface PassReply {
   stdout: string[];

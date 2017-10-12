@@ -1,6 +1,6 @@
-import {OptionsReceiver} from "Options/OptionsReceiver";
 import {RouteProps} from "react-router";
 import {Token} from 'typedi';
+import {OptionsReceiver} from "Options/OptionsReceiver";
 
 export interface ListEntry {
   label: string;

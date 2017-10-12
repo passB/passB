@@ -1,6 +1,6 @@
 import Tab = browser.tabs.Tab;
-import {OptionsReceiver} from "Options/OptionsReceiver";
 import {Token} from 'typedi';
+import {OptionsReceiver} from "Options/OptionsReceiver";
 
 export abstract class Filler<OptionType> extends OptionsReceiver<OptionType> {
   public abstract fillUsername(activeTab: Tab, username?: string): Promise<void>;

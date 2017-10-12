@@ -1,15 +1,14 @@
-import {LazyInject} from "Decorators/LazyInject";
-import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
-import {PassCli} from "PassCli";
-import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
-import {Show} from "./Views/Show";
-
 import {FormControl, FormControlLabel, FormLabel, Grid, Input, List, ListItem, Radio, RadioGroup} from "material-ui";
-import {ClassProps, withStyles} from "material-ui/styles";
+import {withStyles, ClassProps} from "material-ui/styles";
 import * as React from 'react';
 import {QRCode} from "react-qr-svg";
 import {RouteProps} from "react-router";
 import {Service} from 'typedi';
+import {LazyInject} from "Decorators/LazyInject";
+import {OptionsPanelType, OptionPanelProps} from "Options/OptionsReceiver";
+import {PassCli} from "PassCli";
+import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
+import {Show} from "./Views/Show";
 
 type Level = "L" | "M" | "Q" | "H";
 

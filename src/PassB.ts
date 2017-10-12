@@ -1,4 +1,5 @@
-import {AsynchronousCallableServiceFactory, executeInCorrectContext} from "Decorators/ExecuteInContext";
+import {Inject, InjectTagged, Service} from 'typedi';
+import {executeInCorrectContext, AsynchronousCallableServiceFactory} from "Decorators/ExecuteInContext";
 import {LazyInject} from "Decorators/LazyInject";
 import {Extension, ExtensionTag, ListEntry} from "Extensions";
 import {FileFormat, FileFormatTag} from "PluggableStrategies/FileFormats";
@@ -6,8 +7,6 @@ import {Filler, FillerTag} from "PluggableStrategies/Fillers";
 import {Matcher, MatcherTag} from "PluggableStrategies/Matchers";
 import {Options, OptionsData, OptionsList} from "./Options/Options";
 import {OptionsReceiverInterface} from "./Options/OptionsReceiver";
-
-import {Inject, InjectTagged, Service} from 'typedi';
 
 export interface Action {
   extension: string;

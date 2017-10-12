@@ -28,7 +28,14 @@
       "allow-pascal-case"
     ],
     "jsx-no-lambda": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "lowercase-first",
+        "named-imports-order": "lowercase-first"
+      }
+    ]
   },
   "rulesDirectory": []
 }

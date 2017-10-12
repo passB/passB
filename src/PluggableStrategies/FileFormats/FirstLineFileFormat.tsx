@@ -1,10 +1,9 @@
-import {OptionPanelProps, OptionsPanelType} from "Options/OptionsReceiver";
-import {FileFormat, FileFormatTag} from ".";
-
 import {FormControl, FormControlLabel, FormLabel} from "material-ui";
 import {default as Radio, RadioGroup} from 'material-ui/Radio';
 import * as React from 'react';
 import {Service} from 'typedi';
+import {OptionsPanelType, OptionPanelProps} from "Options/OptionsReceiver";
+import {FileFormat, FileFormatTag} from ".";
 
 export type UsernameStyle = "None" | "SecondLine" | "LastPathPart";
 interface Options {

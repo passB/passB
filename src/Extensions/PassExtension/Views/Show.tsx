@@ -1,7 +1,7 @@
-import {LazyInject} from "Decorators/LazyInject";
-import {PassCli} from "PassCli";
 import * as React from 'react';
 import {RouteComponentProps} from "react-router";
+import {LazyInject} from "Decorators/LazyInject";
+import {PassCli} from "PassCli";
 
 interface LocationStateProps {
   location: {

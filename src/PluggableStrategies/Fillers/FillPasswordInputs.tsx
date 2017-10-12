@@ -1,9 +1,8 @@
-import {OptionsPanelType} from "../../Options/OptionsReceiver";
-import {Filler, FillerTag} from "./Filler";
-
 import Tab = browser.tabs.Tab;
 import * as React from 'react';
 import {Service} from 'typedi';
+import {OptionsPanelType} from "Options/OptionsReceiver";
+import {Filler, FillerTag} from "./Filler";
 
 const fillPasswordInputs = (password: string) => {
   let i = 0;

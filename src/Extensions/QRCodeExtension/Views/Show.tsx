@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {QRCode} from 'react-qr-svg';
 import {RouteComponentProps} from "react-router";
-
 import {LazyInject} from "Decorators/LazyInject";
 import {PassB} from "PassB";
 import {PassCli} from "PassCli";

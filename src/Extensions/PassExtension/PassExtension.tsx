@@ -1,14 +1,13 @@
-import {AsynchronousCallableServiceFactory, executeInCorrectContext} from "Decorators/ExecuteInContext";
+import * as React from 'react';
+import {RouteProps} from "react-router";
+import {Service} from 'typedi';
+import {executeInCorrectContext, AsynchronousCallableServiceFactory} from "Decorators/ExecuteInContext";
 import {LazyInject} from "Decorators/LazyInject";
 import {OptionsPanelType} from "Options/OptionsReceiver";
 import {PassB} from "PassB";
 import {PassCli} from "PassCli";
 import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
 import {Show} from "./Views";
-
-import * as React from 'react';
-import {RouteProps} from "react-router";
-import {Service} from 'typedi';
 
 interface Options {
 }

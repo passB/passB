@@ -1,7 +1,3 @@
-import {PassB} from 'PassB';
-import {FileFormat} from 'PluggableStrategies/FileFormats/FileFormat';
-import {StrategyTab} from './StrategyTab';
-
 import {
   Card,
   CardContent,
@@ -10,12 +6,14 @@ import {
   Tab,
   Tabs,
 } from "material-ui";
-import {ClassProps, StyleRules, withStyles} from "material-ui/styles";
+import {withStyles, ClassProps, StyleRules} from "material-ui/styles";
 import * as React from 'react';
-
 import {LazyInject} from "Decorators/LazyInject";
 import {Extension} from "Extensions/Extension";
 import {OptionsData, OptionsList} from "Options/Options";
+import {PassB} from 'PassB';
+import {FileFormat} from 'PluggableStrategies/FileFormats/FileFormat';
+import {StrategyTab} from './StrategyTab';
 
 type TabValue = "Extensions" | "Matcher" | "Filler" | "FileFormat";
 

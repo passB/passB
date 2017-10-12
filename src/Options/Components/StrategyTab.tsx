@@ -1,5 +1,5 @@
 import {FormControl, InputLabel, MenuItem, Select} from "material-ui";
-import {ClassProps, withStyles} from "material-ui/styles";
+import {withStyles, ClassProps} from "material-ui/styles";
 import * as React from 'react';
 import {OptionsList} from "../Options";
 import {OptionsReceiverInterface} from "../OptionsReceiver";
