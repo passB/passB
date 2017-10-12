@@ -1,11 +1,11 @@
-import {AppBar, Button, Card, CardContent, Toolbar, Typography} from "material-ui";
-import {withStyles, ClassProps, StyleRules} from "material-ui/styles";
+import {AppBar, Button, Card, CardContent, Toolbar, Typography} from 'material-ui';
+import {withStyles, ClassProps, StyleRules} from 'material-ui/styles';
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
-import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from "react-router";
-import {LazyInject} from "Decorators/LazyInject";
-import {Extension} from "Extensions";
-import {PassB} from "PassB";
+import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from 'react-router';
+import {LazyInject} from 'Decorators/LazyInject';
+import {Extension} from 'Extensions';
+import {PassB} from 'PassB';
 import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 

@@ -1,11 +1,11 @@
-import {FormControl, FormControlLabel, FormLabel} from "material-ui";
+import {FormControl, FormControlLabel, FormLabel} from 'material-ui';
 import {default as Radio, RadioGroup} from 'material-ui/Radio';
 import * as React from 'react';
 import {Service} from 'typedi';
-import {OptionsPanelType, OptionPanelProps} from "Options/OptionsReceiver";
-import {FileFormat, FileFormatTag} from ".";
+import {OptionsPanelType, OptionPanelProps} from 'Options/OptionsReceiver';
+import {FileFormat, FileFormatTag} from '.';
 
-export type UsernameStyle = "None" | "SecondLine" | "LastPathPart";
+export type UsernameStyle = 'None' | 'SecondLine' | 'LastPathPart';
 interface Options {
   usernameStyle: UsernameStyle;
 }
@@ -13,7 +13,7 @@ interface Options {
 @Service({tags: [FileFormatTag]})
 export class FirstLineFileFormat extends FileFormat<Options> {
   public readonly defaultOptions: Options = {
-    usernameStyle: "SecondLine",
+    usernameStyle: 'SecondLine',
   };
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
   public readonly name: string = FirstLineFileFormat.name;
@@ -24,9 +24,9 @@ export class FirstLineFileFormat extends FileFormat<Options> {
 
   public getUsername(lines: string[], entryName: string): string | undefined {
     switch (this.options.usernameStyle) {
-      case "SecondLine":
+      case 'SecondLine':
         return lines[1];
-      case "LastPathPart":
+      case 'LastPathPart':
         return entryName.split(/[/\\]/).pop();
       default:
         return void 0;

@@ -1,8 +1,8 @@
-import deepExtend = require("deep-extend");
+import deepExtend = require('deep-extend');
 import {Service} from 'typedi';
-import {LazyInject} from "Decorators/LazyInject";
-import {PassB} from "PassB";
-import {OptionsReceiverInterface} from "./OptionsReceiver";
+import {LazyInject} from 'Decorators/LazyInject';
+import {PassB} from 'PassB';
+import {OptionsReceiverInterface} from './OptionsReceiver';
 
 export interface OptionsList {
   [extensionName: string]: {};

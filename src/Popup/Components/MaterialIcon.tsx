@@ -1,5 +1,5 @@
 import {Icon, StyledComponentProps} from 'material-ui';
-import {IconProps} from "material-ui/Icon";
+import {IconProps} from 'material-ui/Icon';
 import * as React from 'react';
 
 import 'mdi/scss/materialdesignicons.scss';
@@ -2057,7 +2057,7 @@ export type MaterialIconType =
   ;
 // endregion
 
-type Size = "18" | "24" | "36" | "48";
+type Size = '18' | '24' | '36' | '48';
 
 export interface Props {
   icon: MaterialIconType;

@@ -1,9 +1,9 @@
 import {List, ListItem, ListItemText} from 'material-ui';
-import {withStyles, ClassProps} from "material-ui/styles";
+import {withStyles, ClassProps} from 'material-ui/styles';
 import * as React from 'react';
-import {LazyInject} from "Decorators/LazyInject";
-import {Entry, LabeledEntries, PassB} from "PassB";
-import {MaterialIcon} from "Popup/Components/MaterialIcon";
+import {LazyInject} from 'Decorators/LazyInject';
+import {Entry, LabeledEntries, PassB} from 'PassB';
+import {MaterialIcon} from 'Popup/Components/MaterialIcon';
 
 interface Props {
   url: string;
@@ -50,9 +50,9 @@ class ListViewComponent extends React.Component<Props & ClassProps<typeof styles
           <ListItem
             button={true}
             key={entry.label}
-            onClick={() => navigateTo(`entry`, {entry})}
+            onClick={() => navigateTo('entry', {entry})}
           >
-            <ListItemText primary={entry.label.replace(/\//g, "/\u200b")}/>
+            <ListItemText primary={entry.label.replace(/\//g, '/\u200b')}/>
           </ListItem>
         ))}
       </List>

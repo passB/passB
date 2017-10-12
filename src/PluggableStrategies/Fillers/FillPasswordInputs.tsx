@@ -1,8 +1,8 @@
 import Tab = browser.tabs.Tab;
 import * as React from 'react';
 import {Service} from 'typedi';
-import {OptionsPanelType} from "Options/OptionsReceiver";
-import {Filler, FillerTag} from "./Filler";
+import {OptionsPanelType} from 'Options/OptionsReceiver';
+import {Filler, FillerTag} from './Filler';
 
 const fillPasswordInputs = (password: string) => {
   let i = 0;
@@ -11,7 +11,7 @@ const fillPasswordInputs = (password: string) => {
     passwordInput.dispatchEvent(new Event('change'));
     passwordInput.dispatchEvent(new KeyboardEvent('keyup'));
     // may not be supported by every browser: https://developer.mozilla.org/en-US/docs/Web/API/InputEvent
-    if (typeof InputEvent === "function") {
+    if (typeof InputEvent === 'function') {
       passwordInput.dispatchEvent(new InputEvent('input'));
     }
     i++;

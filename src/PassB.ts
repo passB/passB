@@ -1,12 +1,12 @@
 import {Inject, InjectTagged, Service} from 'typedi';
-import {executeInCorrectContext, AsynchronousCallableServiceFactory} from "Decorators/ExecuteInContext";
-import {LazyInject} from "Decorators/LazyInject";
-import {Extension, ExtensionTag, ListEntry} from "Extensions";
-import {FileFormat, FileFormatTag} from "PluggableStrategies/FileFormats";
-import {Filler, FillerTag} from "PluggableStrategies/Fillers";
-import {Matcher, MatcherTag} from "PluggableStrategies/Matchers";
-import {Options, OptionsData, OptionsList} from "./Options/Options";
-import {OptionsReceiverInterface} from "./Options/OptionsReceiver";
+import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
+import {LazyInject} from 'Decorators/LazyInject';
+import {Extension, ExtensionTag, ListEntry} from 'Extensions';
+import {FileFormat, FileFormatTag} from 'PluggableStrategies/FileFormats';
+import {Filler, FillerTag} from 'PluggableStrategies/Fillers';
+import {Matcher, MatcherTag} from 'PluggableStrategies/Matchers';
+import {Options, OptionsData, OptionsList} from './Options/Options';
+import {OptionsReceiverInterface} from './Options/OptionsReceiver';
 
 export interface Action {
   extension: string;
@@ -38,7 +38,7 @@ export class PassB {
   private entries: LabeledEntries = {};
 
   public async initialize(): Promise<this> {
-    if (window.executionContext === "background") {
+    if (window.executionContext === 'background') {
       this.injectIntoChildren(await this.getOptions());
       await this.reloadEntries();
       return this;
@@ -91,19 +91,19 @@ export class PassB {
   }
 
   @executeInCorrectContext()
-  @Reflect.metadata("executionContext", "background")
+  @Reflect.metadata('executionContext', 'background')
   public async getEntries(): Promise<LabeledEntries> {
     return this.entries;
   }
 
   @executeInCorrectContext()
-  @Reflect.metadata("executionContext", "background")
+  @Reflect.metadata('executionContext', 'background')
   public async getOptions(): Promise<OptionsData> {
     return await this.options.getOptions();
   }
 
   @executeInCorrectContext()
-  @Reflect.metadata("executionContext", "background")
+  @Reflect.metadata('executionContext', 'background')
   public async setOptions(newOptions: OptionsData): Promise<OptionsData> {
     await this.options.setOptions(newOptions);
     this.injectIntoChildren(newOptions);
@@ -112,7 +112,7 @@ export class PassB {
   }
 
   @executeInCorrectContext()
-  @Reflect.metadata("executionContext", "background")
+  @Reflect.metadata('executionContext', 'background')
   private async reloadEntries(): Promise<this> {
     const enabledExtensionNames = (await (this.getOptions())).enabledExtensions;
     const enabledExtensions = this.extensions

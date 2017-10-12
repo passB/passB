@@ -1,4 +1,4 @@
-import {Container, Token} from "typedi";
+import {Container, Token} from 'typedi';
 
 export function LazyInject(typeOrName?: ((type?: any) => Function) | string | Token<any>): Function {
   return (target: Object, propertyName: string, index?: number) => {
@@ -9,11 +9,11 @@ export function LazyInject(typeOrName?: ((type?: any) => Function) | string | To
       get: () => {
         if (!injectedService) {
           if (!typeOrName) {
-            typeOrName = () => (Reflect as any).getMetadata("design:type", target, propertyName);
+            typeOrName = () => (Reflect as any).getMetadata('design:type', target, propertyName);
           }
 
           let identifier: any;
-          if (typeof typeOrName === "string") {
+          if (typeof typeOrName === 'string') {
             identifier = typeOrName;
 
           } else if (typeOrName instanceof Token) {

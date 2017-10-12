@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {RouteProps} from "react-router";
+import {RouteProps} from 'react-router';
 import {Service} from 'typedi';
-import {executeInCorrectContext, AsynchronousCallableServiceFactory} from "Decorators/ExecuteInContext";
-import {LazyInject} from "Decorators/LazyInject";
-import {OptionsPanelType} from "Options/OptionsReceiver";
-import {PassB} from "PassB";
-import {PassCli} from "PassCli";
-import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from "..";
-import {Show} from "./Views";
+import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
+import {LazyInject} from 'Decorators/LazyInject';
+import {OptionsPanelType} from 'Options/OptionsReceiver';
+import {PassB} from 'PassB';
+import {PassCli} from 'PassCli';
+import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from '..';
+import {Show} from './Views';
 
 interface Options {
 }
@@ -73,15 +73,15 @@ export class PassExtension extends Extension<Options> {
   }
 
   @executeInCorrectContext()
-  @Reflect.metadata("executionContext", "background")
+  @Reflect.metadata('executionContext', 'background')
   private async executeFillAction(entry: string): Promise<{}> {
     const initialUrl = (await this.getCurrentTab()).url;
     const entryContents = await this.passCli.show(entry);
     const activeTab = await this.getCurrentTab();
     const finalUrl = activeTab.url;
 
-    if (typeof finalUrl !== "undefined" && initialUrl !== finalUrl) {
-      console.info(`url changed from request to receive of password. not filling`);
+    if (typeof finalUrl !== 'undefined' && initialUrl !== finalUrl) {
+      console.info('url changed from request to receive of password. not filling');
       return {};
     }
 

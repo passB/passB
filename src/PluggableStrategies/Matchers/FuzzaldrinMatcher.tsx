@@ -1,10 +1,10 @@
-import {score, IScoringOptions} from "fuzzaldrin-plus";
-import {TextField} from "material-ui";
+import {score, IScoringOptions} from 'fuzzaldrin-plus';
+import {TextField} from 'material-ui';
 import * as React from 'react';
 import {Service} from 'typedi';
-import {OptionsPanelType, OptionPanelProps} from "Options/OptionsReceiver";
-import {Entry} from "PassB";
-import {Matcher, MatcherTag} from ".";
+import {OptionsPanelType, OptionPanelProps} from 'Options/OptionsReceiver';
+import {Entry} from 'PassB';
+import {Matcher, MatcherTag} from '.';
 
 interface ScoredEntry {
   entry: Entry;

@@ -5,17 +5,17 @@ import {
   List, ListItem, ListItemText,
   Tab,
   Tabs,
-} from "material-ui";
-import {withStyles, ClassProps, StyleRules} from "material-ui/styles";
+} from 'material-ui';
+import {withStyles, ClassProps, StyleRules} from 'material-ui/styles';
 import * as React from 'react';
-import {LazyInject} from "Decorators/LazyInject";
-import {Extension} from "Extensions/Extension";
-import {OptionsData, OptionsList} from "Options/Options";
+import {LazyInject} from 'Decorators/LazyInject';
+import {Extension} from 'Extensions/Extension';
+import {OptionsData, OptionsList} from 'Options/Options';
 import {PassB} from 'PassB';
 import {FileFormat} from 'PluggableStrategies/FileFormats/FileFormat';
 import {StrategyTab} from './StrategyTab';
 
-type TabValue = "Extensions" | "Matcher" | "Filler" | "FileFormat";
+type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat';
 
 interface State {
   selectedTab: TabValue;
@@ -36,7 +36,7 @@ const styles: StyleRules = {
 
 class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, State> {
   public state: State = {
-    selectedTab: "Extensions",
+    selectedTab: 'Extensions',
     options: void 0,
   };
 
@@ -64,7 +64,7 @@ class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, S
           <Tab value="FileFormat" label={browser.i18n.getMessage('options_tab_file_formats')}/>
           <Tab value="Filler" label={browser.i18n.getMessage('options_tab_fillers')}/>
         </Tabs>
-        {selectedTab === "Extensions" && <div>
+        {selectedTab === 'Extensions' && <div>
           <List>
             {passB.getAllExtensions().map((extension: Extension<{}>) => {
               const enabled = options.enabledExtensions.includes(extension.name);
@@ -108,7 +108,7 @@ class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, S
           </List>
         </div>
         }
-        {selectedTab === "Matcher" && (
+        {selectedTab === 'Matcher' && (
           <StrategyTab
             label="options_tab_matchers"
             strategies={passB.getAllMatchers()}
@@ -118,7 +118,7 @@ class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, S
             updateOptions={(matchers: OptionsList) => this.updateOptions({matchers})}
           />
         )}
-        {selectedTab === "FileFormat" && (
+        {selectedTab === 'FileFormat' && (
           <StrategyTab
             label="options_tab_file_formats"
             strategies={passB.getAllFileFormats()}
@@ -128,7 +128,7 @@ class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, S
             updateOptions={(fileFormats: OptionsList) => this.updateOptions({fileFormats})}
           />
         )}
-        {selectedTab === "Filler" && (
+        {selectedTab === 'Filler' && (
           <StrategyTab
             label="options_tab_fillers"
             strategies={passB.getAllFillers()}

@@ -1,5 +1,5 @@
 import {Service} from 'typedi';
-import {memoizeWithTTL} from "Decorators/memoizeWithTTL";
+import {memoizeWithTTL} from 'Decorators/memoizeWithTTL';
 
 interface PassReply {
   stdout: string[];
@@ -45,9 +45,9 @@ export class PassCli {
   }
 
   private async executeCommand(command: string, args: string[] = []): Promise<PassReply> {
-    const response = await browser.runtime.sendNativeMessage("passb", {command, args}) as PassReply;
+    const response = await browser.runtime.sendNativeMessage('passb', {command, args}) as PassReply;
     if (response.returnCode !== 0) {
-      throw new Error(response.stderr.join("\n"));
+      throw new Error(response.stderr.join('\n'));
     }
     return response;
   }

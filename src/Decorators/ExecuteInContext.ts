@@ -1,7 +1,7 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
-export type ExecutionContext = "background" | "popup" | "options" | undefined;
-const executionContexts = ["background", "popup"];
+export type ExecutionContext = 'background' | 'popup' | 'options' | undefined;
+const executionContexts = ['background', 'popup'];
 
 function getActionName(constructor: Function, propertyKey: string): string {
   return `${constructor.name}.${propertyKey}`;
@@ -20,9 +20,9 @@ export const executeInCorrectContext = () =>
       descriptor: TypedPropertyDescriptor<T>,
     ): TypedPropertyDescriptor<T> => {
 
-    const executionContext = Reflect.getMetadata("executionContext", target, propertyKey);
+    const executionContext = Reflect.getMetadata('executionContext', target, propertyKey);
     if (!executionContexts.includes(executionContext)) {
-      throw new Error("using " + executeInCorrectContext.name
+      throw new Error('using ' + executeInCorrectContext.name
         + ' decorator, but not declaring @Reflect.metadata("executionContext", "...") correctly',
       );
     }
@@ -57,7 +57,7 @@ export const AsynchronousCallable = () =>
 
         for (let obj = this; obj != null; obj = Object.getPrototypeOf(obj)) {
           for (const propertyKey of Object.getOwnPropertyNames(obj)) {
-            const executionContext = Reflect.getMetadata("executionContext", this, propertyKey);
+            const executionContext = Reflect.getMetadata('executionContext', this, propertyKey);
             if (executionContext && window.executionContext === executionContext) {
 
               browser.runtime.onMessage.addListener(

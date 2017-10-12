@@ -7,7 +7,7 @@
   "rules": {
     "no-console": [true, "log"],
     "interface-name": false,
-    "quotemark": "single",
+    "quotemark": [true, "single", "jsx-double", "avoid-template"],
     "object-literal-sort-keys": false,
     "no-empty-interface": false,
     "no-namespace": false,
