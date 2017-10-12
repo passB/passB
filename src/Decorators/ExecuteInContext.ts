@@ -24,8 +24,8 @@ export const executeInCorrectContext = () =>
 
     const executionContext = Reflect.getMetadata('executionContext', target, propertyKey);
     if (!executionContexts.includes(executionContext)) {
-      throw new Error('using ' + executeInCorrectContext.name
-        + ' decorator, but not declaring @Reflect.metadata("executionContext", "...") correctly',
+      throw new Error(`using ${executeInCorrectContext.name} `
+        + 'decorator, but not declaring @Reflect.metadata("executionContext", "...") correctly',
       );
     }
 

@@ -20,10 +20,13 @@ export interface OptionsData {
 }
 
 function extractDefaultOptionsList(receivers: Array<OptionsReceiverInterface<{}>>): OptionsList {
-  return receivers.reduce((list: OptionsList, receiver: OptionsReceiverInterface<{}>): OptionsList => ({
-    ...list,
-    [receiver.name]: receiver.defaultOptions,
-  }), {});
+  return receivers.reduce(
+    (list: OptionsList, receiver: OptionsReceiverInterface<{}>): OptionsList => ({
+      ...list,
+      [receiver.name]: receiver.defaultOptions,
+    }),
+    {},
+  );
 }
 
 @Service()

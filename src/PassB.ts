@@ -55,7 +55,7 @@ export class PassB {
   public getExtension(name: string): Extension<{}> {
     const extension = this.extensions.find((item: Extension<{}>) => item.name === name);
     if (!extension) {
-      throw new Error('query for unknown extension ' + name);
+      throw new Error(`query for unknown extension ${name}`);
     }
     return extension;
   }

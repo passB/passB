@@ -47,7 +47,7 @@ export const StrategyTab = withStyles<Props>(styles)(
             >
               {strategies.map((strategy: OptionsReceiverInterface<{}>, index: number) => (
                 <MenuItem key={index} value={strategy.name}>
-                  {browser.i18n.getMessage('label_' + strategy.name) || strategy.name}
+                  {browser.i18n.getMessage(`label_${strategy.name}`) || strategy.name}
                 </MenuItem>
               ))}
             </Select>

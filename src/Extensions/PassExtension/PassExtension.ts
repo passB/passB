@@ -64,6 +64,7 @@ export class PassExtension extends Extension<Options> {
         break;
       default:
         console.error('unknown action:', action);
+        break;
     }
   }
 
