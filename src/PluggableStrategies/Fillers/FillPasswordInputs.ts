@@ -1,5 +1,4 @@
 import Tab = browser.tabs.Tab;
-import * as React from 'react';
 import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {Filler, FillerTag} from './Filler';

@@ -1,4 +1,4 @@
-import {Icon, StyledComponentProps} from 'material-ui';
+import {Icon} from 'material-ui';
 import {IconProps} from 'material-ui/Icon';
 import * as React from 'react';
 

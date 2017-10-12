@@ -23,7 +23,6 @@ export const StrategyTab = withStyles<Props>(styles)(
   class extends React.Component<Props & ClassProps<typeof styles>> {
     public render(): JSX.Element {
       const {
-        label,
         strategies,
         selectedStrategyName,
         strategyOptions,

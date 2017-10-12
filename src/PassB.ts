@@ -1,4 +1,4 @@
-import {Inject, InjectTagged, Service} from 'typedi';
+import {InjectTagged, Service} from 'typedi';
 import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
 import {LazyInject} from 'Decorators/LazyInject';
 import {Extension, ExtensionTag, ListEntry} from 'Extensions';

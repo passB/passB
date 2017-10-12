@@ -12,7 +12,6 @@ import {LazyInject} from 'Decorators/LazyInject';
 import {Extension} from 'Extensions/Extension';
 import {OptionsData, OptionsList} from 'Options/Options';
 import {PassB} from 'PassB';
-import {FileFormat} from 'PluggableStrategies/FileFormats/FileFormat';
 import {StrategyTab} from './StrategyTab';
 
 type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat';
@@ -21,8 +20,6 @@ interface State {
   selectedTab: TabValue;
   options?: OptionsData;
 }
-
-const x: Partial<React.CSSProperties> = {flexWrap: 'wrap'};
 
 const styles: StyleRules = {
   wrap: {
@@ -144,7 +141,7 @@ class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, S
   }
 
   private updateOptions(newOptions: Partial<OptionsData>): void {
-    const fullNewOptions = {...this.state.options, ...newOptions} as OptionsData;
+    const fullNewOptions: OptionsData = {...this.state.options!, ...newOptions};
     this.setState({options: fullNewOptions});
     this.passB.setOptions(fullNewOptions);
   }

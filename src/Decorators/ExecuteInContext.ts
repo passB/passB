@@ -47,17 +47,13 @@ export const executeInCorrectContext = () =>
     };
   };
 
-export const AsynchronousCallableServiceFactory =
-  <X, T extends { new(...args: any[]): X }>(type: T): ((...args: any[]) => X) =>
-    ((...args: any[]): X => (new (AsynchronousCallable()(type))(...args)));
-
 export const AsynchronousCallable = () =>
   <T extends { new(...args: any[]): {} }>(constructor: T): T =>
     class extends constructor {
-      constructor(...args: any[]) {
+      public constructor(...args: any[]) {
         super(...args);
 
-        for (let obj = this; obj != null; obj = Object.getPrototypeOf(obj)) {
+        for (let obj = this; !!obj; obj = Object.getPrototypeOf(obj)) { // tslint:disable-line:no-this-assignment
           for (const propertyKey of Object.getOwnPropertyNames(obj)) {
             const executionContext = Reflect.getMetadata('executionContext', this, propertyKey);
             if (executionContext && window.executionContext === executionContext) {
@@ -79,3 +75,7 @@ export const AsynchronousCallable = () =>
         }
       }
     };
+
+export const AsynchronousCallableServiceFactory =
+  <X, T extends { new(...args: any[]): X }>(type: T): ((...args: any[]) => X) =>
+    ((...args: any[]): X => (new (AsynchronousCallable()(type))(...args)));

@@ -13,6 +13,7 @@
     "no-namespace": false,
     "ban-types": false,
     "no-any": true,
+    "member-access": [true, "check-constructor"],
     "typedef": [
       true,
       "call-signature",
@@ -36,7 +37,35 @@
         "import-sources-order": "lowercase-first",
         "named-imports-order": "lowercase-first"
       }
-    ]
+    ],
+    "curly": true,
+    "no-for-in-array": true,
+    "no-null-keyword": true,
+    "no-object-literal-type-assertion": true,
+    "no-shadowed-variable": true,
+    "no-string-literal": true,
+    "no-string-throw": true,
+    "no-this-assignment": [true, {"allow-destructuring": true}],
+    "no-unbound-method": true,
+    "no-unused-variable": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "prefer-conditional-expression": true,
+    "prefer-object-spread": true,
+    "radix": false,
+    "restrict-plus-operands": true,
+    "triple-equals": true,
+    "typeof-compare": true,
+    "deprecation": true,
+    "eofline": true,
+    "indent": [true, "spaces", 2],
+    "linebreak-style": [true, "LF"],
+    "max-classes-per-file": [true, 1],
+    "max-line-length": [true, 120],
+    "no-default-export": true,
+    "no-duplicate-imports": true,
+    "prefer-const": [true, {"destructuring": "all"}],
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}]
   },
   "rulesDirectory": []
 }

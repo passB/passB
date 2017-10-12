@@ -23,7 +23,7 @@ function extractDefaultOptionsList(receivers: Array<OptionsReceiverInterface<{}>
   return receivers.reduce((list: OptionsList, receiver: OptionsReceiverInterface<{}>): OptionsList => ({
     ...list,
     [receiver.name]: receiver.defaultOptions,
-  }), {} as OptionsList);
+  }), {});
 }
 
 @Service()
