@@ -48,6 +48,7 @@
     "react-router-dom": "^4.2.2",
     "reflect-metadata": "^0.1.10",
     "tslint-react": "^3.2.0",
-    "typedi": "https://github.com/phryneas/typedi.git#cfed2307672a880b99f164825a5b5ac165842624"
+    "typedi": "https://github.com/phryneas/typedi.git#cfed2307672a880b99f164825a5b5ac165842624",
+    "typeface-roboto": "^0.0.35"
   }
 }

@@ -6,6 +6,7 @@ import {Container} from 'typedi';
 import {PassB} from 'PassB';
 import {AddonOptions} from './Components/AddonOptions';
 
+import 'typeface-roboto';
 import './style.scss';
 
 Container.get(PassB).initialize();
