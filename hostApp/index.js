@@ -3,7 +3,7 @@ const spawn = require('cross-spawn');
 
 /*
 (async function test() {
-  console.log(await handleMessage({command: 'show', args: ['freshrss/phry']}));
+  console.log(await handleMessage({command: 'listEntries'}));
 })();
 */
 
@@ -17,6 +17,7 @@ process.stdin
   .pipe(new nativeMessage.Output())
   .pipe(process.stdout)
 ;
+
 /**
  * @typedef {{stdout: string[], stderr: string[], returnCode: number}} reply
  */
@@ -54,6 +55,8 @@ async function handleMessage({command, args}) {
       return await executePassCommand('show', args);
     case 'version':
       return await executePassCommand('version', args);
+    case 'list-entries':
+      return await listEntries();
     default:
       return buildReply({stdout: [], stderr: ['unknown command'], returnCode: -1});
   }
@@ -85,6 +88,38 @@ function executePassCommand(command, args) {
         returnCode,
         stdout: stdout.join('').replace(BASH_COLOR_CODES, '').trim().split("\n"),
         stderr: stderr.join('').replace(BASH_COLOR_CODES, '').trim().split("\n"),
+      })));
+    } catch (err) {
+      resolve(buildReply({stdout: [], stderr: ['error executing pass', err.message], returnCode: -1}));
+    }
+  });
+}
+
+async function listEntries() {
+  return new Promise((resolve) => {
+
+    try {
+      const pass = spawn('find', [
+        '-L',
+        '.',
+        '-not', '-path', '*/.*',
+        '-type', 'd',
+        '-or',
+        '-not', '-path', '*/.*',
+        '-type', 'f', '-iname', '*.gpg',
+      ], {
+        cwd: process.env.PASSWORD_STORE_DIR || `${process.env.HOME || '~'}/.password-store`,
+      });
+      let stdout = [], stderr = [];
+
+      pass.stdout.on('data', (data) => stdout.push(data));
+      pass.stderr.on('data', (data) => stderr.push(data));
+      pass.on('close', (returnCode) => resolve(buildReply({
+        returnCode,
+        stdout: stdout.join('').split("\n").map(
+          line => (line.endsWith('.gpg') ? line : `${line}/`).replace(/^\.\//, '').replace(/\.gpg$/, '').trim()
+        ).sort(),
+        stderr: stderr.join('').trim().split("\n"),
       })));
     } catch (err) {
       resolve(buildReply({stdout: [], stderr: ['error executing pass', err.message], returnCode: -1}));

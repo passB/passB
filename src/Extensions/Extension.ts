@@ -2,7 +2,7 @@ import {RouteProps} from 'react-router';
 import {Token} from 'typedi';
 import {OptionsReceiver} from 'Options/OptionsReceiver';
 
-export interface ListEntry {
+export interface EntryActions {
   label: string;
   actions: string[];
 }
@@ -11,7 +11,7 @@ export interface ExecutionOptions {
   navigateTo: (newUrl: string, state: {}) => void;
 }
 
-export type RegisterEntryCallback = (entry: ListEntry) => void;
+export type RegisterEntryCallback = (entry: EntryActions) => void;
 
 export abstract class Extension<OptionType> extends OptionsReceiver<OptionType> {
   public static readonly routes: RouteProps[] = [];

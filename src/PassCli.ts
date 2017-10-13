@@ -11,33 +11,9 @@ interface PassReply {
 export class PassCli {
   @memoizeWithTTL(5000) // cache list calls for 5 seconds
   public async list(): Promise<string[]> {
-    const REGEX_LINE = /^((?:(?:[|`]-{0,2})\s*)+)(.*$)/;
-    const REGEX_TREENODE = /([|`]-{0,2})/g;
-    const response = await this.executeCommand('list');
-    const list = [];
-    const stack = [];
+    const response = await this.executeCommand('list-entries');
 
-    for (const line of response.stdout) {
-      const match = REGEX_LINE.exec(line);
-      if (!match) {
-        continue;
-      }
-      const currentPrefix = match[1];
-      const currentEntry = match[2];
-      let nodeCount = 0;
-      while (REGEX_TREENODE.exec(currentPrefix) !== null) {
-        nodeCount++;
-      }
-
-      while (stack.length > Math.max(nodeCount - 1, 0)) {
-        stack.pop();
-      }
-      stack.push(currentEntry);
-
-      list.push(stack.join('/'));
-    }
-
-    return list;
+    return response.stdout;
   }
 
   public async show(path: string): Promise<string[]> {

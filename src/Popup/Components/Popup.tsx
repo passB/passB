@@ -1,13 +1,12 @@
 import {AppBar, Button, Card, CardContent, Toolbar, Typography} from 'material-ui';
+import {Settings} from 'material-ui-icons';
 import {withStyles, ClassProps, StyleRules} from 'material-ui/styles';
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
 import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from 'react-router';
-import {MaterialIcon} from 'Components/MaterialIcon';
 import {LazyInject} from 'Decorators/LazyInject';
 import {Extension} from 'Extensions';
 import {PassB} from 'PassB';
-import {EntryView} from './Views/EntryView';
 import {ListView} from './Views/ListView';
 
 interface State {
@@ -58,7 +57,7 @@ class ClassLessPopup extends React.Component<ClassProps<typeof styles>, State> {
                   window.close();
                 }}
               >
-                <MaterialIcon icon="settings" size="24"/>
+                <Settings />
               </Button>
             </Toolbar>
           </AppBar>
@@ -67,14 +66,9 @@ class ClassLessPopup extends React.Component<ClassProps<typeof styles>, State> {
               <Switch>
                 {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
                 <Route
-                  path="/entry"
-                  component={EntryView}
-                />
-                <Route
                   render={
                     ({history}: RouteComponentProps<{}>) => (
                       <ListView
-                        navigateTo={(newUrl: string, state: {}) => history.push(newUrl, state)}
                         url={activeTab && activeTab.url ? activeTab.url : ''}
                       />
                     )}

@@ -3,11 +3,11 @@ import {TextField} from 'material-ui';
 import * as React from 'react';
 import {Service} from 'typedi';
 import {OptionsPanelType, OptionPanelProps} from 'Options/OptionsReceiver';
-import {Entry} from 'PassB';
+import {EntryNode} from 'PassB';
 import {Matcher, MatcherTag} from '.';
 
 interface ScoredEntry {
-  entry: Entry;
+  entry: EntryNode;
   score: number;
 }
 
@@ -36,14 +36,14 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
   public readonly name: string = FuzzaldrinMatcher.name;
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 
-  public async filterEntries(url: string, entries: Entry[]): Promise<Entry[]> {
+  public async filterEntries(url: string, entries: EntryNode[]): Promise<EntryNode[]> {
     url = url.replace(FuzzaldrinMatcher.URL_CLEAN_REGEX, '');
     const {maxResults, minScore} = this.options;
 
     return entries
-      .map((entry: Entry): ScoredEntry => {
+      .map((entry: EntryNode): ScoredEntry => {
         let accumulatedScore = 0;
-        for (const part of entry.label.split('/')) {
+        for (const part of entry.fullPath.split('/')) {
           accumulatedScore += score(url, part, void 0, this.defaultOptions.fuzzOptions); // TODO
         }
 

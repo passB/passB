@@ -1,7 +1,7 @@
 import {InjectTagged, Service} from 'typedi';
 import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
 import {LazyInject} from 'Decorators/LazyInject';
-import {Extension, ExtensionTag, ListEntry} from 'Extensions';
+import {EntryActions, Extension, ExtensionTag} from 'Extensions';
 import {FileFormat, FileFormatTag} from 'PluggableStrategies/FileFormats';
 import {Filler, FillerTag} from 'PluggableStrategies/Fillers';
 import {Matcher, MatcherTag} from 'PluggableStrategies/Matchers';
@@ -13,13 +13,25 @@ export interface Action {
   action: string;
 }
 
-export interface Entry {
+export interface EntryNode {
+  name: string;
+  fullPath: string;
   actions: Action[];
-  label: string;
+  children: { [label: string]: EntryNode };
 }
 
-export interface LabeledEntries {
-  [label: string]: Entry;
+function buildEntryNode({name, fullPath, actions = [], children = {}}: {
+  name: string;
+  fullPath: string;
+  actions?: Action[];
+  children?: { [label: string]: EntryNode };
+}): EntryNode {
+  return {
+    name,
+    fullPath,
+    actions,
+    children,
+  };
 }
 
 @Service({factory: AsynchronousCallableServiceFactory(PassB)})
@@ -35,7 +47,7 @@ export class PassB {
   @LazyInject(() => Options)
   protected options: Options;
 
-  private entries: LabeledEntries = {};
+  private rootNode: EntryNode = buildEntryNode({fullPath: '', name: ''});
 
   public async initialize(): Promise<this> {
     if (window.executionContext === 'background') {
@@ -92,8 +104,8 @@ export class PassB {
 
   @executeInCorrectContext()
   @Reflect.metadata('executionContext', 'background')
-  public async getEntries(): Promise<LabeledEntries> {
-    return this.entries;
+  public async getRootNode(): Promise<EntryNode> {
+    return this.rootNode;
   }
 
   @executeInCorrectContext()
@@ -118,18 +130,35 @@ export class PassB {
     const enabledExtensions = this.extensions
       .filter((extension: Extension<{}>) => enabledExtensionNames.includes(extension.name));
 
-    this.entries = {};
-    const entries = this.entries; // keep reference to "current" entries to prevent potential timing issues
+    this.rootNode = buildEntryNode({fullPath: '', name: ''});
+    const rootNode = this.rootNode; // keep reference to "current" rootNode to prevent potential timing issues
+
+    const addEntries = (newActions: EntryActions, extension: Extension<{}>) => {
+      const parts = newActions.label.split('/');
+      let node: EntryNode = rootNode;
+      for (const [depth, part] of Array.from(parts.entries())) {
+        if (part !== '') {
+          const partName = depth === parts.length - 1 ? part : `${part}/`;
+
+          if (!node.children[partName]) {
+            node.children[partName] = buildEntryNode({
+              name: part,
+              fullPath: node.fullPath + partName,
+            });
+          }
+          node = node.children[partName];
+        }
+
+        if (depth === parts.length - 1) {
+          node.actions.push(...newActions.actions.map((action: string) => ({extension: extension.name, action})));
+        }
+      }
+    };
+
     for (const extension of enabledExtensions) {
-      await (extension.initializeList((entry: ListEntry) =>
-        entries[entry.label] = {
-          label: entry.label,
-          actions: [
-            ...(entries[entry.label] ? entries[entry.label].actions : []),
-            ...entry.actions.map((action: string) => ({extension: extension.name, action})),
-          ],
-        }));
+      await (extension.initializeList((newActions: EntryActions) => addEntries(newActions, extension)));
     }
+
     return this;
   }
 

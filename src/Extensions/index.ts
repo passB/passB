@@ -1,4 +1,4 @@
-export {Extension, ExtensionTag, ListEntry, ExecutionOptions, RegisterEntryCallback} from './Extension';
+export {Extension, ExtensionTag, EntryActions, ExecutionOptions, RegisterEntryCallback} from './Extension';
 
 import './PassExtension';
 import './QRCodeExtension';

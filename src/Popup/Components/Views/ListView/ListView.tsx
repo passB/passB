@@ -1,18 +1,17 @@
-import {List, ListItem, ListItemText} from 'material-ui';
+import {List} from 'material-ui';
+import {Sync} from 'material-ui-icons';
 import {withStyles, ClassProps} from 'material-ui/styles';
 import * as React from 'react';
-import {MaterialIcon} from 'Components/MaterialIcon';
 import {LazyInject} from 'Decorators/LazyInject';
-import {Entry, LabeledEntries, PassB} from 'PassB';
+import {EntryNode, PassB} from 'PassB';
+import {EntryNodeList} from './EntryNodeList';
 
 interface Props {
   url: string;
-  navigateTo: (newUrl: string, state: {}) => void;
 }
 
 interface State {
-  entries: Entry[];
-  filtered?: Entry[];
+  rootNode?: EntryNode;
 }
 
 const styles = {
@@ -23,49 +22,42 @@ const styles = {
 };
 
 class ListViewComponent extends React.Component<Props & ClassProps<typeof styles>, State> {
-  public state: State = {
-    entries: [],
-  };
+  public state: State = {};
 
   @LazyInject(() => PassB)
   private passB: PassB;
 
   public componentDidMount(): void {
-    this.passB.getEntries()
-      .then((entries: LabeledEntries) =>
-        this.setState({entries: Object.values(entries)}, () => this.recalculateFilteredEntries()),
+    this.passB.getRootNode()
+      .then((rootNode: EntryNode) =>
+        this.setState({rootNode}, () => this.recalculateFilteredEntries()),
       );
   }
 
   public render(): JSX.Element {
-    const {navigateTo, classes} = this.props;
-    const {filtered} = this.state;
+    const {classes} = this.props;
+    const {rootNode} = this.state;
 
     return (
       <List>
-        {!filtered && (
-          <div className={classes.centered}> <MaterialIcon icon="loading" size="36" spin={true}/></div>
-        )}
-        {filtered && filtered.map((entry: Entry) => (
-          <ListItem
-            button={true}
-            key={entry.label}
-            onClick={() => navigateTo('entry', {entry})}
-          >
-            <ListItemText primary={entry.label.replace(/\//g, '/\u200b')}/>
-          </ListItem>
-        ))}
+        {rootNode ?
+          <EntryNodeList root={rootNode}/> :
+          <div className={classes.centered}><Sync/></div>
+        }
       </List>
     );
   }
 
   private async recalculateFilteredEntries(): Promise<void> {
-    if (!this.props.url || !this.state.entries) {
+    // TODO: reimplement in a useful way
+    /*
+    if (!this.props.url || !this.state.rootNode) {
       return;
     }
     (await (this.passB.getMatcher()))
-      .filterEntries(this.props.url || '', this.state.entries)
-      .then((filtered: Entry[]) => this.setState({filtered}));
+      .filterEntries(this.props.url || '', this.state.rootNode)
+      .then((filtered: EntryNode[]) => this.setState({filtered}));
+      */
   }
 }
 

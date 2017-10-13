@@ -35,6 +35,9 @@ export class PassExtension extends Extension<Options> {
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
     for (const label of await this.passCli.list()) {
+      if (label === '' || label.endsWith('/')) {
+        continue;
+      }
       registerEntryCallback({
         label,
         actions: this.actions,
