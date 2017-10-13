@@ -2,7 +2,6 @@ import {Icon} from 'material-ui';
 import {IconProps} from 'material-ui/Icon';
 import * as React from 'react';
 
-import 'mdi/scss/materialdesignicons.scss';
 import './MaterialIcon.scss';
 
 // region MaterialIcon type

@@ -1,9 +1,9 @@
 import {List, ListItem, ListItemText} from 'material-ui';
 import {withStyles, ClassProps} from 'material-ui/styles';
 import * as React from 'react';
+import {MaterialIcon} from 'Components/MaterialIcon';
 import {LazyInject} from 'Decorators/LazyInject';
 import {Entry, LabeledEntries, PassB} from 'PassB';
-import {MaterialIcon} from 'Popup/Components/MaterialIcon';
 
 interface Props {
   url: string;

@@ -21,10 +21,21 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: [
+          /typedi\/.*\/Require.js$/,
+        ],
+        use: 'ignore-loader',
+      },
+      {
         test: /\.tsx?$/,
         use: [
           'awesome-typescript-loader',
-          'tslint-loader',
+          {
+            loader: 'tslint-loader',
+            options: {
+              typeCheck: true,
+            },
+          },
         ]
       },
       {

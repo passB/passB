@@ -39,6 +39,7 @@
     "file-loader": "^0.11.2",
     "fuzzaldrin": "^2.1.0",
     "fuzzaldrin-plus": "^0.4.1",
+    "ignore-loader": "^0.1.2",
     "lodash.memoize": "^4.1.2",
     "material-ui": "next",
     "mdi": "^2.0.46",

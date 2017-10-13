@@ -3,6 +3,7 @@ import {withStyles, ClassProps, StyleRules} from 'material-ui/styles';
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
 import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from 'react-router';
+import {MaterialIcon} from 'Components/MaterialIcon';
 import {LazyInject} from 'Decorators/LazyInject';
 import {Extension} from 'Extensions';
 import {PassB} from 'PassB';
@@ -57,7 +58,7 @@ class ClassLessPopup extends React.Component<ClassProps<typeof styles>, State> {
                   window.close();
                 }}
               >
-                Settings
+                <MaterialIcon icon="settings" size="24"/>
               </Button>
             </Toolbar>
           </AppBar>
