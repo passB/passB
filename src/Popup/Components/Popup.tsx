@@ -1,6 +1,6 @@
-import {AppBar, Button, Card, CardContent, Toolbar, Typography} from 'material-ui';
+import {AppBar, Button, Card, CardContent, Toolbar, Typography, WithStyles} from 'material-ui';
 import {Settings} from 'material-ui-icons';
-import {withStyles, ClassProps, StyleRules} from 'material-ui/styles';
+import {withStyles, StyleRules} from 'material-ui/styles';
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
 import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from 'react-router';
@@ -8,6 +8,8 @@ import {LazyInject} from 'Decorators/LazyInject';
 import {Extension} from 'Extensions';
 import {PassB} from 'PassB';
 import {ListView} from './Views/ListView';
+
+interface Props {}
 
 interface State {
   activeTab?: Tab;
@@ -24,7 +26,7 @@ const styles: StyleRules = {
   },
 };
 
-class ClassLessPopup extends React.Component<ClassProps<typeof styles>, State> {
+class ClassLessPopup extends React.Component<Props & WithStyles<keyof typeof styles>, State> {
   public state: State = {};
   private gatheredRoutes: RouteProps[] = this.gatherRoutes();
 
@@ -98,4 +100,4 @@ class ClassLessPopup extends React.Component<ClassProps<typeof styles>, State> {
   }
 }
 
-export const Popup = withStyles(styles)(ClassLessPopup);
+export const Popup = withStyles<keyof typeof styles>(styles)(ClassLessPopup);

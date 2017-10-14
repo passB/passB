@@ -1,6 +1,6 @@
 import {ListItem, ListItemText} from 'material-ui';
 import {ExpandLess, ExpandMore, Folder, InsertDriveFile} from 'material-ui-icons';
-import {withStyles, ClassProps, Theme} from 'material-ui/styles';
+import {withStyles, Theme, WithStyles} from 'material-ui/styles';
 import Collapse from 'material-ui/transitions/Collapse';
 import Avatar from 'material-ui/Avatar';
 import * as React from 'react';
@@ -15,14 +15,16 @@ interface State {
   collapsed: boolean;
 }
 
+type styleClasses = 'nested';
+
 const styles = (theme: Theme) => ({
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
 });
 
-export const CollapsibleListItem = withStyles(styles)(
-  class extends React.Component<Props & ClassProps<{ nested: Partial<React.CSSProperties> }>, State> {
+export const CollapsibleListItem = withStyles<styleClasses>(styles)(
+  class extends React.Component<Props & WithStyles<styleClasses>, State> {
     public state: State = {
       collapsed: true,
     };

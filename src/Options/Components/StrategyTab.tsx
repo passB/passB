@@ -1,5 +1,5 @@
 import {FormControl, InputLabel, MenuItem, Select} from 'material-ui';
-import {withStyles, ClassProps} from 'material-ui/styles';
+import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {OptionsList} from '../Options';
 import {OptionsReceiverInterface} from '../OptionsReceiver';
@@ -19,8 +19,8 @@ const styles = {
   },
 };
 
-export const StrategyTab = withStyles<Props>(styles)(
-  class extends React.Component<Props & ClassProps<typeof styles>> {
+export const StrategyTab = withStyles<keyof typeof styles>(styles)(
+  class extends React.Component<Props & WithStyles<keyof typeof styles>> {
     public render(): JSX.Element {
       const {
         strategies,

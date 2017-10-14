@@ -6,7 +6,7 @@ import {
   Tab,
   Tabs,
 } from 'material-ui';
-import {withStyles, ClassProps, StyleRules} from 'material-ui/styles';
+import {withStyles, StyleRules, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {LazyInject} from 'Decorators/LazyInject';
 import {Extension} from 'Extensions/Extension';
@@ -16,12 +16,14 @@ import {StrategyTab} from './StrategyTab';
 
 type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat';
 
+interface Props {}
+
 interface State {
   selectedTab: TabValue;
   options?: OptionsData;
 }
 
-const styles: StyleRules = {
+const styles: StyleRules<'wrap' | 'breakBefore'>  = {
   wrap: {
     flexWrap: 'wrap',
   },
@@ -31,7 +33,7 @@ const styles: StyleRules = {
   },
 };
 
-class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, State> {
+class ClassLessAddonOptions extends React.Component<Props & WithStyles<keyof typeof styles>, State> {
   public state: State = {
     selectedTab: 'Extensions',
     options: void 0,
@@ -147,4 +149,4 @@ class ClassLessAddonOptions extends React.Component<ClassProps<typeof styles>, S
   }
 }
 
-export const AddonOptions = withStyles(styles)(ClassLessAddonOptions);
+export const AddonOptions = withStyles<keyof typeof styles>(styles)(ClassLessAddonOptions);

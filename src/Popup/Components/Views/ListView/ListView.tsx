@@ -1,6 +1,6 @@
 import {List} from 'material-ui';
 import {Sync} from 'material-ui-icons';
-import {withStyles, ClassProps} from 'material-ui/styles';
+import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {LazyInject} from 'Decorators/LazyInject';
 import {EntryNode, PassB} from 'PassB';
@@ -21,7 +21,7 @@ const styles = {
   },
 };
 
-class ListViewComponent extends React.Component<Props & ClassProps<typeof styles>, State> {
+class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof styles>, State> {
   public state: State = {};
 
   @LazyInject(() => PassB)
@@ -61,4 +61,4 @@ class ListViewComponent extends React.Component<Props & ClassProps<typeof styles
   }
 }
 
-export const ListView = withStyles<Props>(styles)(ListViewComponent);
+export const ListView = withStyles<keyof typeof styles>(styles)(ListViewComponent);
