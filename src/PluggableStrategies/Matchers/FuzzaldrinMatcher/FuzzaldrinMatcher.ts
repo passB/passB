@@ -1,17 +1,16 @@
 import {score, IScoringOptions} from 'fuzzaldrin-plus';
-import {TextField} from 'material-ui';
-import * as React from 'react';
 import {Service} from 'typedi';
-import {OptionsPanelType, OptionPanelProps} from 'Options/OptionsReceiver';
+import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {EntryNode} from 'PassB';
-import {Matcher, MatcherTag} from '.';
+import {Matcher, MatcherTag} from '../';
+import {OptionsPanel} from './OptionsPanel';
 
 interface ScoredEntry {
   entry: EntryNode;
   score: number;
 }
 
-interface Options {
+export interface Options {
   fuzzOptions: IScoringOptions;
   minScore: number;
   maxResults: number;
@@ -44,7 +43,7 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
       .map((entry: EntryNode): ScoredEntry => {
         let accumulatedScore = 0;
         for (const part of entry.fullPath.split('/')) {
-          accumulatedScore += score(url, part, void 0, this.defaultOptions.fuzzOptions); // TODO
+          accumulatedScore += score(url, part, void 0, this.options.fuzzOptions);
         }
 
         return {entry, score: accumulatedScore};
@@ -54,35 +53,4 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
       .slice(0, maxResults > 0 ? maxResults : void 0)
       .map((entry: ScoredEntry) => entry.entry);
   }
-}
-
-function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {
-  return (
-    <div>
-      <TextField
-        label="Minimum score:"
-        helperText=""
-        value={options.minScore}
-        onChange={(e: any) => updateOptions({ // tslint:disable-line:no-any
-          // required until material-ui get their typings right
-          // this will be finally fixed with beta v1.0.0-beta.17
-          ...options,
-          minScore: Math.max(0, (e as React.ChangeEvent<HTMLInputElement>).target.valueAsNumber),
-        })}
-        type="number"
-      />
-      <br/>
-      <TextField
-        label="Maximum visible results:"
-        helperText="to show all results, enter '0'"
-        value={options.maxResults}
-        onChange={(e: any) => updateOptions({ // tslint:disable-line:no-any
-          // required until material-ui get their typings right
-          ...options,
-          maxResults: Math.max(0, (e as React.ChangeEvent<HTMLInputElement>).target.valueAsNumber),
-        })}
-        type="number"
-      />
-    </div>
-  );
 }
