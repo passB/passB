@@ -65,6 +65,7 @@ function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.
         value={options.minScore}
         onChange={(e: any) => updateOptions({ // tslint:disable-line:no-any
           // required until material-ui get their typings right
+          // this will be finally fixed with beta v1.0.0-beta.17
           ...options,
           minScore: Math.max(0, (e as React.ChangeEvent<HTMLInputElement>).target.valueAsNumber),
         })}
