@@ -46,6 +46,11 @@ class ClassLessAddonOptions extends React.Component<Props & WithStyles<keyof typ
     this.setState({options: await this.passB.getOptions()});
   }
 
+  public componentDidCatch(error: Error, info: React.ErrorInfo): void {
+    // TODO: better error handling
+    console.error(error, info);
+  }
+
   public render(): JSX.Element {
     const {selectedTab, options} = this.state;
     const {classes} = this.props;

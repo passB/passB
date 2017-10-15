@@ -1,4 +1,6 @@
 import {Divider, List, ListItem, ListItemText} from 'material-ui';
+import {Folder, InsertDriveFile} from 'material-ui-icons';
+import Avatar from 'material-ui/Avatar';
 import * as React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
 import {LazyInject} from 'Decorators/LazyInject';
@@ -39,8 +41,18 @@ class UnconnectedEntryNodeList extends React.Component<Props & RouteComponentPro
     const childItems = Object.values(root.children).map((child: EntryNode) => (
       <CollapsibleListItem
         key={child.fullPath}
-        node={child}
-      />
+        CollapsedChildren={() => <EntryNodeList root={child}/>}
+      >
+        {[
+          <Avatar key="avatar">
+            {child.fullPath.endsWith('/') ?
+              <Folder/> :
+              <InsertDriveFile/>
+            }
+          </Avatar>,
+          <ListItemText key="text" primary={child.fullPath.replace(/\//g, '/\u200b')}/>,
+        ]}
+      </CollapsibleListItem>
     ));
 
     return (

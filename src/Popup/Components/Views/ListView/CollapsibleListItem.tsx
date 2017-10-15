@@ -1,14 +1,13 @@
-import {withStyles, ListItem, ListItemText, WithStyles} from 'material-ui';
-import {ExpandLess, ExpandMore, Folder, InsertDriveFile} from 'material-ui-icons';
+import {withStyles, ListItem,  WithStyles} from 'material-ui';
+import {ExpandLess, ExpandMore} from 'material-ui-icons';
 import {Theme} from 'material-ui/styles';
 import Collapse from 'material-ui/transitions/Collapse';
-import Avatar from 'material-ui/Avatar';
 import * as React from 'react';
-import {EntryNode} from 'PassB';
-import {EntryNodeList} from './EntryNodeList';
 
 interface Props {
-  node: EntryNode;
+  children: JSX.Element | JSX.Element[] | React.ReactNode;
+  CollapsedChildren: React.ComponentType<{}>;
+  initiallyExpanded?: boolean;
 }
 
 interface State {
@@ -25,28 +24,25 @@ const styles = (theme: Theme) => ({
 
 export const CollapsibleListItem = withStyles<styleClasses>(styles)(
   class extends React.Component<Props & WithStyles<styleClasses>, State> {
-    public state: State = {
-      collapsed: true,
-    };
+    public constructor(props: Props & WithStyles<styleClasses>) {
+      super(props);
+      this.state = {
+        collapsed: !this.props.initiallyExpanded,
+      };
+    }
 
     public render(): JSX.Element[] {
-      const {node, classes} = this.props;
+      const {classes, children, CollapsedChildren} = this.props;
       const {collapsed} = this.state;
 
       // tslint:disable:jsx-wrap-multiline - see https://github.com/palantir/tslint-react/issues/79
       return [
         <ListItem
           button={true}
-          key={node.fullPath}
+          key="item"
           onClick={() => this.setState({collapsed: !collapsed})}
         >
-          <Avatar>
-            {node.fullPath.endsWith('/') ?
-              <Folder/> :
-              <InsertDriveFile/>
-            }
-          </Avatar>
-          <ListItemText primary={node.fullPath.replace(/\//g, '/\u200b')}/>
+          {children}
           {collapsed ?
             <ExpandMore/> :
             <ExpandLess/>
@@ -54,7 +50,7 @@ export const CollapsibleListItem = withStyles<styleClasses>(styles)(
         </ListItem>,
         <Collapse key="collapsible" in={!collapsed} transitionDuration="auto" unmountOnExit={true}>
           <div className={classes.nested}>
-            <EntryNodeList root={node}/>
+            <CollapsedChildren />
           </div>
         </Collapse>,
       ];

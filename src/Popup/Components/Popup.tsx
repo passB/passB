@@ -40,6 +40,11 @@ class ClassLessPopup extends React.Component<Props & WithStyles<keyof typeof sty
     }).then((tabs: Tab[]) => this.setState({activeTab: tabs[0]}));
   }
 
+  public componentDidCatch(error: Error, info: React.ErrorInfo): void {
+    // TODO: better error handling
+    console.error(error, info);
+  }
+
   public render(): JSX.Element {
     const {activeTab} = this.state;
     const {classes} = this.props;

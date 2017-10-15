@@ -33,7 +33,8 @@ module.exports = {
           {
             loader: 'tslint-loader',
             options: {
-              typeCheck: true,
+              // disable for day-to-day development as it is too slow - should be checked in CI
+              typeCheck: false,
             },
           },
         ]

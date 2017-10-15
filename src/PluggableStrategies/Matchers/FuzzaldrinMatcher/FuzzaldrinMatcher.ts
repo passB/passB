@@ -29,8 +29,8 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
       allowErrors: true,
       isPath: true,
     },
-    minScore: 0,
-    maxResults: 0,
+    minScore: 1,
+    maxResults: 20,
   };
   public readonly name: string = FuzzaldrinMatcher.name;
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
