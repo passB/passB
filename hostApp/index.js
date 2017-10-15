@@ -3,7 +3,7 @@ const spawn = require('cross-spawn');
 
 /*
 (async function test() {
-  console.log(await handleMessage({command: 'listEntries'}));
+  console.log(await handleMessage({command: 'list-entries'}));
 })();
 */
 
@@ -102,11 +102,11 @@ async function listEntries() {
       const pass = spawn('find', [
         '-L',
         '.',
-        '-not', '-path', '*/.*',
+        '-not', '-path', '\\*/.\\*',
         '-type', 'd',
         '-or',
-        '-not', '-path', '*/.*',
-        '-type', 'f', '-iname', '*.gpg',
+        '-not', '-path', '\\*/.\\*',
+        '-type', 'f', '-iname', '\\*.gpg',
       ], {
         cwd: process.env.PASSWORD_STORE_DIR || `${process.env.HOME || '~'}/.password-store`,
       });
