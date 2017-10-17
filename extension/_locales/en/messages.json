@@ -3,6 +3,10 @@
     "message": "passB",
     "description": "Name of the extension."
   },
+  "popup_search": {
+    "message": "Search...",
+    "description": "Placeholder/label for search input in popup"
+  },
   "extensionDescription": {
     "message": "browser addon for the passwordstore password manager",
     "description": "Description of the extension."

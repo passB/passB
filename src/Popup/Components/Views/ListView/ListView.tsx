@@ -72,7 +72,7 @@ class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof 
         <ListItem className={classes.noTopPadding}>
           <TextField
             id="search"
-            label="Search..."
+            label={browser.i18n.getMessage('popup_search')}
             type="search"
             fullWidth={true}
             margin="none"
