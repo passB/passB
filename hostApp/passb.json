@@ -1,7 +1,0 @@
-{
-  "name": "passb",
-  "description": "Host Application for passB",
-  "path": "PLACEHOLDER",
-  "type": "stdio",
-  "allowed_extensions": [ "passb@phryneas.de" ]
-}
