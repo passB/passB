@@ -13,7 +13,7 @@ const styles = {
 
 export const OptionsPanel = withStyles<'qrcode'>(styles)(
   ({options, updateOptions, classes}: OptionPanelProps<Options> & WithStyles<'qrcode'>): JSX.Element => (
-    <Grid container={true} direction="row" justify="space-between" align="center" spacing={0}>
+    <Grid container={true} direction="row" justify="space-between" alignItems="center" spacing={0}>
       <Grid item={true}>
         <List>
           <ListItem>

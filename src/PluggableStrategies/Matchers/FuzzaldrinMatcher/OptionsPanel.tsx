@@ -10,11 +10,9 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
         label="Minimum score:"
         helperText=""
         value={options.minScore}
-        onChange={(e: any) => updateOptions({ // tslint:disable-line:no-any
-          // required until material-ui get their typings right
-          // this will be finally fixed with beta v1.0.0-beta.17
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateOptions({
           ...options,
-          minScore: Math.max(0, (e as React.ChangeEvent<HTMLInputElement>).target.valueAsNumber),
+          minScore: Math.max(0, e.target.valueAsNumber),
         })}
         type="number"
       />
@@ -23,10 +21,9 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
         label="Maximum visible results:"
         helperText="to show all results, enter '0'"
         value={options.maxResults}
-        onChange={(e: any) => updateOptions({ // tslint:disable-line:no-any
-          // required until material-ui get their typings right
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateOptions({
           ...options,
-          maxResults: Math.max(0, (e as React.ChangeEvent<HTMLInputElement>).target.valueAsNumber),
+          maxResults: Math.max(0, e.target.valueAsNumber),
         })}
         type="number"
       />
