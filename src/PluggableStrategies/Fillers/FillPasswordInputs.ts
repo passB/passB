@@ -35,7 +35,8 @@ export class FillPasswordInputs extends Filler<{}> {
       return Promise.resolve();
     }
     const args = [password];
-    const code = `(${fillPasswordInputs.toString()}).apply(null, JSON.parse('${JSON.stringify(args)}')); `;
+    const code = `(${fillPasswordInputs.toString()}).apply(null, JSON.parse('${JSON.stringify(args)
+        .replace("'", "\\'")}')); `;
     return browser.tabs.executeScript(activeTab.id, {code}).then(() => void 0);
   }
 }
