@@ -22,6 +22,12 @@
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.1.tgz#0dbaef4febad5d074d06dbdfae6b027d1d701d25"
 
+"@types/lodash.debounce@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@types/lodash.debounce/-/lodash.debounce-4.0.3.tgz#d712aee9e6136be77f70523ed9f0fc049a6cf15a"
+  dependencies:
+    "@types/lodash" "*"
+
 "@types/lodash.memoize@^4.1.3":
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/@types/lodash.memoize/-/lodash.memoize-4.1.3.tgz#7d3cd9cb9cd87085c9ee8a1679991180e6dae3cc"
@@ -3110,6 +3116,10 @@ lodash.camelcase@^4.3.0:
 lodash.clonedeep@^4.3.2:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
 lodash.defaults@^4.0.1:
   version "4.2.0"

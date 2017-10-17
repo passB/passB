@@ -1,4 +1,5 @@
-import {List, ListItemText} from 'material-ui';
+import debounce = require('lodash.debounce');
+import {List, ListItem, ListItemText, TextField} from 'material-ui';
 import {Sync} from 'material-ui-icons';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
@@ -13,6 +14,7 @@ interface Props {
 
 interface State {
   rootNode?: EntryNode;
+  filteredRootNode?: EntryNode;
   contextualRootNode?: EntryNode;
 }
 
@@ -20,6 +22,9 @@ const styles = {
   centered: {
     width: '100%',
     textAlign: 'center',
+  },
+  noTopPadding: {
+    paddingTop: '0px',
   },
 };
 
@@ -45,6 +50,12 @@ class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof 
   @LazyInject(() => PassB)
   private passB: PassB;
 
+  public constructor(props: Props & WithStyles<keyof typeof styles>) {
+    super(props);
+
+    this.filterNodes = debounce(this.filterNodes, 50);
+  }
+
   public componentDidMount(): void {
     this.passB.getRootNode()
       .then((rootNode: EntryNode) =>
@@ -54,15 +65,25 @@ class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof 
 
   public render(): JSX.Element {
     const {classes} = this.props;
-    const {rootNode, contextualRootNode} = this.state;
+    const {rootNode, contextualRootNode, filteredRootNode} = this.state;
 
     return (
       <List>
+        <ListItem className={classes.noTopPadding}>
+          <TextField
+            id="search"
+            label="Search..."
+            type="search"
+            fullWidth={true}
+            margin="none"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.filterNodes(e.target.value)}
+          />
+        </ListItem>
         {rootNode ?
           <CollapsibleListItem
             key="allEntriesRoot"
-            CollapsedChildren={() => <EntryNodeList root={rootNode}/>}
-            initiallyExpanded={false}
+            CollapsedChildren={() => <EntryNodeList root={filteredRootNode || rootNode}/>}
+            initiallyExpanded={typeof filteredRootNode !== 'undefined'}
           >
             <ListItemText
               primary="All Items"
@@ -83,6 +104,16 @@ class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof 
         }
       </List>
     );
+  }
+
+  private filterNodes(filter: string): void {
+    const newNode = JSON.parse(JSON.stringify(this.state.rootNode));
+    const flattened: EntryNode[] = flattenEntryNode(newNode);
+    const filteredNodes = flattened.filter((node: EntryNode) => node.fullPath.includes(filter));
+    deepFilterEntryNodes(newNode, filteredNodes);
+
+    this.setState({filteredRootNode: newNode});
+
   }
 
   private async recalculateContextualEntries(): Promise<void> {

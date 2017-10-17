@@ -31,6 +31,13 @@ export const CollapsibleListItem = withStyles<styleClasses>(styles)(
       };
     }
 
+    public componentWillReceiveProps(newProps: Props & WithStyles<styleClasses>, newState: State): void {
+      // if initiallyExpanded property changed from false to true, uncollapse this
+      if (newProps.initiallyExpanded && !this.props.initiallyExpanded) {
+        this.setState({collapsed: false});
+      }
+    }
+
     public render(): JSX.Element[] {
       const {classes, children, CollapsedChildren} = this.props;
       const {collapsed} = this.state;
