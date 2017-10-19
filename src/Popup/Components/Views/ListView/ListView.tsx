@@ -53,7 +53,7 @@ class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof 
   public constructor(props: Props & WithStyles<keyof typeof styles>) {
     super(props);
 
-    this.filterNodes = debounce(this.filterNodes, 50);
+    this.filterNodes = debounce(this.filterNodes.bind(this), 50);
   }
 
   public componentDidMount(): void {

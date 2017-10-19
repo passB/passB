@@ -41,7 +41,7 @@ class UnconnectedEntryNodeList extends React.Component<Props & RouteComponentPro
     const childItems = Object.values(root.children).map((child: EntryNode) => (
       <CollapsibleListItem
         key={child.fullPath}
-        CollapsedChildren={() => <EntryNodeList root={child}/>}
+        CollapsedChildren={() => <UnconnectedEntryNodeList {...this.props} root={child}/>}
       >
         {[
           <Avatar key="avatar">
