@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const production = process.env.NODE_ENV === 'production';
+
 module.exports = {
   entry: {
     'background-script': './src/background-script.ts',
@@ -34,7 +36,7 @@ module.exports = {
             loader: 'tslint-loader',
             options: {
               // disable for day-to-day development as it is too slow - should be checked in CI
-              typeCheck: false,
+              typeCheck: production,
             },
           },
         ]
@@ -103,3 +105,9 @@ module.exports = {
     }),
   ],
 };
+
+if (production) {
+  const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+  module.exports.plugins.push(new UglifyJSPlugin());
+  delete module.exports.devtool;
+}

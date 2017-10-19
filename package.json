@@ -5,7 +5,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "start:firefox": "web-ext run --source-dir ./extension",
-    "build": "webpack && web-ext build --source-dir ./extension --overwrite-dest"
+    "build": "env NODE_ENV=production webpack && web-ext build --source-dir ./extension --overwrite-dest"
   },
   "author": "",
   "license": "MIT",
