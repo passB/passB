@@ -22,7 +22,7 @@ describe('FillPasswordInputs', () => {
     pwInput2: string;
   }
 
-  async function expectBeforeAfter(before: TestState, callback: () => Promise<void>, after: TestState): Promise<void> {
+  async function expectBeforeAfter(before: TestState, callback: () => Promise<void | {}>, after: TestState): Promise<void> {
     const input1 = document.getElementById('input-1') as HTMLInputElement;
     const pwInput1 = document.getElementById('pw-input-1') as HTMLInputElement;
     const pwInput2 = document.getElementById('pw-input-2') as HTMLInputElement;
