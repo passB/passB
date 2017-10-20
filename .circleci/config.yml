@@ -28,6 +28,8 @@ jobs:
 
       - run: yarn jest -- --verbose --coverage
 
+      - run: cat ./coverage/lcov.info | node ./node_modules/coveralls/bin/coveralls.js
+
       - store_artifacts:
           path: coverage
 

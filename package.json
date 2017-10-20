@@ -12,6 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "awesome-typescript-loader": "^3.2.2",
+    "coveralls": "^3.0.0",
     "css-loader": "^0.28.5",
     "node-sass": "^4.5.3",
     "raf": "^3.4.0",
