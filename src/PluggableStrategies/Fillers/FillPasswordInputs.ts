@@ -3,13 +3,14 @@ import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {Filler, FillerTag} from './Filler';
 
-const fillPasswordInputs = (password: string) => {
+export const fillPasswordInputs = (password: string) => {
   let i = 0;
   for (const passwordInput of Array.from(document.querySelectorAll('input[type="password"]'))) {
     (passwordInput as HTMLInputElement).value = password;
     passwordInput.dispatchEvent(new Event('change'));
     passwordInput.dispatchEvent(new KeyboardEvent('keyup'));
     // may not be supported by every browser: https://developer.mozilla.org/en-US/docs/Web/API/InputEvent
+    /* istanbul ignore next */
     if (typeof InputEvent === 'function') {
       passwordInput.dispatchEvent(new InputEvent('input'));
     }
@@ -35,7 +36,7 @@ export class FillPasswordInputs extends Filler<{}> {
       return Promise.resolve();
     }
     const args = [password];
-    const code = `(${fillPasswordInputs.toString()}).apply(null, JSON.parse('${JSON.stringify(args)}')); `;
+    const code = `(${fillPasswordInputs.toString()}).apply(null, JSON.parse(${JSON.stringify(JSON.stringify(args))}));`;
     return browser.tabs.executeScript(activeTab.id, {code}).then(() => void 0);
   }
 }
