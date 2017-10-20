@@ -26,6 +26,11 @@ jobs:
             - node_modules
           key: dependencies-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
 
+      - run: yarn jest -- --verbose --coverage
+
+      - store_artifacts:
+          path: coverage
+
       - run: yarn run build
 
       - store_artifacts:

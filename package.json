@@ -5,6 +5,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "start:firefox": "web-ext run --source-dir ./extension",
+    "watch-tests": "jest --watch --verbose",
     "build": "env NODE_ENV=production webpack && web-ext build --source-dir ./extension --overwrite-dest"
   },
   "author": "",
@@ -13,6 +14,7 @@
     "awesome-typescript-loader": "^3.2.2",
     "css-loader": "^0.28.5",
     "node-sass": "^4.5.3",
+    "raf": "^3.4.0",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
@@ -28,6 +30,7 @@
     "@types/deep-freeze": "^0.1.1",
     "@types/fuzzaldrin": "^2.1.0",
     "@types/fuzzaldrin-plus": "^0.0.1",
+    "@types/jest": "^21.1.4",
     "@types/lodash.debounce": "^4.0.3",
     "@types/lodash.memoize": "^4.1.3",
     "@types/react": "^16.0.0",
@@ -41,6 +44,7 @@
     "fuzzaldrin": "^2.1.0",
     "fuzzaldrin-plus": "^0.4.1",
     "ignore-loader": "^0.1.2",
+    "jest": "^21.2.1",
     "lodash.debounce": "^4.0.8",
     "lodash.memoize": "^4.1.2",
     "material-ui": "next",
@@ -50,8 +54,34 @@
     "react-qr-svg": "^2.0.2",
     "react-router-dom": "^4.2.2",
     "reflect-metadata": "^0.1.10",
+    "ts-jest": "^21.1.3",
     "tslint-react": "^3.2.0",
     "typedi": "https://github.com/phryneas/typedi.git#cfed2307672a880b99f164825a5b5ac165842624",
     "typeface-roboto": "^0.0.35"
+  },
+  "jest": {
+    "mapCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**"
+    ],
+    "modulePaths": [
+      "node_modules",
+      "src"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/?(*.)test.ts?(x)"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest/preprocessor.js"
+    },
+    "setupFiles": [
+      "raf/polyfill"
+    ]
   }
 }
