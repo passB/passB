@@ -11,11 +11,17 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/enzyme": "^3.1.0",
+    "@types/enzyme-adapter-react-16": "^1.0.0",
+    "@types/react-test-renderer": "^16.0.0",
     "awesome-typescript-loader": "^3.2.2",
     "coveralls": "^3.0.0",
     "css-loader": "^0.28.5",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.2",
     "node-sass": "^4.5.3",
     "raf": "^3.4.0",
+    "react-test-renderer": "^16.0.0",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
@@ -82,7 +88,8 @@
       "^.+\\.tsx?$": "ts-jest/preprocessor.js"
     },
     "setupFiles": [
-      "raf/polyfill"
+      "raf/polyfill",
+      "<rootDir>/src/testSetup.ts"
     ]
   }
 }

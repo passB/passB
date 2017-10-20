@@ -7,6 +7,7 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
   return (
     <FormControl>
       <FormControlLabel
+        id="passwordFirstLine"
         control={
           <Checkbox
             checked={options.passwordFirstLine}
@@ -20,9 +21,10 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
         }
         label="Password is in first line (without prefix)"
       />
+      {!options.passwordFirstLine &&
       <TextField
         id="passwordPrefix"
-        label="PasswordPrefix"
+        label="password prefix"
         value={options.passwordPrefix}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           updateOptions({
@@ -30,11 +32,11 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
             passwordPrefix: event.target.value,
           });
         }}
-        disabled={options.passwordFirstLine}
       />
+      }
       <TextField
-        id="passwordPrefix"
-        label="PasswordPrefix"
+        id="usernamePrefix"
+        label="username prefix"
         value={options.usernamePrefix}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           updateOptions({
@@ -44,6 +46,7 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
         }}
       />
       <FormControlLabel
+        id="trimWhitespace"
         control={
           <Checkbox
             checked={options.trimWhitespace}
