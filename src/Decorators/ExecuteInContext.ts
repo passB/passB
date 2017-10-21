@@ -2,8 +2,11 @@
 
 import 'reflect-metadata';
 
-export type ExecutionContext = 'background' | 'popup' | 'options' | undefined;
-const executionContexts = ['background', 'popup'];
+export type ExecutionContext = 'background' | 'popup' | 'options';
+
+const EXECUTION_CONTEXT = 'execution_context';
+const EXECUTING_IN_CONTEXT = 'executing_in_context';
+const CONTEXT_METHODS = 'execution_context_methods';
 
 function getActionName(constructor: Function, propertyKey: string): string {
   return `${constructor.name}.${propertyKey}`;
@@ -14,38 +17,43 @@ interface AsynchronousRequest {
   params: any[];
 }
 
-export const executeInCorrectContext = () =>
+let definedExecutionContext: ExecutionContext;
+export const setExecutionContext = (executionContext: ExecutionContext) => definedExecutionContext = executionContext;
+export const getExecutionContext = () => definedExecutionContext;
+
+export const executeInCorrectContext = (executionContext: ExecutionContext) => (
   <R, T extends (this: any, ...args: any[]) => Promise<R>>
-    (
-      target: object,
-      propertyKey: string,
-      descriptor: TypedPropertyDescriptor<T>,
-    ): TypedPropertyDescriptor<T> => {
+  (
+    target: object,
+    propertyKey: string,
+    descriptor: TypedPropertyDescriptor<T>,
+  ): TypedPropertyDescriptor<T> => {
 
-    const executionContext = Reflect.getMetadata('executionContext', target, propertyKey);
-    if (!executionContexts.includes(executionContext)) {
-      throw new Error(`using ${executeInCorrectContext.name} `
-        + 'decorator, but not declaring @Reflect.metadata("executionContext", "...") correctly',
-      );
+    // define executionContext metadata information on property
+    Reflect.defineMetadata(EXECUTION_CONTEXT, executionContext, target, propertyKey);
+
+    // keep track of all methods with executionContext annotation
+    let propertiesWithExecutionContext = Reflect.getOwnMetadata(CONTEXT_METHODS, target);
+    if (!propertiesWithExecutionContext) {
+      propertiesWithExecutionContext = [...(Reflect.getMetadata(CONTEXT_METHODS, target) || [])];
+      Reflect.defineMetadata(CONTEXT_METHODS, propertiesWithExecutionContext, target);
     }
-
-    const wrappedFunction = descriptor.value || (() => Promise.reject(void 0));
+    propertiesWithExecutionContext.push(propertyKey);
 
     return {
-      value: (async function wrapper(this: any, ...params: any[]): Promise<R> {
-        if (window.executionContext === executionContext) {
-          // console.debug('executing synchonously %s.%s', target.constructor.name, propertyKey);
-          return await wrappedFunction.apply(this, params);
+      value: function(this: any, ...params: any[]): Promise<R> {
+        const executingInContext = Reflect.getMetadata(EXECUTING_IN_CONTEXT, this);
+        if (executingInContext !== executionContext) {
+          return browser.runtime.sendMessage({
+            action: getActionName(target.constructor, propertyKey),
+            params: [...params],
+          });
         }
 
-        // console.debug('executing asynchonously %s.%s', target.constructor.name, propertyKey);
-        return await browser.runtime.sendMessage({
-          action: getActionName(target.constructor, propertyKey),
-          params: [...params],
-        });
-      }) as T,
+        return descriptor.value!.call(this, params);
+      } as T,
     };
-  };
+  });
 
 export const AsynchronousCallable = () =>
   <T extends { new(...args: any[]): {} }>(constructor: T): T =>
@@ -53,24 +61,25 @@ export const AsynchronousCallable = () =>
       public constructor(...args: any[]) {
         super(...args);
 
-        for (let obj = this; !!obj; obj = Object.getPrototypeOf(obj)) { // tslint:disable-line:no-this-assignment
-          for (const propertyKey of Object.getOwnPropertyNames(obj)) {
-            const executionContext = Reflect.getMetadata('executionContext', this, propertyKey);
-            if (executionContext && window.executionContext === executionContext) {
+        // save definedExecutionContext at the moment of class initialization for later use
+        // in @executeInCorrectContext methods
+        Reflect.defineMetadata(EXECUTING_IN_CONTEXT, definedExecutionContext, this);
 
-              browser.runtime.onMessage.addListener(
-                (request: AsynchronousRequest, sender: object, sendResponse: Function) => {
-                  if (request.action !== getActionName(constructor, propertyKey)) {
-                    return false;
-                  }
+        for (const propertyKey of Reflect.getMetadata(CONTEXT_METHODS, this) || []) {
+          const executionContext = Reflect.getMetadata(EXECUTION_CONTEXT, this, propertyKey);
+          if (executionContext && definedExecutionContext === executionContext) {
+            browser.runtime.onMessage.addListener(
+              (request: AsynchronousRequest, sender: object, sendResponse: Function) => {
+                if (request.action !== getActionName(constructor, propertyKey)) {
+                  return false;
+                }
 
-                  const wrappedFn: ((...args: any[]) => Promise<any>) = (this as any)[propertyKey];
-                  wrappedFn.apply(this, request.params).then(sendResponse);
-                  return true;
-                },
-              );
+                const wrappedFn: ((...args: any[]) => Promise<any>) = (this as any)[propertyKey];
+                wrappedFn.apply(this, request.params).then(sendResponse);
+                return true;
+              },
+            );
 
-            }
           }
         }
       }

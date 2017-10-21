@@ -3,6 +3,12 @@ import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {Filler, FillerTag} from './Filler';
 
+// tslint:disable:max-classes-per-file
+declare global {
+  class InputEvent extends Event {
+  }
+}
+
 export const fillPasswordInputs = (password: string) => {
   let i = 0;
   for (const passwordInput of Array.from(document.querySelectorAll('input[type="password"]'))) {

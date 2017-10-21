@@ -1,5 +1,9 @@
 import {InjectTagged, Service} from 'typedi';
-import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
+import {
+  executeInCorrectContext,
+  getExecutionContext,
+  AsynchronousCallableServiceFactory,
+} from 'Decorators/ExecuteInContext';
 import {LazyInject} from 'Decorators/LazyInject';
 import {EntryActions, Extension, ExtensionTag} from 'Extensions';
 import {FileFormat, FileFormatTag} from 'PluggableStrategies/FileFormats';
@@ -50,7 +54,7 @@ export class PassB {
   private rootNode: EntryNode = buildEntryNode({fullPath: '', name: ''});
 
   public async initialize(): Promise<this> {
-    if (window.executionContext === 'background') {
+    if (getExecutionContext() === 'background') {
       this.injectIntoChildren(await this.getOptions());
       await this.reloadEntries();
       return this;
@@ -102,20 +106,17 @@ export class PassB {
     return this.fileFormats;
   }
 
-  @executeInCorrectContext()
-  @Reflect.metadata('executionContext', 'background')
+  @executeInCorrectContext('background')
   public async getRootNode(): Promise<EntryNode> {
     return this.rootNode;
   }
 
-  @executeInCorrectContext()
-  @Reflect.metadata('executionContext', 'background')
+  @executeInCorrectContext('background')
   public async getOptions(): Promise<OptionsData> {
     return await this.options.getOptions();
   }
 
-  @executeInCorrectContext()
-  @Reflect.metadata('executionContext', 'background')
+  @executeInCorrectContext('background')
   public async setOptions(newOptions: OptionsData): Promise<OptionsData> {
     await this.options.setOptions(newOptions);
     this.injectIntoChildren(newOptions);
@@ -123,8 +124,7 @@ export class PassB {
     return newOptions;
   }
 
-  @executeInCorrectContext()
-  @Reflect.metadata('executionContext', 'background')
+  @executeInCorrectContext('background')
   private async reloadEntries(): Promise<this> {
     const enabledExtensionNames = (await (this.getOptions())).enabledExtensions;
     const enabledExtensions = this.extensions

@@ -75,8 +75,7 @@ export class PassExtension extends Extension<Options> {
     return (await browser.tabs.query({active: true, currentWindow: true}))[0];
   }
 
-  @executeInCorrectContext()
-  @Reflect.metadata('executionContext', 'background')
+  @executeInCorrectContext('background')
   private async executeFillAction(entry: string): Promise<{}> {
     const initialUrl = (await this.getCurrentTab()).url;
     const entryContents = await this.passCli.show(entry);

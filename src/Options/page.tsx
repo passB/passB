@@ -3,11 +3,14 @@ import {createMuiTheme} from 'material-ui/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Container} from 'typedi';
+import {setExecutionContext} from 'Decorators/ExecuteInContext';
 import {PassB} from 'PassB';
 import {AddonOptions} from './Components/AddonOptions';
 
 import 'typeface-roboto';
 import './style.scss';
+
+setExecutionContext('options');
 
 Container.get(PassB).initialize();
 
