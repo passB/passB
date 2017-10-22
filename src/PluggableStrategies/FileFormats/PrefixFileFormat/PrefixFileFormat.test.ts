@@ -10,39 +10,52 @@ const passwordFile1 = [
   'login: testUser2',
   'password: specifiedPw',
 ];
-
-test('test passwordFirstLine', () => {
-  const fileFormat = Container.get(PrefixFileFormat);
-  fileFormat.injectOptions({
-    passwordFirstLine: true,
-    usernamePrefix: 'login:',
-    trimWhitespace: true,
-    passwordPrefix: '',
+describe('PrefixFileFormat', () => {
+  it('should return first line when passwordFirstLine is true', () => {
+    const fileFormat = Container.get(PrefixFileFormat);
+    fileFormat.injectOptions({
+      passwordFirstLine: true,
+      usernamePrefix: 'login:',
+      trimWhitespace: true,
+      passwordPrefix: '',
+    });
+    expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe('firstLinePw');
+    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe('testUser2');
   });
-  expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe('firstLinePw');
-  expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe('testUser2');
-});
 
-test('test passwordPrefix', () => {
-  const fileFormat = Container.get(PrefixFileFormat);
-  fileFormat.injectOptions({
-    passwordFirstLine: false,
-    usernamePrefix: 'username:',
-    trimWhitespace: true,
-    passwordPrefix: 'password:',
+  it('should return password when passwordPrefix is found', () => {
+    const fileFormat = Container.get(PrefixFileFormat);
+    fileFormat.injectOptions({
+      passwordFirstLine: false,
+      usernamePrefix: 'username:',
+      trimWhitespace: true,
+      passwordPrefix: 'password:',
+    });
+    expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe('specifiedPw');
+    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe('testUser');
   });
-  expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe('specifiedPw');
-  expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe('testUser');
-});
 
-test('test without trimWhitespace', () => {
-  const fileFormat = Container.get(PrefixFileFormat);
-  fileFormat.injectOptions({
-    passwordFirstLine: false,
-    usernamePrefix: 'username:',
-    trimWhitespace: false,
-    passwordPrefix: 'password:',
+  it('should return undefined when prefix is not present', () => {
+    const fileFormat = Container.get(PrefixFileFormat);
+    fileFormat.injectOptions({
+      passwordFirstLine: false,
+      usernamePrefix: 'username_not_present:',
+      trimWhitespace: true,
+      passwordPrefix: 'password_not_present:',
+    });
+    expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBeUndefined();
+    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBeUndefined();
   });
-  expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe(' specifiedPw');
-  expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe(' testUser');
+
+  it('should not trim matches when trimWhitespace is set to false', () => {
+    const fileFormat = Container.get(PrefixFileFormat);
+    fileFormat.injectOptions({
+      passwordFirstLine: false,
+      usernamePrefix: 'username:',
+      trimWhitespace: false,
+      passwordPrefix: 'password:',
+    });
+    expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe(' specifiedPw');
+    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe(' testUser');
+  });
 });
