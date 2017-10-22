@@ -1,4 +1,4 @@
-import {mount, shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import {Checkbox, TextField} from 'material-ui';
 import * as React from 'react';
 import {OptionsPanel} from './OptionsPanel';

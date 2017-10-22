@@ -2,7 +2,7 @@
 
 import 'reflect-metadata';
 
-export type ExecutionContext = 'background' | 'popup' | 'options';
+type ExecutionContext = string;
 
 const EXECUTION_CONTEXT = 'execution_context';
 const EXECUTING_IN_CONTEXT = 'executing_in_context';
@@ -17,8 +17,8 @@ interface AsynchronousRequest {
   params: any[];
 }
 
-let definedExecutionContext: ExecutionContext;
-export const setExecutionContext = (executionContext: ExecutionContext) => definedExecutionContext = executionContext;
+let definedExecutionContext: ExecutionContext | undefined;
+export const setExecutionContext = (executionContext?: ExecutionContext) => definedExecutionContext = executionContext;
 export const getExecutionContext = () => definedExecutionContext;
 
 export const executeInCorrectContext = (executionContext: ExecutionContext) => (
@@ -43,6 +43,11 @@ export const executeInCorrectContext = (executionContext: ExecutionContext) => (
     return {
       value: function(this: any, ...params: any[]): Promise<R> {
         const executingInContext = Reflect.getMetadata(EXECUTING_IN_CONTEXT, this);
+        if (!executingInContext) {
+          return Promise.reject('Current executionContext is not available. ' +
+            'Either the class has not been instantiated or it lacks the @AsynchronousCallable decorator');
+        }
+
         if (executingInContext !== executionContext) {
           return browser.runtime.sendMessage({
             action: getActionName(target.constructor, propertyKey),
@@ -50,16 +55,20 @@ export const executeInCorrectContext = (executionContext: ExecutionContext) => (
           });
         }
 
-        return descriptor.value!.call(this, params);
+        return descriptor.value!.apply(this, params);
       } as T,
     };
   });
 
 export const AsynchronousCallable = () =>
   <T extends { new(...args: any[]): {} }>(constructor: T): T =>
-    class extends constructor {
+    class AsynchronousCallableWrapped extends constructor {
       public constructor(...args: any[]) {
         super(...args);
+
+        if (!definedExecutionContext) {
+          throw new Error('instantiated @AsynchronousCallable without setting Context');
+        }
 
         // save definedExecutionContext at the moment of class initialization for later use
         // in @executeInCorrectContext methods
@@ -69,14 +78,12 @@ export const AsynchronousCallable = () =>
           const executionContext = Reflect.getMetadata(EXECUTION_CONTEXT, this, propertyKey);
           if (executionContext && definedExecutionContext === executionContext) {
             browser.runtime.onMessage.addListener(
-              (request: AsynchronousRequest, sender: object, sendResponse: Function) => {
+              (request: AsynchronousRequest) => {
                 if (request.action !== getActionName(constructor, propertyKey)) {
                   return false;
                 }
 
-                const wrappedFn: ((...args: any[]) => Promise<any>) = (this as any)[propertyKey];
-                wrappedFn.apply(this, request.params).then(sendResponse);
-                return true;
+                return (this as any)[propertyKey](...request.params);
               },
             );
 
