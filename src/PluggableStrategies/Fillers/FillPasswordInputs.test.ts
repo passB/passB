@@ -50,7 +50,7 @@ describe('FillPasswordInputs', () => {
         eval(code);  // tslint:disable-line:no-eval
       },
     );
-    (window as any).browser = {tabs: {executeScript}}; // tslint:disable-line:no-any
+    browser.tabs.executeScript = executeScript;
 
     const filler = Container.get(FillPasswordInputs);
 
@@ -79,7 +79,7 @@ describe('FillPasswordInputs', () => {
         eval(code);  // tslint:disable-line:no-eval
       },
     );
-    (window as any).browser = {tabs: {executeScript}}; // tslint:disable-line:no-any
+    browser.tabs.executeScript = executeScript;
 
     const filler = Container.get(FillPasswordInputs);
 
