@@ -82,6 +82,7 @@
       "tsx"
     ],
     "testMatch": [
+      "**/__tests__/**/*.ts?(x)",
       "<rootDir>/src/**/?(*.)test.ts?(x)"
     ],
     "transform": {
@@ -89,7 +90,8 @@
     },
     "setupFiles": [
       "raf/polyfill",
-      "<rootDir>/src/testSetup.ts"
-    ]
+      "<rootDir>/src/testSetup/testSetup.ts"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/src/testSetup/testFrameworkScriptSetup.ts"
   }
 }

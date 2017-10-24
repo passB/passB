@@ -1,4 +1,5 @@
 // tslint:disable:max-classes-per-file
+import {mockBrowserMessaging} from 'testSetup/mockBrowserMessaging';
 import {
   executeInCorrectContext,
   getExecutionContext,
@@ -24,25 +25,8 @@ describe('ExecuteInContext', () => {
   }
 
   beforeAll(() => {
-    const foreverPendingPromise = Promise.race([]);
-    type Listener = (request: {}) => Promise<{}>;
-
-    let listeners: Listener[] = [];
-    afterEach(() => listeners = []);
-
-    const sendMessage = (message: {}) => Promise.race(
-      listeners.map((listener: Listener) => listener(message) || foreverPendingPromise),
-    );
-    const addListener = (listener: Listener) => listeners.push(listener);
-
-    (global as any).browser = { // tslint:disable-line:no-any
-      runtime: {
-        sendMessage,
-        onMessage: {
-          addListener,
-        },
-      },
-    };
+    const {resetListeners} = mockBrowserMessaging();
+    beforeEach(resetListeners);
   });
 
   beforeEach(() => {
