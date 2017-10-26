@@ -15,7 +15,7 @@ module.exports = {
     filename: '[name].js'
   },
   target: "web",
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     modules: ['node_modules', './src'],
