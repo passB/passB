@@ -22,3 +22,8 @@ ReactDOM.render(
   </MuiThemeProvider>,
   document.getElementById('app'),
 );
+
+import {State} from 'State/State';
+const state = new State();
+
+setTimeout(() => console.log('state options', state.getOptions().toJS()), 500);
