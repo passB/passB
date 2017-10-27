@@ -3,6 +3,7 @@ import {Service} from 'typedi';
 import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {PassCli} from 'PassCli';
+import {createOptionsData, OptionsDataType} from 'State/Options/Interfaces';
 import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from '..';
 import {OptionsPanel} from './OptionsPanel';
 import {Show} from './Views/Show';
@@ -25,11 +26,11 @@ export class QRCodeExtension extends Extension<Options> {
   ];
   public readonly name: string = 'QRCode';
   public readonly actions: string[] = ['show'];
-  public readonly defaultOptions: Options = {
+  public readonly defaultOptions: OptionsDataType<Options> = createOptionsData({
     bgColor: '#FFFFFF',
     fgColor: '#000000',
-    level: 'Q',
-  };
+    level: 'Q' as Level,
+  });
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 
   @LazyInject(() => PassCli)

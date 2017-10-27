@@ -1,3 +1,4 @@
+import {Map} from 'immutable';
 import {RouteProps} from 'react-router';
 import {Service} from 'typedi';
 import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
@@ -6,6 +7,7 @@ import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {PassB} from 'PassB';
 import {PassCli} from 'PassCli';
 import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from '..';
+import {createOptionsData, OptionsDataType} from '../../State/Options/Interfaces';
 import {Show} from './Views';
 
 interface Options {
@@ -24,7 +26,7 @@ export class PassExtension extends Extension<Options> {
   ];
   public readonly name: string = 'Pass';
   public readonly actions: string[] = ['show', 'fill'];
-  public readonly defaultOptions: Options = {};
+  public readonly defaultOptions: OptionsDataType<Options> = createOptionsData({});
   public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
 
   @LazyInject(() => PassB)

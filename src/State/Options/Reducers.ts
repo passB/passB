@@ -1,6 +1,6 @@
 import {Set} from 'immutable';
 import {reducerWithInitialState} from 'typescript-fsa-reducers';
-import {actions} from './Actions';
+import * as Actions from './Actions';
 import {
   ExtensionName,
   ExtensionNameArgs,
@@ -21,13 +21,13 @@ const setExtensionOptions =
 const enableExtension = (oldState: OptionsState, {extensionName}: ExtensionNameArgs): OptionsState =>
   oldState.updateIn(
     ['enabledExtensions'],
-    (enabledExtensions: Set<ExtensionName>) => enabledExtensions.add(extensionName),
+    (enabledExtensions: Set<ExtensionName> = Set<ExtensionName>()) => enabledExtensions.add(extensionName),
   );
 
 const disableExtension = (oldState: OptionsState, {extensionName}: ExtensionNameArgs): OptionsState =>
   oldState.updateIn(
     ['enabledExtensions'],
-    (enabledExtensions: Set<ExtensionName>) => enabledExtensions.remove(extensionName),
+    (enabledExtensions: Set<ExtensionName> = Set<ExtensionName>()) => enabledExtensions.remove(extensionName),
   );
 
 const setStrategyDefaultOptions =
@@ -42,11 +42,11 @@ const setSelectedStrategy = (oldState: OptionsState, {strategyType, strategyName
   oldState.updateIn(['selectedStrategies', strategyType], () => strategyName);
 
 export const reducer = reducerWithInitialState(OptionsStateFactory())
-  .case(actions.setExtensionDefaultOptions, setExtensionDefaultOptions)
-  .case(actions.setExtensionOptions, setExtensionOptions)
-  .case(actions.enableExtension, enableExtension)
-  .case(actions.disableExtension, disableExtension)
-  .case(actions.setStrategyDefaultOptions, setStrategyDefaultOptions)
-  .case(actions.setStrategyOptions, setStrategyOptions)
-  .case(actions.setSelectedStrategy, setSelectedStrategy)
+  .case(Actions.setExtensionDefaultOptions, setExtensionDefaultOptions)
+  .case(Actions.setExtensionOptions, setExtensionOptions)
+  .case(Actions.enableExtension, enableExtension)
+  .case(Actions.disableExtension, disableExtension)
+  .case(Actions.setStrategyDefaultOptions, setStrategyDefaultOptions)
+  .case(Actions.setStrategyOptions, setStrategyOptions)
+  .case(Actions.setSelectedStrategy, setSelectedStrategy)
   .build();

@@ -2,6 +2,7 @@ import {score, IScoringOptions} from 'fuzzaldrin-plus';
 import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {EntryNode} from 'PassB';
+import {createOptionsData, OptionsDataType} from 'State/Options/Interfaces';
 import {Matcher, MatcherTag} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
@@ -23,7 +24,7 @@ export interface Options {
 export class FuzzaldrinMatcher extends Matcher<Options> {
   public static readonly URL_CLEAN_REGEX: RegExp = /^(http|ftp)s?:\/\//;
 
-  public readonly defaultOptions: Options = {
+  public readonly defaultOptions: OptionsDataType<Options> = createOptionsData({
     fuzzOptions: {
       pathSeparator: '/',
       allowErrors: true,
@@ -31,19 +32,19 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
     },
     minScore: 1,
     maxResults: 20,
-  };
+  });
   public readonly name: string = FuzzaldrinMatcher.name;
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 
   public async filterEntries(url: string, entries: EntryNode[]): Promise<EntryNode[]> {
     url = url.replace(FuzzaldrinMatcher.URL_CLEAN_REGEX, '');
-    const {maxResults, minScore} = this.options;
+    const {fuzzOptions, maxResults, minScore} = this.options.toJS();
 
     return entries
       .map((entry: EntryNode): ScoredEntry => {
         let accumulatedScore = 0;
         for (const part of entry.fullPath.split('/')) {
-          accumulatedScore += score(url, part, void 0, this.options.fuzzOptions);
+          accumulatedScore += score(url, part, void 0, fuzzOptions);
         }
 
         return {entry, score: accumulatedScore};

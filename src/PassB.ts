@@ -9,8 +9,8 @@ import {EntryActions, Extension, ExtensionTag} from 'Extensions';
 import {FileFormat, FileFormatTag} from 'PluggableStrategies/FileFormats';
 import {Filler, FillerTag} from 'PluggableStrategies/Fillers';
 import {Matcher, MatcherTag} from 'PluggableStrategies/Matchers';
-import {Options, OptionsData, OptionsList} from './Options/Options';
-import {OptionsReceiverInterface} from './Options/OptionsReceiver';
+import * as OptionsSelectors from 'State/Options/Selectors';
+import {State} from 'State/State';
 
 export interface Action {
   extension: string;
@@ -48,20 +48,16 @@ export class PassB {
   protected matchers: Array<Matcher<{}>>;
   @InjectTagged(FillerTag)
   protected fillers: Array<Filler<{}>>;
-  @LazyInject(() => Options)
-  protected options: Options;
+  @LazyInject(() => State)
+  protected state: State;
 
   private rootNode: EntryNode = buildEntryNode({fullPath: '', name: ''});
 
   public async initialize(): Promise<this> {
     if (getExecutionContext() === 'background') {
-      this.injectIntoChildren(await this.getOptions());
       await this.reloadEntries();
-      return this;
-    } else {
-      this.injectIntoChildren(await this.getOptions());
-      return this;
     }
+    return this;
   }
 
   public getAllExtensions(): Array<Extension<{}>> {
@@ -76,9 +72,9 @@ export class PassB {
     return extension;
   }
 
-  public async getMatcher(): Promise<Matcher<{}>> {
-    const selected = (await this.getOptions()).selectedMatcher;
-    return this.matchers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+  public getMatcher(): Matcher<{}> {
+    const selected = OptionsSelectors.getSelectedStrategy(this.state.getOptions(), 'Matcher');
+    return this.matchers.find((strategy: Matcher<{}>) => strategy.name === selected)
       || this.matchers[0];
   }
 
@@ -86,9 +82,9 @@ export class PassB {
     return this.matchers;
   }
 
-  public async getFiller(): Promise<Filler<{}>> {
-    const selected = (await this.getOptions()).selectedFiller;
-    return this.fillers.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+  public getFiller(): Filler<{}> {
+    const selected = OptionsSelectors.getSelectedStrategy(this.state.getOptions(), 'Filler');
+    return this.fillers.find((strategy: Filler<{}>) => strategy.name === selected)
       || this.fillers[0];
   }
 
@@ -96,9 +92,9 @@ export class PassB {
     return this.fillers;
   }
 
-  public async getFileFormat(): Promise<FileFormat<{}>> {
-    const selected = (await this.getOptions()).selectedFileFormat;
-    return this.fileFormats.find((strategy: OptionsReceiverInterface<{}>) => strategy.name === selected)
+  public getFileFormat(): FileFormat<{}> {
+    const selected =  OptionsSelectors.getSelectedStrategy(this.state.getOptions(), 'FileFormat');
+    return this.fileFormats.find((strategy: FileFormat<{}>) => strategy.name === selected)
       || this.fileFormats[0];
   }
 
@@ -112,21 +108,8 @@ export class PassB {
   }
 
   @executeInCorrectContext('background')
-  public async getOptions(): Promise<OptionsData> {
-    return await this.options.getOptions();
-  }
-
-  @executeInCorrectContext('background')
-  public async setOptions(newOptions: OptionsData): Promise<OptionsData> {
-    await this.options.setOptions(newOptions);
-    this.injectIntoChildren(newOptions);
-    await this.reloadEntries();
-    return newOptions;
-  }
-
-  @executeInCorrectContext('background')
   private async reloadEntries(): Promise<this> {
-    const enabledExtensionNames = (await (this.getOptions())).enabledExtensions;
+    const enabledExtensionNames = OptionsSelectors.getEnabledExtensions(this.state.getOptions());
     const enabledExtensions = this.extensions
       .filter((extension: Extension<{}>) => enabledExtensionNames.includes(extension.name));
 
@@ -160,15 +143,5 @@ export class PassB {
     }
 
     return this;
-  }
-
-  private injectIntoChildren(options: OptionsData): void {
-    const injectOptions = (optionsList: OptionsList) =>
-      (item: OptionsReceiverInterface<{}>) => item.injectOptions(optionsList[item.name]);
-
-    this.extensions.forEach(injectOptions(options.extensionsOptions));
-    this.fileFormats.forEach(injectOptions(options.fileFormats));
-    this.fillers.forEach(injectOptions(options.fillers));
-    this.matchers.forEach(injectOptions(options.matchers));
   }
 }

@@ -9,22 +9,20 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
       <TextField
         label="Minimum score:"
         helperText=""
-        value={options.minScore}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateOptions({
-          ...options,
-          minScore: Math.max(0, e.target.valueAsNumber),
-        })}
+        value={options.get('minScore')}
+        onChange={
+          (e: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('minScore', Math.max(0, e.target.valueAsNumber)))
+        }
         type="number"
       />
       <br/>
       <TextField
         label="Maximum visible results:"
         helperText="to show all results, enter '0'"
-        value={options.maxResults}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateOptions({
-          ...options,
-          maxResults: Math.max(0, e.target.valueAsNumber),
-        })}
+        value={options.get('maxResults')}
+        onChange={
+          (e: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('maxResults', Math.max(0, e.target.valueAsNumber)))
+        }
         type="number"
       />
     </div>

@@ -1,6 +1,6 @@
 // tslint:disable:no-any
 declare module 'redux-persist' {
-  import {AnyAction, Reducer, Store} from 'redux';
+  import {Reducer, Store} from 'redux';
 
   export interface PersistState {
     version: number;
@@ -86,6 +86,7 @@ declare module 'redux-persist' {
   type BoostrappedCb = () => any;
 
   export function persistStore<S>(store: Store<S>, options?: PersistorOptions, cb?: BoostrappedCb): Persistor;
+  export function purgeStoredState(options: PersistorOptions): void;
 
   interface PersistPartial {
     _persist: PersistState;
@@ -95,4 +96,22 @@ declare module 'redux-persist' {
     config: PersistConfig,
     baseReducer: Reducer<State>,
   ): (s: State, a: Action) => State & PersistPartial;
+}
+
+declare module 'redux-persist/es/integration/react' {
+  import * as React from 'react';
+  import {Persistor} from 'redux-persist';
+
+  interface Props {
+    onBeforeLift?: Function;
+    children?: React.ReactNode;
+    loading: React.ReactNode;
+    persistor: Persistor;
+  }
+
+  interface State {
+    bootstrapped: boolean;
+  }
+
+  export class PersistGate extends React.PureComponent<Props, State> {}
 }
