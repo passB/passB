@@ -1,8 +1,11 @@
 import {Token} from 'typedi';
-import {OptionsReceiver} from 'Options/OptionsReceiver';
 import {EntryNode} from 'PassB';
+import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
+import {StrategyType} from 'State/Options/Interfaces';
 
-export abstract class Matcher<OptionType> extends OptionsReceiver<OptionType> {
+export abstract class Matcher<OptionType> extends BaseStrategy<OptionType> {
+  public readonly type: StrategyType = 'Matcher';
+
   public abstract filterEntries(url: string, entries: EntryNode[]): Promise<EntryNode[]>;
 }
 

@@ -61,7 +61,7 @@
     "indent": [true, "spaces", 2],
     "linebreak-style": [true, "LF"],
     "max-classes-per-file": [true, 1],
-    "max-line-length": [true, 120],
+    "max-line-length": [true, 140],
     "no-default-export": true,
     "no-duplicate-imports": true,
     "prefer-const": [true, {"destructuring": "all"}],

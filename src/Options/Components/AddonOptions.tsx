@@ -1,3 +1,4 @@
+import {Map, Set} from 'immutable';
 import {
   Card,
   CardContent,
@@ -8,22 +9,58 @@ import {
 } from 'material-ui';
 import {withStyles, StyleRules, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
+import {connect} from 'react-redux';
+import {compose} from 'recompose';
 import {LazyInject} from 'Decorators/LazyInject';
 import {Extension} from 'Extensions/Extension';
-import {OptionsData, OptionsList} from 'Options/Options';
 import {PassB} from 'PassB';
+import {
+  disableExtension,
+  enableExtension,
+  setExtensionOptions,
+  setSelectedStrategy,
+  setStrategyOptions,
+} from 'State/Options/Actions';
+import {getOptionsFromState, StoreContents} from 'State/State';
+import {BaseStrategy} from '../../PluggableStrategies/BaseStrategy';
+import {
+  ExtensionName,
+  ExtensionNameArgs,
+  ExtensionOptionsArgs,
+  OptionsDataType,
+  StrategyName,
+  StrategyNameArgs,
+  StrategyOptionsArgs,
+  StrategyType,
+} from '../../State/Options/Interfaces';
+import {
+  getAllExtensionOptions, getAllStrategyOptions, getEnabledExtensions,
+  getSelectedStrategies,
+} from '../../State/Options/Selectors';
 import {StrategyTab} from './StrategyTab';
 
 type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat';
 
-interface Props {}
+interface Props {
+}
+
+interface MappedProps {
+  enabledExtensions: Set<ExtensionName>;
+  extensionOptions: Map<ExtensionName, OptionsDataType<{}>>;
+  selectedStrategies: Map<StrategyType, StrategyName>;
+  strategyOptions: Map<StrategyType, Map<StrategyName, OptionsDataType<{}>>>;
+  enableExtension: (args: ExtensionNameArgs) => void;
+  disableExtension: (args: ExtensionNameArgs) => void;
+  setExtensionOptions: (args: ExtensionOptionsArgs) => void;
+  setSelectedStrategy: (args: StrategyNameArgs) => void;
+  setStrategyOptions: (args: StrategyOptionsArgs) => void;
+}
 
 interface State {
   selectedTab: TabValue;
-  options?: OptionsData;
 }
 
-const styles: StyleRules<'wrap' | 'breakBefore'>  = {
+const styles: StyleRules<'wrap' | 'breakBefore'> = {
   wrap: {
     flexWrap: 'wrap',
   },
@@ -33,18 +70,19 @@ const styles: StyleRules<'wrap' | 'breakBefore'>  = {
   },
 };
 
-class ClassLessAddonOptions extends React.Component<Props & WithStyles<keyof typeof styles>, State> {
+interface StrategyTabData {
+  strategyType: StrategyType;
+  strategies: Array<BaseStrategy<{}>>;
+  tabLabel: string;
+}
+
+class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithStyles<keyof typeof styles>, State> {
   public state: State = {
     selectedTab: 'Extensions',
-    options: void 0,
   };
 
   @LazyInject(() => PassB)
   private passB: PassB;
-
-  public async componentDidMount(): Promise<void> {
-    this.setState({options: await this.passB.getOptions()});
-  }
 
   public componentDidCatch(error: Error, info: React.ErrorInfo): void {
     // TODO: better error handling
@@ -52,106 +90,119 @@ class ClassLessAddonOptions extends React.Component<Props & WithStyles<keyof typ
   }
 
   public render(): JSX.Element {
-    const {selectedTab, options} = this.state;
-    const {classes} = this.props;
+    const {selectedTab} = this.state;
+
+    const {
+      classes,
+      enabledExtensions,
+      extensionOptions,
+      selectedStrategies,
+      strategyOptions,
+      // tslint:disable:no-shadowed-variable
+      enableExtension,
+      disableExtension,
+      setExtensionOptions,
+      setSelectedStrategy,
+      setStrategyOptions,
+      // tslint:enable:no-shadowed-variable
+    } = this.props;
     const passB = this.passB;
 
-    if (!options) {
-      return <div>please wait, loading...</div>;
-    }
+    const strategyTabs: StrategyTabData[] = [
+      {strategyType: 'Matcher', strategies: passB.getAllMatchers(), tabLabel: 'options_tab_matchers'},
+      {strategyType: 'FileFormat', strategies: passB.getAllFileFormats(), tabLabel: 'options_tab_file_formats'},
+      {strategyType: 'Filler', strategies: passB.getAllFillers(), tabLabel: 'options_tab_fillers'},
+    ];
 
     return (
       <div>
         <Tabs value={selectedTab} onChange={(event: object, value: TabValue) => this.setState({selectedTab: value})}>
           <Tab value="Extensions" label={browser.i18n.getMessage('options_tab_extensions')}/>
-          <Tab value="Matcher" label={browser.i18n.getMessage('options_tab_matchers')}/>
-          <Tab value="FileFormat" label={browser.i18n.getMessage('options_tab_file_formats')}/>
-          <Tab value="Filler" label={browser.i18n.getMessage('options_tab_fillers')}/>
+          {strategyTabs.map(({strategyType, tabLabel}: StrategyTabData) => (
+            <Tab
+              key={`tab_${strategyType}`}
+              value={strategyType}
+              label={tabLabel}
+            />
+          ))}
         </Tabs>
         {selectedTab === 'Extensions' && <div>
           <List>
             {passB.getAllExtensions().map((extension: Extension<{}>) => {
-              const enabled = options.enabledExtensions.includes(extension.name);
+              const extensionName = extension.name;
+              const enabled = enabledExtensions.includes(extensionName);
               const OptionsPanel = extension.OptionsPanel;
               return (
                 <ListItem
-                  key={extension.name}
+                  key={extensionName}
                   className={classes.wrap}
                 >
                   <Checkbox
                     checked={enabled}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>, newValue: boolean) => {
-                      this.updateOptions({
-                        enabledExtensions: [
-                          ...(newValue ?
-                              [...options.enabledExtensions, extension.name] :
-                              options.enabledExtensions.filter((value: string) => value !== extension.name)
-                          ),
-                        ],
-                      });
-
-                    }}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>, newValue: boolean) =>
+                      (newValue ? enableExtension : disableExtension)({extensionName})
+                    }
                   />
-                  <ListItemText primary={extension.name}/>
+                  <ListItemText primary={extensionName}/>
                   {enabled && OptionsPanel && (
                     <Card className={classes.breakBefore}>
                       <CardContent>
                         <OptionsPanel
-                          options={options.extensionsOptions[extension.name]}
-                          updateOptions={(newOptions: {}) => this.updateOptions({
-                            extensionsOptions: {...options.extensionsOptions, [extension.name]: newOptions},
+                          options={extensionOptions.get(extensionName)!}
+                          updateOptions={(options: OptionsDataType<{}>) => setExtensionOptions({
+                            extensionName,
+                            options,
                           })}
                         />
                       </CardContent>
                     </Card>
                   )}
-
                 </ListItem>
               );
             })}
           </List>
         </div>
         }
-        {selectedTab === 'Matcher' && (
-          <StrategyTab
-            label="options_tab_matchers"
-            strategies={passB.getAllMatchers()}
-            selectedStrategyName={options.selectedMatcher}
-            strategyOptions={options.matchers}
-            updateSelectedStrategyName={(selectedMatcher: string) => this.updateOptions({selectedMatcher})}
-            updateOptions={(matchers: OptionsList) => this.updateOptions({matchers})}
-          />
-        )}
-        {selectedTab === 'FileFormat' && (
-          <StrategyTab
-            label="options_tab_file_formats"
-            strategies={passB.getAllFileFormats()}
-            selectedStrategyName={options.selectedFileFormat}
-            strategyOptions={options.fileFormats}
-            updateSelectedStrategyName={(selectedFileFormat: string) => this.updateOptions({selectedFileFormat})}
-            updateOptions={(fileFormats: OptionsList) => this.updateOptions({fileFormats})}
-          />
-        )}
-        {selectedTab === 'Filler' && (
-          <StrategyTab
-            label="options_tab_fillers"
-            strategies={passB.getAllFillers()}
-            selectedStrategyName={options.selectedFiller}
-            strategyOptions={options.fillers}
-            updateSelectedStrategyName={(selectedFiller: string) => this.updateOptions({selectedFiller})}
-            updateOptions={(fillers: OptionsList) => this.updateOptions({fillers})}
-          />
-        )}
-
+        {strategyTabs.map(({strategyType, tabLabel, strategies}: StrategyTabData) => {
+          console.log({strategyType, tabLabel, strategies, x: strategies.map(x => x.name)});
+          const selectedStrategy = selectedStrategies.get(strategyType) || strategies[0].name;
+          return (
+            <StrategyTab
+              key={`tabContents_${strategyType}`}
+              label={tabLabel}
+              strategies={strategies}
+              selectedStrategyName={selectedStrategy}
+              strategyOptions={strategyOptions.getIn([strategyType, selectedStrategy])}
+              updateSelectedStrategyName={(strategyName: string) =>
+                setSelectedStrategy({strategyType, strategyName})}
+              updateOptions={(options: OptionsDataType<{}>) =>
+                setStrategyOptions({strategyType, strategyName: selectedStrategy, options})}
+            />
+          );
+        })}
       </div>
     );
   }
-
-  private updateOptions(newOptions: Partial<OptionsData>): void {
-    const fullNewOptions: OptionsData = {...this.state.options!, ...newOptions};
-    this.setState({options: fullNewOptions});
-    this.passB.setOptions(fullNewOptions);
-  }
 }
 
-export const AddonOptions = withStyles<keyof typeof styles>(styles)(ClassLessAddonOptions);
+export const AddonOptions: React.ComponentClass<Props> = compose(
+  withStyles<keyof typeof styles>(styles),
+  connect(
+    (state: StoreContents) => {
+      const options = getOptionsFromState(state);
+      return {
+        enabledExtensions: getEnabledExtensions(options),
+        extensionOptions: getAllExtensionOptions(options),
+        selectedStrategies: getSelectedStrategies(options),
+        strategyOptions: getAllStrategyOptions(options),
+      };
+    },
+    {
+      enableExtension,
+      disableExtension,
+      setExtensionOptions,
+      setSelectedStrategy,
+      setStrategyOptions,
+    },
+  ),
+)(ClassLessAddonOptions);

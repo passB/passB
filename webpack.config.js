@@ -15,19 +15,13 @@ module.exports = {
     filename: '[name].js'
   },
   target: "web",
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     modules: ['node_modules', './src'],
   },
   module: {
     loaders: [
-      {
-        test: [
-          /typedi\/.*\/Require.js$/,
-        ],
-        use: 'ignore-loader',
-      },
       {
         test: /\.tsx?$/,
         use: [

@@ -11,15 +11,14 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
         <FormLabel>Get username from:</FormLabel>
         <RadioGroup
           name="FirstLineFileFormat_usernameStyle"
-          value={options.usernameStyle}
-          onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: UsernameStyle) => updateOptions({
-            ...options,
-            usernameStyle: value,
-          })}
+          value={options.get('usernameStyle')}
+          onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: UsernameStyle) =>
+            updateOptions(options.set('usernameStyle', value))
+          }
         >
-          <FormControlLabel value="None" control={<Radio />} label="None"/>
-          <FormControlLabel value="SecondLine" control={<Radio />} label="SecondLine"/>
-          <FormControlLabel value="LastPathPart" control={<Radio />} label="LastPathPart"/>
+          <FormControlLabel value="None" control={<Radio/>} label="None"/>
+          <FormControlLabel value="SecondLine" control={<Radio/>} label="SecondLine"/>
+          <FormControlLabel value="LastPathPart" control={<Radio/>} label="LastPathPart"/>
         </RadioGroup>
       </FormControl>
     </div>

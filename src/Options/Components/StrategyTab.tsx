@@ -1,16 +1,16 @@
 import {FormControl, InputLabel, MenuItem, Select} from 'material-ui';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
-import {OptionsList} from '../Options';
-import {OptionsReceiverInterface} from '../OptionsReceiver';
+import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
+import {OptionsDataType, StrategyName} from 'State/Options/Interfaces';
 
 interface Props {
   label: string;
-  strategies: Array<OptionsReceiverInterface<{}>>;
-  strategyOptions: OptionsList;
-  selectedStrategyName: string;
-  updateOptions: (newOptions: OptionsList) => void;
-  updateSelectedStrategyName: (selectedStrategyName: string) => void;
+  strategies: Array<BaseStrategy<{}>>;
+  strategyOptions: OptionsDataType<{}>;
+  selectedStrategyName: StrategyName;
+  updateOptions: (newOptions: OptionsDataType<{}>) => void;
+  updateSelectedStrategyName: (selectedStrategyName: StrategyName) => void;
 }
 
 const styles = {
@@ -32,8 +32,8 @@ export const StrategyTab = withStyles<keyof typeof styles>(styles)(
       } = this.props;
 
       const selectedStrategy = strategies.find(
-        (strategy: OptionsReceiverInterface<{}>) => strategy.name === selectedStrategyName,
-      ) as OptionsReceiverInterface<{}>;
+        (strategy: BaseStrategy<{}>) => strategy.name === selectedStrategyName,
+      )!;
 
       const {OptionsPanel} = selectedStrategy;
 
@@ -45,7 +45,7 @@ export const StrategyTab = withStyles<keyof typeof styles>(styles)(
               value={selectedStrategyName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateSelectedStrategyName(e.target.value)}
             >
-              {strategies.map((strategy: OptionsReceiverInterface<{}>, index: number) => (
+              {strategies.map((strategy: BaseStrategy<{}>, index: number) => (
                 <MenuItem key={index} value={strategy.name}>
                   {browser.i18n.getMessage(`label_${strategy.name}`) || strategy.name}
                 </MenuItem>
@@ -55,11 +55,8 @@ export const StrategyTab = withStyles<keyof typeof styles>(styles)(
           <br/>
           {OptionsPanel && (
             <OptionsPanel
-              options={strategyOptions[selectedStrategyName]}
-              updateOptions={(newOptions: {}) => updateOptions({
-                ...strategyOptions,
-                [selectedStrategyName]: newOptions,
-              })}
+              options={strategyOptions}
+              updateOptions={updateOptions}
             />
           )}
         </div>

@@ -20,12 +20,10 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
             <FormControl>
               <FormLabel>Error correction level:</FormLabel>
               <RadioGroup
-                value={options.level}
+                value={options.get('level')}
                 row={true}
-                onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: Level) => updateOptions({
-                  ...options,
-                  level: value,
-                })}
+                onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: Level) =>
+                  updateOptions(options.set('level', value))}
               >
 
                 <FormControlLabel value="L" control={<Radio/>} label="L"/>
@@ -41,13 +39,10 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
               <FormLabel>Background color:</FormLabel>
               <Input
                 inputProps={{
-                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => updateOptions({
-                    ...options,
-                    bgColor: event.target.value,
-                  }),
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('bgColor', event.target.value)),
                 }}
                 type="color"
-                value={options.bgColor}
+                value={options.get('bgColor')}
               />
             </FormControl>
           </ListItem>
@@ -56,13 +51,10 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
               <FormLabel>Foreground color:</FormLabel>
               <Input
                 inputProps={{
-                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => updateOptions({
-                    ...options,
-                    fgColor: event.target.value,
-                  }),
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('fgColor', event.target.value)),
                 }}
                 type="color"
-                value={options.fgColor}
+                value={options.get('fgColor')}
               />
             </FormControl>
           </ListItem>
@@ -70,7 +62,7 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
       </Grid>
       <QRCode
         className={classes.qrcode}
-        {...options}
+        {...options.toJS()}
         value="example. happy testing 😀"
       />
     </Grid>

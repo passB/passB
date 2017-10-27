@@ -1,11 +1,10 @@
 export {
   ExtensionName,
-  ExtensionOptions,
   OptionsState,
   StrategyType,
   StrategyName,
-  StrategyOptions,
+  OptionsDataType,
 } from './Interfaces';
 export {reducer} from './Reducers';
-export {actions} from './Actions';
+export * from './Actions';
 export * from './Selectors';
