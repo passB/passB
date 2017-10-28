@@ -1,4 +1,5 @@
 import {InjectTagged, Service} from 'typedi';
+import {executionContext} from 'Constants';
 import {
   executeInCorrectContext,
   getExecutionContext,
@@ -54,7 +55,7 @@ export class PassB {
   private rootNode: EntryNode = buildEntryNode({fullPath: '', name: ''});
 
   public async initialize(): Promise<this> {
-    if (getExecutionContext() === 'background') {
+    if (getExecutionContext() === executionContext.background) {
       await this.reloadEntries();
     }
     return this;
@@ -102,12 +103,12 @@ export class PassB {
     return this.fileFormats;
   }
 
-  @executeInCorrectContext('background')
+  @executeInCorrectContext(executionContext.background)
   public async getRootNode(): Promise<EntryNode> {
     return this.rootNode;
   }
 
-  @executeInCorrectContext('background')
+  @executeInCorrectContext(executionContext.background)
   private async reloadEntries(): Promise<this> {
     const enabledExtensionNames = OptionsSelectors.getEnabledExtensions(this.state.getOptions());
     const enabledExtensions = this.extensions

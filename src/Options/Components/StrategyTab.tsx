@@ -38,8 +38,6 @@ export const StrategyTab = withStyles<keyof typeof styles>(styles)(
 
       const {OptionsPanel} = selectedStrategy;
 
-      console.log('passing options to child:', strategyOptions, strategyOptions.toJS());
-
       return (
         <div>
           <FormControl className={classes.fullWidth}>
