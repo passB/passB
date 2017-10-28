@@ -1,6 +1,6 @@
 import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {createOptionsData, OptionsDataType} from 'State/Options/Interfaces';
+import {createTypedMap} from 'State/Types/TypedMap';
 import {FileFormat, FileFormatTag} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
@@ -13,14 +13,19 @@ export interface Options {
 
 @Service({tags: [FileFormatTag]})
 export class PrefixFileFormat extends FileFormat<Options> {
-  public readonly defaultOptions: OptionsDataType<Options> = createOptionsData({
-    passwordFirstLine: true,
-    passwordPrefix: '',
-    usernamePrefix: 'login:',
-    trimWhitespace: true,
-  });
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
-  public readonly name: string = PrefixFileFormat.name;
+
+  public constructor() {
+    super(
+      'PrefixFileFormat',
+      createTypedMap({
+        passwordFirstLine: true,
+        passwordPrefix: '',
+        usernamePrefix: 'login:',
+        trimWhitespace: true,
+      }),
+    );
+  }
 
   public getPassword(lines: string[], entryName: string): string | undefined {
     if (this.options.get('passwordFirstLine')) {

@@ -2,14 +2,15 @@ import {FormControl, InputLabel, MenuItem, Select} from 'material-ui';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
-import {OptionsDataType, StrategyName} from 'State/Options/Interfaces';
+import {StrategyName} from 'State/Options/Interfaces';
+import {TypedMap} from 'State/Types/TypedMap';
 
 interface Props {
   label: string;
   strategies: Array<BaseStrategy<{}>>;
-  strategyOptions: OptionsDataType<{}>;
+  strategyOptions: TypedMap<{}>;
   selectedStrategyName: StrategyName;
-  updateOptions: (newOptions: OptionsDataType<{}>) => void;
+  updateOptions: (newOptions: TypedMap<{}>) => void;
   updateSelectedStrategyName: (selectedStrategyName: StrategyName) => void;
 }
 
@@ -36,6 +37,8 @@ export const StrategyTab = withStyles<keyof typeof styles>(styles)(
       )!;
 
       const {OptionsPanel} = selectedStrategy;
+
+      console.log('passing options to child:', strategyOptions, strategyOptions.toJS());
 
       return (
         <div>

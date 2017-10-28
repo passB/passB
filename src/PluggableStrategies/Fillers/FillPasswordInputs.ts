@@ -1,7 +1,7 @@
 import Tab = browser.tabs.Tab;
 import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {createOptionsData, OptionsDataType} from 'State/Options/Interfaces';
+import {createTypedMap} from 'State/Types/TypedMap';
 import {Filler, FillerTag} from './Filler';
 
 // tslint:disable:max-classes-per-file
@@ -28,9 +28,14 @@ export const fillPasswordInputs = (password: string) => {
 
 @Service({tags: [FillerTag]})
 export class FillPasswordInputs extends Filler<{}> {
-  public readonly defaultOptions: OptionsDataType<{}> = createOptionsData({});
-  public readonly name: string = FillPasswordInputs.name;
   public readonly OptionsPanel?: OptionsPanelType<{}> = void 0;
+
+  public constructor() {
+    super(
+      'FillPasswordInputs',
+      createTypedMap({}),
+    );
+  }
 
   public fillUsername(activeTab: Tab, username: string): Promise<void> {
     // not supported by this filler, just skip it

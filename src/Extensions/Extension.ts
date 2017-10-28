@@ -1,10 +1,11 @@
 import {RouteProps} from 'react-router';
-import {Service, Token} from 'typedi';
+import {Token} from 'typedi';
 import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {getExtensionOptions, setExtensionDefaultOptions, OptionsDataType} from 'State/Options';
+import {getExtensionOptions, setExtensionDefaultOptions, TypedMap} from 'State/Options';
 import {ExtensionName} from 'State/Options/Interfaces';
 import {State} from 'State/State';
+import {MapTypeAllowedData} from 'State/Types/TypedMap';
 
 export interface EntryActions {
   label: string;
@@ -17,27 +18,29 @@ export interface ExecutionOptions {
 
 export type RegisterEntryCallback = (entry: EntryActions) => void;
 
-@Service()
-export abstract class Extension<OptionType> {
+export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType>> {
   public static readonly routes: RouteProps[] = [];
-  public abstract readonly defaultOptions: OptionsDataType<OptionType>;
   public abstract readonly OptionsPanel?: OptionsPanelType<OptionType>;
-  public abstract readonly name: ExtensionName;
   public abstract readonly actions: string[];
 
   @LazyInject(() => State)
   private state: State;
 
-  public constructor() {
-    this.state.dispatch(setExtensionDefaultOptions({extensionName: this.name, options: this.defaultOptions}));
+  // tslint:disable:no-parameter-properties
+  // as these properties have to be accessed in this base class constructor, they have to be passed up by the inheriting class
+  public constructor(
+    public readonly name: ExtensionName,
+    public readonly defaultOptions: TypedMap<OptionType>,
+  ) {
+    this.state.dispatch(setExtensionDefaultOptions({extensionName: name, options: defaultOptions}));
   }
 
   public abstract initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void>;
   public abstract getLabelForAction(action: string): string;
   public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 
-  protected get options(): OptionsDataType<OptionType> {
-    return getExtensionOptions(this.state.getOptions(), this.name) as OptionsDataType<OptionType>;
+  protected get options(): TypedMap<OptionType> {
+    return getExtensionOptions(this.state.getOptions(), this.name) as TypedMap<OptionType>;
   }
 }
 

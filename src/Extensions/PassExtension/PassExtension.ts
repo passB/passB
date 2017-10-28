@@ -1,4 +1,3 @@
-import {Map} from 'immutable';
 import {RouteProps} from 'react-router';
 import {Service} from 'typedi';
 import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
@@ -6,8 +5,8 @@ import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {PassB} from 'PassB';
 import {PassCli} from 'PassCli';
+import {createTypedMap} from 'State/Types/TypedMap';
 import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from '..';
-import {createOptionsData, OptionsDataType} from '../../State/Options/Interfaces';
 import {Show} from './Views';
 
 interface Options {
@@ -24,9 +23,7 @@ export class PassExtension extends Extension<Options> {
       component: Show,
     },
   ];
-  public readonly name: string = 'Pass';
   public readonly actions: string[] = ['show', 'fill'];
-  public readonly defaultOptions: OptionsDataType<Options> = createOptionsData({});
   public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
 
   @LazyInject(() => PassB)
@@ -34,6 +31,10 @@ export class PassExtension extends Extension<Options> {
 
   @LazyInject(() => PassCli)
   private passCli: PassCli;
+
+  public constructor() {
+    super('Pass', createTypedMap({}));
+  }
 
   public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
     for (const label of await this.passCli.list()) {

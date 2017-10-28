@@ -1,11 +1,12 @@
-import {Set} from 'immutable';
+import {List} from 'immutable';
 import {reducerWithInitialState} from 'typescript-fsa-reducers';
 import * as Actions from './Actions';
 import {
+  initialState,
   ExtensionName,
   ExtensionNameArgs,
   ExtensionOptionsArgs,
-  OptionsState, OptionsStateFactory,
+  OptionsState,
   StrategyNameArgs,
   StrategyOptionsArgs,
 } from './Interfaces';
@@ -21,13 +22,20 @@ const setExtensionOptions =
 const enableExtension = (oldState: OptionsState, {extensionName}: ExtensionNameArgs): OptionsState =>
   oldState.updateIn(
     ['enabledExtensions'],
-    (enabledExtensions: Set<ExtensionName> = Set<ExtensionName>()) => enabledExtensions.add(extensionName),
+    (enabledExtensions: List<ExtensionName> = List<ExtensionName>()) =>
+      enabledExtensions.includes(extensionName) ? enabledExtensions : enabledExtensions.push(extensionName),
   );
 
 const disableExtension = (oldState: OptionsState, {extensionName}: ExtensionNameArgs): OptionsState =>
   oldState.updateIn(
     ['enabledExtensions'],
-    (enabledExtensions: Set<ExtensionName> = Set<ExtensionName>()) => enabledExtensions.remove(extensionName),
+    (enabledExtensions: List<ExtensionName> = List<ExtensionName>()) => {
+      const index = enabledExtensions.findIndex((item: ExtensionName) => item === extensionName);
+      if (index === -1) {
+        return enabledExtensions;
+      }
+      return enabledExtensions.delete(index);
+    },
   );
 
 const setStrategyDefaultOptions =
@@ -41,7 +49,7 @@ const setStrategyOptions =
 const setSelectedStrategy = (oldState: OptionsState, {strategyType, strategyName}: StrategyNameArgs): OptionsState =>
   oldState.updateIn(['selectedStrategies', strategyType], () => strategyName);
 
-export const reducer = reducerWithInitialState(OptionsStateFactory())
+export const reducer = reducerWithInitialState(initialState)
   .case(Actions.setExtensionDefaultOptions, setExtensionDefaultOptions)
   .case(Actions.setExtensionOptions, setExtensionOptions)
   .case(Actions.enableExtension, enableExtension)

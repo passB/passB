@@ -1,45 +1,34 @@
-import {Map, Record, Set} from 'immutable';
-import Factory = Record.Factory;
+import {List, Map} from 'immutable';
+import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 
 export type ExtensionName = string;
-export interface OptionsDataType<DataType extends {}> extends Map<string, any> { // tslint:disable-line:no-any
-  toJS(): DataType;
-  get<K extends keyof DataType>(key: K): DataType[K];
-  set<K extends keyof DataType>(key: K, value: DataType[K]): this;
-}
-
-export function createOptionsData<DataType extends {}>(data: DataType): OptionsDataType<DataType> {
-  return Map(data) as any; // tslint:disable-line:no-any
-}
 
 export type StrategyType = 'FileFormat' | 'Filler' | 'Matcher';
 export type StrategyName = string;
 
 export interface IOptionsState {
-  enabledExtensions: Set<ExtensionName>;
-  extensionsDefaultOptions: Map<ExtensionName, OptionsDataType<{}>>;
-  extensionsOptions: Map<ExtensionName, OptionsDataType<{}>>;
+  enabledExtensions: List<ExtensionName>;
+  extensionsDefaultOptions: Map<ExtensionName, TypedMap<{}>>;
+  extensionsOptions: Map<ExtensionName, TypedMap<{}>>;
   selectedStrategies: Map<StrategyType, StrategyName>;
-  strategyDefaultOptions: Map<StrategyType, Map<StrategyName, OptionsDataType<{}>>>;
-  strategyOptions: Map<StrategyType, Map<StrategyName, OptionsDataType<{}>>>;
+  strategyDefaultOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
+  strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
 }
 
-const initialState: IOptionsState = {
-  enabledExtensions: Set<ExtensionName>(),
-  extensionsDefaultOptions: Map<ExtensionName, OptionsDataType<{}>>(),
-  extensionsOptions: Map<ExtensionName, OptionsDataType<{}>>(),
+export const initialState: OptionsState = createTypedMap({
+  enabledExtensions: List<ExtensionName>(),
+  extensionsDefaultOptions: Map<ExtensionName, TypedMap<{}>>(),
+  extensionsOptions: Map<ExtensionName, TypedMap<{}>>(),
   selectedStrategies: Map<StrategyType, StrategyName>(),
-  strategyDefaultOptions: Map<StrategyType, Map<StrategyName, OptionsDataType<{}>>>(),
-  strategyOptions: Map<StrategyType, Map<StrategyName, OptionsDataType<{}>>>(),
-};
+  strategyDefaultOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>(),
+  strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>(),
+});
 
-export const OptionsStateFactory: Factory<IOptionsState> = Record(initialState, 'OptionsState');
-
-export type OptionsState = Record<IOptionsState> & Readonly<IOptionsState>; // = Record<IOptionsState>(initialState);
+export type OptionsState = TypedMap<IOptionsState>;
 
 export interface ExtensionOptionsArgs {
   extensionName: ExtensionName;
-  options: OptionsDataType<{}>;
+  options: TypedMap<{}>;
 }
 
 export interface ExtensionNameArgs {
@@ -49,7 +38,7 @@ export interface ExtensionNameArgs {
 export interface StrategyOptionsArgs {
   strategyType: StrategyType;
   strategyName: StrategyName;
-  options: OptionsDataType<{}>;
+  options: TypedMap<{}>;
 }
 
 export interface StrategyNameArgs {

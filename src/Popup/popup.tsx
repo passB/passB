@@ -8,6 +8,7 @@ import {PassB} from 'PassB';
 import {Popup} from './Components/Popup';
 
 import 'typeface-roboto';
+import {State} from 'State/State';
 import './style.scss';
 
 setExecutionContext('popup');
@@ -16,9 +17,13 @@ Container.get(PassB).initialize();
 
 const theme = createMuiTheme();
 
+Container.get(State).hydrated.then(() => {
+
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Popup/>
   </MuiThemeProvider>,
   document.getElementById('app'),
 );
+
+});
