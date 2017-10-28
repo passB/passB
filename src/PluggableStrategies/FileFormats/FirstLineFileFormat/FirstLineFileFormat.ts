@@ -1,6 +1,6 @@
 import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {createOptionsData, OptionsDataType} from 'State/Options/Interfaces';
+import {createTypedMap} from 'State/Types/TypedMap';
 import {FileFormat, FileFormatTag} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
@@ -12,11 +12,16 @@ export interface Options {
 
 @Service({tags: [FileFormatTag]})
 export class FirstLineFileFormat extends FileFormat<Options> {
-  public readonly defaultOptions: OptionsDataType<Options> = createOptionsData({
-    usernameStyle: 'SecondLine' as UsernameStyle,
-  });
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
-  public readonly name: string = FirstLineFileFormat.name;
+
+  public constructor() {
+    super(
+      'FirstLineFileFormat',
+      createTypedMap({
+        usernameStyle: 'SecondLine' as UsernameStyle,
+      }),
+    );
+  }
 
   public getPassword(lines: string[], entryName: string): string | undefined {
     return lines[0];

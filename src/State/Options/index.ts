@@ -3,8 +3,8 @@ export {
   OptionsState,
   StrategyType,
   StrategyName,
-  OptionsDataType,
-} from './Interfaces';
+  } from './Interfaces';
 export {reducer} from './Reducers';
 export * from './Actions';
 export * from './Selectors';
+export {TypedMap} from '../Types/TypedMap';

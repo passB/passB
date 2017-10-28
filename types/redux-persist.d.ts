@@ -96,6 +96,12 @@ declare module 'redux-persist' {
     config: PersistConfig,
     baseReducer: Reducer<State>,
   ): (s: State, a: Action) => State & PersistPartial;
+
+  export function createTransform(
+    inbound: Function,
+    outbound: Function,
+    config?: {whitelist?: string[]},
+  ): Transform;
 }
 
 declare module 'redux-persist/es/integration/react' {

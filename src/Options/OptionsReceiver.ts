@@ -1,9 +1,10 @@
 import {ComponentType} from 'react';
-import { OptionsDataType } from 'State/Options';
+import { TypedMap } from 'State/Options';
+import {MapTypeAllowedData} from '../State/Types/TypedMap';
 
-export interface OptionPanelProps<OptionType> {
-  options: OptionsDataType<OptionType>;
-  updateOptions: (newOptions: OptionsDataType<OptionType>) => void;
+export interface OptionPanelProps<OptionType extends MapTypeAllowedData<OptionType>> {
+  options: TypedMap<OptionType>;
+  updateOptions: (newOptions: TypedMap<OptionType>) => void;
 }
 
-export type OptionsPanelType<OptionType> = ComponentType<OptionPanelProps<OptionType>>;
+export type OptionsPanelType<OptionType extends MapTypeAllowedData<OptionType>> = ComponentType<OptionPanelProps<OptionType>>;

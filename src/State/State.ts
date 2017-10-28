@@ -1,22 +1,32 @@
-import {Record} from 'immutable';
+import {fromJS, List, Map} from 'immutable';
 import {
   applyMiddleware, combineReducers, createStore, Action, Reducer, Store,
 } from 'redux';
-import {persistReducer, persistStore, Persistor} from 'redux-persist';
-import immutableTransform = require('redux-persist-transform-immutable');
+import {createTransform, persistReducer, persistStore, Persistor} from 'redux-persist';
 import {Service} from 'typedi';
 import {LazyInject} from '../Decorators/LazyInject';
 import {loggerMiddlerware} from './loggerMiddleware';
 import {storageSyncListener, storageSyncMiddleware} from './syncMiddleware';
 import {BrowserStorageAdapter, StorageAdaper} from './BrowserStorageAdapter';
 import {reducer as OptionsReducer, OptionsState} from './Options';
-import {OptionsStateFactory} from './Options/Interfaces';
 
 export interface StoreContents {
   options: OptionsState;
 }
 
 export const getOptionsFromState = (state: StoreContents) => state.options;
+
+const immutableTransform = createTransform(
+  (item: Map<string, {}> | List<{}>) => {
+    console.log('serializing', item, 'to', item.toJS());
+    return item.toJS();
+  },
+  (data: {}) => {
+    console.log('deserializing', data);
+    return fromJS(data);
+  },
+  {whitelist: ['options']},
+);
 
 @Service()
 export class State {
@@ -32,7 +42,7 @@ export class State {
       {
         key: 'root',
         storage: this.storageAdapter,
-        transforms: [immutableTransform({records: [OptionsStateFactory]})],
+        transforms: [immutableTransform],
       },
       combineReducers({
         options: OptionsReducer,
@@ -58,7 +68,8 @@ export class State {
       unsubscribe = this.persistor.subscribe(checkHydrated);
       checkHydrated();
     });
-    storageSyncListener(this.store, this.storageAdapter);
+    // TODO: storageSyncListener currently butchers immutableJS that might be passed as payload.
+    // storageSyncListener(this.store, this.storageAdapter);
   }
 
   public getOptions(): OptionsState {
@@ -74,6 +85,6 @@ export class State {
   }
 
   public dispatch(action: Action): void {
-    this.store.dispatch(action);
+    this.hydrated.then(() => this.store.dispatch(action));
   }
 }

@@ -21,22 +21,22 @@ import {
   setSelectedStrategy,
   setStrategyOptions,
 } from 'State/Options/Actions';
-import {getOptionsFromState, StoreContents} from 'State/State';
-import {BaseStrategy} from '../../PluggableStrategies/BaseStrategy';
 import {
   ExtensionName,
   ExtensionNameArgs,
   ExtensionOptionsArgs,
-  OptionsDataType,
   StrategyName,
   StrategyNameArgs,
   StrategyOptionsArgs,
   StrategyType,
-} from '../../State/Options/Interfaces';
+  } from 'State/Options/Interfaces';
 import {
   getAllExtensionOptions, getAllStrategyOptions, getEnabledExtensions,
   getSelectedStrategies,
-} from '../../State/Options/Selectors';
+} from 'State/Options/Selectors';
+import {getOptionsFromState, StoreContents} from 'State/State';
+import {TypedMap} from 'State/Types/TypedMap';
+import {BaseStrategy} from '../../PluggableStrategies/BaseStrategy';
 import {StrategyTab} from './StrategyTab';
 
 type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat';
@@ -46,9 +46,9 @@ interface Props {
 
 interface MappedProps {
   enabledExtensions: Set<ExtensionName>;
-  extensionOptions: Map<ExtensionName, OptionsDataType<{}>>;
+  extensionOptions: Map<ExtensionName, TypedMap<{}>>;
   selectedStrategies: Map<StrategyType, StrategyName>;
-  strategyOptions: Map<StrategyType, Map<StrategyName, OptionsDataType<{}>>>;
+  strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
   enableExtension: (args: ExtensionNameArgs) => void;
   disableExtension: (args: ExtensionNameArgs) => void;
   setExtensionOptions: (args: ExtensionOptionsArgs) => void;
@@ -91,7 +91,6 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
 
   public render(): JSX.Element {
     const {selectedTab} = this.state;
-
     const {
       classes,
       enabledExtensions,
@@ -122,7 +121,7 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
             <Tab
               key={`tab_${strategyType}`}
               value={strategyType}
-              label={tabLabel}
+              label={browser.i18n.getMessage(tabLabel)}
             />
           ))}
         </Tabs>
@@ -149,7 +148,7 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
                       <CardContent>
                         <OptionsPanel
                           options={extensionOptions.get(extensionName)!}
-                          updateOptions={(options: OptionsDataType<{}>) => setExtensionOptions({
+                          updateOptions={(options: TypedMap<{}>) => setExtensionOptions({
                             extensionName,
                             options,
                           })}
@@ -163,23 +162,24 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
           </List>
         </div>
         }
-        {strategyTabs.map(({strategyType, tabLabel, strategies}: StrategyTabData) => {
-          console.log({strategyType, tabLabel, strategies, x: strategies.map(x => x.name)});
-          const selectedStrategy = selectedStrategies.get(strategyType) || strategies[0].name;
-          return (
-            <StrategyTab
-              key={`tabContents_${strategyType}`}
-              label={tabLabel}
-              strategies={strategies}
-              selectedStrategyName={selectedStrategy}
-              strategyOptions={strategyOptions.getIn([strategyType, selectedStrategy])}
-              updateSelectedStrategyName={(strategyName: string) =>
-                setSelectedStrategy({strategyType, strategyName})}
-              updateOptions={(options: OptionsDataType<{}>) =>
-                setStrategyOptions({strategyType, strategyName: selectedStrategy, options})}
-            />
-          );
-        })}
+        {strategyTabs
+          .filter(({strategyType}: StrategyTabData) => strategyType === selectedTab)
+          .map(({strategyType, tabLabel, strategies}: StrategyTabData) => {
+            const selectedStrategy = selectedStrategies.get(strategyType, strategies[0].name);
+            return (
+              <StrategyTab
+                key={`tabContents_${strategyType}`}
+                label={tabLabel}
+                strategies={strategies}
+                selectedStrategyName={selectedStrategy}
+                strategyOptions={strategyOptions.getIn([strategyType, selectedStrategy], Map())}
+                updateSelectedStrategyName={(strategyName: string) =>
+                  setSelectedStrategy({strategyType, strategyName})}
+                updateOptions={(options: TypedMap<{}>) =>
+                  setStrategyOptions({strategyType, strategyName: selectedStrategy, options})}
+              />
+            );
+          })}
       </div>
     );
   }

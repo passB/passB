@@ -1,8 +1,8 @@
-import {score, IScoringOptions} from 'fuzzaldrin-plus';
+import {score} from 'fuzzaldrin-plus';
 import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {EntryNode} from 'PassB';
-import {createOptionsData, OptionsDataType} from 'State/Options/Interfaces';
+import {createTypedMap} from 'State/Types/TypedMap';
 import {Matcher, MatcherTag} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
@@ -12,7 +12,6 @@ interface ScoredEntry {
 }
 
 export interface Options {
-  fuzzOptions: IScoringOptions;
   minScore: number;
   maxResults: number;
 }
@@ -24,21 +23,27 @@ export interface Options {
 export class FuzzaldrinMatcher extends Matcher<Options> {
   public static readonly URL_CLEAN_REGEX: RegExp = /^(http|ftp)s?:\/\//;
 
-  public readonly defaultOptions: OptionsDataType<Options> = createOptionsData({
-    fuzzOptions: {
-      pathSeparator: '/',
-      allowErrors: true,
-      isPath: true,
-    },
-    minScore: 1,
-    maxResults: 20,
-  });
-  public readonly name: string = FuzzaldrinMatcher.name;
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
+
+  public constructor() {
+    super(
+      'FuzzaldrinMatcher',
+      createTypedMap({
+        minScore: 1,
+        maxResults: 20,
+      }),
+    );
+  }
 
   public async filterEntries(url: string, entries: EntryNode[]): Promise<EntryNode[]> {
     url = url.replace(FuzzaldrinMatcher.URL_CLEAN_REGEX, '');
-    const {fuzzOptions, maxResults, minScore} = this.options.toJS();
+    const {maxResults, minScore} = this.options.toJS();
+
+    const fuzzOptions = {
+      pathSeparator: '/',
+      allowErrors: true,
+      isPath: true,
+    };
 
     return entries
       .map((entry: EntryNode): ScoredEntry => {

@@ -29,9 +29,11 @@ const theme = createMuiTheme({
 
 const state = Container.get(State);
 
+state.hydrated.then(() => console.log('rehydrated in options:', state.getOptions().toJS()));
+
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
-    <PersistGate persistor={state.getPersistor()} loading={() => 'loading'}>
+    <PersistGate persistor={state.getPersistor()} loading={'loading'}>
       <Provider store={state.getStore()}>
         <AddonOptions/>
       </Provider>

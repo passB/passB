@@ -12,11 +12,14 @@ export interface StorageAdaper {
 @Service()
 export class BrowserStorageAdapter implements StorageAdaper {
   public async getItem<T extends {}>(key: string): Promise<T> {
+    //return void 0 as any as T;
     const result = await browser.storage.local.get(key);
+    console.log('returning', result[key], 'of', result);
     return result[key];
   }
 
   public setItem<T extends {}>(key: string, item: T): Promise<void> {
+    console.log('set', key, item);
     return browser.storage.local.set({[key]: item});
   }
 
