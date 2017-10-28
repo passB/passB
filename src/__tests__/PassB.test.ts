@@ -1,4 +1,18 @@
 // tslint:disable:no-var-requires max-classes-per-file
+import {PassB as PassBType} from 'PassB';
+import {Extension} from '../Extensions/Extension';
+import {BaseStrategy} from '../PluggableStrategies/BaseStrategy';
+
+/**
+ * prevent side-effect imports
+ * usually importing one of these would register all their implementations as tagged services
+ */
+function mockPreventSideEffects(): void {
+  jest.setMock('Extensions', require('Extensions/Extension'));
+  jest.setMock('PluggableStrategies/FileFormats', require('PluggableStrategies/FileFormats/FileFormat'));
+  jest.setMock('PluggableStrategies/Fillers', require('PluggableStrategies/Fillers/Filler'));
+  jest.setMock('PluggableStrategies/Matchers', require('PluggableStrategies/Matchers/Matcher'));
+}
 
 describe('PassB', () => {
   let {Container} = require('typedi');
@@ -12,7 +26,34 @@ describe('PassB', () => {
     PassB = require('PassB').PassB;
   });
 
+  describe('tagged injections', () => {
+    let passB: PassBType;
+    beforeAll(() => {
+      setExecutionContext('test1');
+      passB = Container.get(PassB);
+    });
+
+    const mapToClassName = (item: BaseStrategy<{}> | Extension<{}>) => item.name;
+
+    it('receives Extensions', () => {
+      expect(passB.getAllExtensions().map(mapToClassName)).toMatchSnapshot();
+    });
+
+    it('receives FileFormats', () => {
+      expect(passB.getAllFileFormats().map(mapToClassName)).toMatchSnapshot();
+    });
+
+    it('receives Fillers', () => {
+      expect(passB.getAllFillers().map(mapToClassName)).toMatchSnapshot();
+    });
+
+    it('receives Matchers', () => {
+      expect(passB.getAllMatchers().map(mapToClassName)).toMatchSnapshot();
+    });
+  });
+
   describe('extension behaviour', () => {
+    beforeAll(mockPreventSideEffects);
 
     describe('extension injection', () => {
 
