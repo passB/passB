@@ -1,14 +1,16 @@
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
 import {reducerWithInitialState} from 'typescript-fsa-reducers';
+import {createTypedMap, TypedMap} from '../Types/TypedMap';
 import * as Actions from './Actions';
 import {
-  initialState,
   ExtensionName,
   ExtensionNameArgs,
   ExtensionOptionsArgs,
   OptionsState,
+  StrategyName,
   StrategyNameArgs,
   StrategyOptionsArgs,
+  StrategyType,
 } from './Interfaces';
 
 const setExtensionDefaultOptions =
@@ -48,6 +50,15 @@ const setStrategyOptions =
 
 const setSelectedStrategy = (oldState: OptionsState, {strategyType, strategyName}: StrategyNameArgs): OptionsState =>
   oldState.updateIn(['selectedStrategies', strategyType], () => strategyName);
+
+const initialState: OptionsState = createTypedMap({
+  enabledExtensions: List<ExtensionName>(),
+  extensionsDefaultOptions: Map<ExtensionName, TypedMap<{}>>(),
+  extensionsOptions: Map<ExtensionName, TypedMap<{}>>(),
+  selectedStrategies: Map<StrategyType, StrategyName>(),
+  strategyDefaultOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>(),
+  strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>(),
+});
 
 export const reducer = reducerWithInitialState(initialState)
   .case(Actions.setExtensionDefaultOptions, setExtensionDefaultOptions)

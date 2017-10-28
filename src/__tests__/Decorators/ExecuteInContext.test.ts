@@ -1,12 +1,12 @@
 // tslint:disable:max-classes-per-file
-import {mockBrowserMessaging} from 'testSetup/mockBrowserMessaging';
+import {mockBrowserMessaging} from '__test_helpers__/mockBrowserMessaging';
 import {
   executeInCorrectContext,
   getExecutionContext,
   setExecutionContext,
   AsynchronousCallable,
   AsynchronousCallableServiceFactory,
-} from './ExecuteInContext';
+} from 'Decorators/ExecuteInContext';
 
 describe('ExecuteInContext', () => {
 

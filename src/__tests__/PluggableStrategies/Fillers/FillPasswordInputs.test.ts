@@ -1,6 +1,6 @@
 import 'jest';
 import {Container} from 'typedi';
-import {fillPasswordInputs, FillPasswordInputs} from './FillPasswordInputs';
+import {fillPasswordInputs, FillPasswordInputs} from 'PluggableStrategies/Fillers/FillPasswordInputs';
 
 describe('FillPasswordInputs', () => {
 
