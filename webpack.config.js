@@ -90,7 +90,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('web'),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
       },
     }),
     new webpack.optimize.CommonsChunkPlugin({

@@ -1,5 +1,7 @@
 import {RouteProps} from 'react-router';
 import {Token} from 'typedi';
+import {executionContext} from 'Constants';
+import {getExecutionContext} from 'Decorators/ExecuteInContext';
 import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {getExtensionOptions, setExtensionDefaultOptions, TypedMap} from 'State/Options';
@@ -32,7 +34,9 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
     public readonly name: ExtensionName,
     public readonly defaultOptions: TypedMap<OptionType>,
   ) {
-    this.state.dispatch(setExtensionDefaultOptions({extensionName: name, options: defaultOptions}));
+    if (getExecutionContext() === executionContext.background) {
+      this.state.dispatch(setExtensionDefaultOptions({extensionName: name, options: defaultOptions}));
+    }
   }
 
   public abstract initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void>;

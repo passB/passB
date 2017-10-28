@@ -1,5 +1,6 @@
 import {RouteProps} from 'react-router';
 import {Service} from 'typedi';
+import {executionContext} from 'Constants';
 import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
 import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
@@ -78,7 +79,7 @@ export class PassExtension extends Extension<Options> {
     return (await browser.tabs.query({active: true, currentWindow: true}))[0];
   }
 
-  @executeInCorrectContext('background')
+  @executeInCorrectContext(executionContext.background)
   private async executeFillAction(entry: string): Promise<{}> {
     const initialUrl = (await this.getCurrentTab()).url;
     const entryContents = await this.passCli.show(entry);

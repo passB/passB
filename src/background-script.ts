@@ -1,15 +1,11 @@
 import {Container} from 'typedi';
+import {executionContext} from 'Constants';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
+import {PassB} from 'PassB';
 import {State} from 'State/State';
-import {PassB} from './PassB';
 
-setExecutionContext('background');
+setExecutionContext(executionContext.background);
 
-browser.storage.local.clear();
-
-const state = Container.get(State);
-Container.get(PassB).initialize();
-
-state.hydrated.then(() => console.log(state.getOptions().toJS()));
-state.getStore().subscribe(() => console.log(state.getOptions().toJS()));
-
+Container.get(State).hydrated.then(() => {
+  Container.get(PassB).initialize();
+});
