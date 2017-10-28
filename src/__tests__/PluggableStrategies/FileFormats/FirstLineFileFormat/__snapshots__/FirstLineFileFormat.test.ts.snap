@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FirstLineFileFormat dispatches expected defaultOptions in background context 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "options": Immutable.Map {
+          "usernameStyle": "SecondLine",
+        },
+        "strategyName": "FirstLineFileFormat",
+        "strategyType": "FileFormat",
+      },
+      "type": "OPTIONS/SET_STRATEGY_DEFAULT_OPTIONS",
+    },
+  ],
+]
+`;

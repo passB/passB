@@ -1,5 +1,5 @@
 import {List, Map} from 'immutable';
-import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
+import {TypedMap} from 'State/Types/TypedMap';
 
 export type ExtensionName = string;
 
@@ -14,15 +14,6 @@ export interface IOptionsState {
   strategyDefaultOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
   strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
 }
-
-export const initialState: OptionsState = createTypedMap({
-  enabledExtensions: List<ExtensionName>(),
-  extensionsDefaultOptions: Map<ExtensionName, TypedMap<{}>>(),
-  extensionsOptions: Map<ExtensionName, TypedMap<{}>>(),
-  selectedStrategies: Map<StrategyType, StrategyName>(),
-  strategyDefaultOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>(),
-  strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>(),
-});
 
 export type OptionsState = TypedMap<IOptionsState>;
 

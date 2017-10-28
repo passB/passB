@@ -1,4 +1,3 @@
-import {fromJS, List, Map} from 'immutable';
 import {
   applyMiddleware, combineReducers, createStore, Action, Reducer, Store,
 } from 'redux';
