@@ -1,0 +1,290 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PassEntries Reducer has an empty map as initial state 1`] = `Immutable.OrderedMap {}`;
+
+exports[`PassEntries Reducer resets extension "testExtension" 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {},
+  },
+}
+`;
+
+exports[`PassEntries Reducer tree building adds actions for similarly named directories and files into different nodes 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {
+      "foo/": Immutable.Map {
+        "name": "foo/",
+        "fullPath": "foo/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "bar": Immutable.Map {
+            "name": "bar",
+            "fullPath": "foo/bar",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "extension": "testExtension",
+                "action": "fileTest",
+              },
+            ],
+            "children": Immutable.OrderedMap {},
+          },
+          "bar/": Immutable.Map {
+            "name": "bar/",
+            "fullPath": "foo/bar/",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "extension": "testExtension",
+                "action": "directoryTest",
+              },
+            ],
+            "children": Immutable.OrderedMap {
+              "contents": Immutable.Map {
+                "name": "contents",
+                "fullPath": "foo/bar/contents",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "fileTest2",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`PassEntries Reducer tree building adds actions to root node 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [
+      Immutable.Map {
+        "extension": "testExtension",
+        "action": "test",
+      },
+      Immutable.Map {
+        "extension": "testExtension",
+        "action": "test2",
+      },
+    ],
+    "children": Immutable.OrderedMap {},
+  },
+}
+`;
+
+exports[`PassEntries Reducer tree building builds an empty tree 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {},
+  },
+}
+`;
+
+exports[`PassEntries Reducer tree building directories adds actions 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {
+      "dir/": Immutable.Map {
+        "name": "dir/",
+        "fullPath": "dir/",
+        "actions": Immutable.List [
+          Immutable.Map {
+            "extension": "testExtension",
+            "action": "test",
+          },
+        ],
+        "children": Immutable.OrderedMap {},
+      },
+      "foo/": Immutable.Map {
+        "name": "foo/",
+        "fullPath": "foo/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "dir/": Immutable.Map {
+            "name": "dir/",
+            "fullPath": "foo/dir/",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "extension": "testExtension",
+                "action": "test2",
+              },
+            ],
+            "children": Immutable.OrderedMap {},
+          },
+          "bar/": Immutable.Map {
+            "name": "bar/",
+            "fullPath": "foo/bar/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "dir/": Immutable.Map {
+                "name": "dir/",
+                "fullPath": "foo/bar/dir/",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test3",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`PassEntries Reducer tree building directories creates missing intermediate directory nodes if necessary 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {
+      "foo/": Immutable.Map {
+        "name": "foo/",
+        "fullPath": "foo/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "bar/": Immutable.Map {
+            "name": "bar/",
+            "fullPath": "foo/bar/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "dir/": Immutable.Map {
+                "name": "dir/",
+                "fullPath": "foo/bar/dir/",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`PassEntries Reducer tree building files adds actions to file nodes 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {
+      "file": Immutable.Map {
+        "name": "file",
+        "fullPath": "file",
+        "actions": Immutable.List [
+          Immutable.Map {
+            "extension": "testExtension",
+            "action": "test",
+          },
+        ],
+        "children": Immutable.OrderedMap {},
+      },
+      "foo/": Immutable.Map {
+        "name": "foo/",
+        "fullPath": "foo/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "file": Immutable.Map {
+            "name": "file",
+            "fullPath": "foo/file",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "extension": "testExtension",
+                "action": "test2",
+              },
+            ],
+            "children": Immutable.OrderedMap {},
+          },
+          "bar/": Immutable.Map {
+            "name": "bar/",
+            "fullPath": "foo/bar/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "file": Immutable.Map {
+                "name": "file",
+                "fullPath": "foo/bar/file",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test3",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`PassEntries Reducer tree building files creates missing intermediate directory nodes if necessary 1`] = `
+Immutable.OrderedMap {
+  "testExtension": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {
+      "foo/": Immutable.Map {
+        "name": "foo/",
+        "fullPath": "foo/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "bar/": Immutable.Map {
+            "name": "bar/",
+            "fullPath": "foo/bar/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "file": Immutable.Map {
+                "name": "file",
+                "fullPath": "foo/bar/file",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;

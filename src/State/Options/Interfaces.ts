@@ -1,10 +1,6 @@
 import {List, Map} from 'immutable';
+import {ExtensionName, StrategyName, StrategyType} from 'State/Interfaces';
 import {TypedMap} from 'State/Types/TypedMap';
-
-export type ExtensionName = string;
-
-export type StrategyType = 'FileFormat' | 'Filler' | 'Matcher';
-export type StrategyName = string;
 
 export interface IOptionsState {
   enabledExtensions: List<ExtensionName>;

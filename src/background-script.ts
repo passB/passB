@@ -7,5 +7,5 @@ import {State} from 'State/State';
 setExecutionContext(executionContext.background);
 
 Container.get(State).hydrated.then(() => {
-  Container.get(PassB).initialize();
+  Container.get(PassB).reloadEntries();
 });

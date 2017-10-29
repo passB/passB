@@ -1,18 +1,27 @@
 import {List, Map} from 'immutable';
 import {createSelector} from 'reselect';
-import {TypedMap} from '../Types/TypedMap';
-import {
-  ExtensionName,
-  OptionsState,
-  StrategyName,
-  StrategyType,
-  } from './Interfaces';
+import {ExtensionName, StrategyName, StrategyType} from 'State/Interfaces';
+import {getOptionsState} from 'State/Selectors';
+import {StoreContents} from 'State/State';
+import {TypedMap} from 'State/Types/TypedMap';
+import {OptionsState} from './Interfaces';
 
-export const getEnabledExtensions = (state: OptionsState): List<ExtensionName> => state.get('enabledExtensions', List());
-const getExtensionDefaultOptions = (state: OptionsState) => state.get('extensionsDefaultOptions', Map());
-const getExtensionSpecifiedOptions = (state: OptionsState) => state.get('extensionsOptions', Map());
+export const getEnabledExtensions = createSelector(
+  getOptionsState,
+  (state: OptionsState): List<ExtensionName> => state.get('enabledExtensions', List()),
+);
 
-export const getAllExtensionOptions: (state: OptionsState) => Map<ExtensionName, TypedMap<{}>> =
+const getExtensionDefaultOptions = createSelector(
+  getOptionsState,
+  (state: OptionsState) => state.get('extensionsDefaultOptions', Map()),
+);
+
+const getExtensionSpecifiedOptions = createSelector(
+  getOptionsState,
+  (state: OptionsState) => state.get('extensionsOptions', Map()),
+);
+
+export const getAllExtensionOptions: (state: StoreContents) => Map<ExtensionName, TypedMap<{}>> =
   createSelector(
     getExtensionDefaultOptions,
     getExtensionSpecifiedOptions,
@@ -22,19 +31,28 @@ export const getAllExtensionOptions: (state: OptionsState) => Map<ExtensionName,
     ) => Map<ExtensionName, TypedMap<{}>>().mergeDeep(defaultOptions, specifiedOptions),
   );
 
-export const getExtensionOptions = (state: OptionsState, extensionName: ExtensionName) =>
+export const getExtensionOptions = (state: StoreContents, extensionName: ExtensionName) =>
   getAllExtensionOptions(state).get(extensionName, Map()); // tslint:disable-line:no-any
 
-export const getSelectedStrategies = (state: OptionsState): Map<StrategyType, StrategyName> =>
-  state.get('selectedStrategies', Map());
+export const getSelectedStrategies = createSelector(
+  getOptionsState,
+  (state: OptionsState): Map<StrategyType, StrategyName> =>
+    state.get('selectedStrategies', Map()),
+);
 
-export const getSelectedStrategy = (state: OptionsState, strategyType: StrategyType): string | undefined =>
+export const getSelectedStrategy = (state: StoreContents, strategyType: StrategyType): string | undefined =>
   getSelectedStrategies(state).get(strategyType);
 
-const getStrategyDefaultOptions = (state: OptionsState) => state.get('strategyDefaultOptions', Map());
-const getStrategySpecifiedOptions = (state: OptionsState) => state.get('strategyOptions', Map());
+const getStrategyDefaultOptions = createSelector(
+  getOptionsState,
+  (state: OptionsState) => state.get('strategyDefaultOptions', Map()),
+);
+const getStrategySpecifiedOptions = createSelector(
+  getOptionsState,
+  (state: OptionsState) => state.get('strategyOptions', Map()),
+);
 
-export const getAllStrategyOptions: (state: OptionsState) => Map<StrategyType, Map<StrategyName, TypedMap<{}>>> =
+export const getAllStrategyOptions: (state: StoreContents) => Map<StrategyType, Map<StrategyName, TypedMap<{}>>> =
   createSelector(
     getStrategyDefaultOptions,
     getStrategySpecifiedOptions,
@@ -44,7 +62,7 @@ export const getAllStrategyOptions: (state: OptionsState) => Map<StrategyType, M
     ) => Map<StrategyType, Map<StrategyName, TypedMap<{}>>>().mergeDeep(defaultOptions, specifiedOptions),
   );
 
-export const getStrategyOptions = (state: OptionsState, strategyType: StrategyType, strategyName: StrategyName) =>
+export const getStrategyOptions = (state: StoreContents, strategyType: StrategyType, strategyName: StrategyName) =>
   getAllStrategyOptions(state).getIn(
     [strategyType, strategyName],
     Map(),

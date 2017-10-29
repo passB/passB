@@ -22,21 +22,19 @@ import {
   setStrategyOptions,
 } from 'State/Options/Actions';
 import {
-  ExtensionName,
   ExtensionNameArgs,
   ExtensionOptionsArgs,
-  StrategyName,
   StrategyNameArgs,
   StrategyOptionsArgs,
-  StrategyType,
-  } from 'State/Options/Interfaces';
+} from 'State/Options/Interfaces';
 import {
   getAllExtensionOptions, getAllStrategyOptions, getEnabledExtensions,
   getSelectedStrategies,
 } from 'State/Options/Selectors';
-import {getOptionsFromState, StoreContents} from 'State/State';
+import {StoreContents} from 'State/State';
 import {TypedMap} from 'State/Types/TypedMap';
 import {BaseStrategy} from '../../PluggableStrategies/BaseStrategy';
+import {ExtensionName, StrategyName, StrategyType} from '../../State/Interfaces';
 import {StrategyTab} from './StrategyTab';
 
 type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat';
@@ -188,15 +186,12 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
 export const AddonOptions: React.ComponentClass<Props> = compose(
   withStyles<keyof typeof styles>(styles),
   connect(
-    (state: StoreContents) => {
-      const options = getOptionsFromState(state);
-      return {
-        enabledExtensions: getEnabledExtensions(options),
-        extensionOptions: getAllExtensionOptions(options),
-        selectedStrategies: getSelectedStrategies(options),
-        strategyOptions: getAllStrategyOptions(options),
-      };
-    },
+    (state: StoreContents) => ({
+      enabledExtensions: getEnabledExtensions(state),
+      extensionOptions: getAllExtensionOptions(state),
+      selectedStrategies: getSelectedStrategies(state),
+      strategyOptions: getAllStrategyOptions(state),
+    }),
     {
       enableExtension,
       disableExtension,

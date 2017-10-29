@@ -3,8 +3,9 @@ import {Service} from 'typedi';
 import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {PassCli} from 'PassCli';
+import {EntryAction} from 'State/PassEntries/Interfaces';
 import {createTypedMap} from 'State/Types/TypedMap';
-import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from '..';
+import {ExecutionOptions, Extension, ExtensionTag} from '..';
 import {OptionsPanel} from './OptionsPanel';
 import {Show} from './Views/Show';
 
@@ -38,16 +39,17 @@ export class QRCodeExtension extends Extension<Options> {
     }));
   }
 
-  public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
-    for (const label of await this.passCli.list()) {
-      if (label === '' || label.endsWith('/')) {
+  public async initializeList(): Promise<void> {
+    const entries: EntryAction[] = [];
+
+    for (const fullPath of await this.passCli.list()) {
+      if (fullPath === '' || fullPath.endsWith('/')) {
         continue;
       }
-      registerEntryCallback({
-        label,
-        actions: this.actions,
-      });
+
+      entries.push(...this.actions.map((action: string) => ({fullPath, action })));
     }
+    this.setEntries(entries);
   }
 
   public getLabelForAction(action: string): string {
@@ -62,7 +64,7 @@ export class QRCodeExtension extends Extension<Options> {
   public executeAction(action: string, entry: string, {navigateTo}: ExecutionOptions): void {
     switch (action) {
       case 'show':
-        navigateTo('/extension/QRCode/Show', {entry, options: this.options});
+        navigateTo('/extension/QRCode/Show', {entry, options: this.options.toJS()});
         break;
       default:
         console.error('unknown action:', action);

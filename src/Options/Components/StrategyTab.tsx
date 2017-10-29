@@ -2,7 +2,7 @@ import {FormControl, InputLabel, MenuItem, Select} from 'material-ui';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
-import {StrategyName} from 'State/Options/Interfaces';
+import {StrategyName} from 'State/Interfaces';
 import {TypedMap} from 'State/Types/TypedMap';
 
 interface Props {

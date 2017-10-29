@@ -4,10 +4,12 @@ import {executionContext} from 'Constants';
 import {getExecutionContext} from 'Decorators/ExecuteInContext';
 import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {getExtensionOptions, setExtensionDefaultOptions, TypedMap} from 'State/Options';
-import {ExtensionName} from 'State/Options/Interfaces';
+import {ExtensionName} from 'State/Interfaces';
+import {getExtensionOptions, setExtensionDefaultOptions} from 'State/Options';
+import {setEntries} from 'State/PassEntries/Actions';
+import {EntryAction} from 'State/PassEntries/Interfaces';
 import {State} from 'State/State';
-import {MapTypeAllowedData} from 'State/Types/TypedMap';
+import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
 
 export interface EntryActions {
   label: string;
@@ -39,12 +41,16 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
     }
   }
 
-  public abstract initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void>;
+  public abstract initializeList(): Promise<void>;
   public abstract getLabelForAction(action: string): string;
   public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 
   protected get options(): TypedMap<OptionType> {
-    return getExtensionOptions(this.state.getOptions(), this.name) as TypedMap<OptionType>;
+    return getExtensionOptions(this.state.getState(), this.name) as TypedMap<OptionType>;
+  }
+
+  protected setEntries(entries: EntryAction[]): void {
+    this.state.dispatch(setEntries({extensionName: this.name, entries}));
   }
 }
 

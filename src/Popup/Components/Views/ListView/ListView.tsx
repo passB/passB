@@ -1,10 +1,16 @@
+import {OrderedMap} from 'immutable';
 import debounce = require('lodash.debounce');
 import {List, ListItem, ListItemText, TextField} from 'material-ui';
 import {Sync} from 'material-ui-icons';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
+import {connect} from 'react-redux';
+import {compose} from 'recompose';
 import {LazyInject} from 'Decorators/LazyInject';
-import {EntryNode, PassB} from 'PassB';
+import {PassB} from 'PassB';
+import {EntryNode} from 'State/PassEntries/Interfaces';
+import {getCombinedPassEntries} from 'State/PassEntries/Selectors';
+import {StoreContents} from 'State/State';
 import {CollapsibleListItem} from './CollapsibleListItem';
 import {EntryNodeList} from './EntryNodeList';
 
@@ -12,8 +18,11 @@ interface Props {
   url: string;
 }
 
+interface ConnectedProps {
+  rootNode: EntryNode;
+}
+
 interface State {
-  rootNode?: EntryNode;
   filteredRootNode?: EntryNode;
   contextualRootNode?: EntryNode;
 }
@@ -30,42 +39,49 @@ const styles = {
 
 function flattenEntryNode(currentNode: EntryNode, flattened: EntryNode[] = []): EntryNode[] {
   flattened.push(currentNode);
-  Object.values(currentNode.children).forEach((item: EntryNode) => flattenEntryNode(item, flattened));
+  currentNode.get('children').forEach((item: EntryNode) => flattenEntryNode(item, flattened));
 
   return flattened;
 }
 
-function deepFilterEntryNodes(node: EntryNode, filteredNodes: EntryNode[]): void {
-  for (const [key, childNode] of Object.entries(node.children)) {
-    deepFilterEntryNodes(childNode, filteredNodes);
-    if (!(filteredNodes.includes(childNode) || Object.values(childNode.children).length > 0)) {
-      delete (node.children[key]);
-    }
-  }
+function deepFilterEntryNodes(node: EntryNode, filteredNodes: EntryNode[]): EntryNode {
+  const nodeFullNames = filteredNodes.map((filtered: EntryNode) => filtered.get('fullPath'));
+  return node.update(
+    'children',
+    (origChildren: OrderedMap<string, EntryNode>) =>
+      origChildren
+        .map((child: EntryNode) => deepFilterEntryNodes(child, filteredNodes))
+        .filter((child: EntryNode) => nodeFullNames.includes(child.get('fullPath')) || child.get('children').count() > 0),
+  );
 }
 
-class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof styles>, State> {
+type InnerProps = Props & ConnectedProps & WithStyles<keyof typeof styles>;
+
+class ListViewComponent extends React.Component<InnerProps, State> {
   public state: State = {};
 
   @LazyInject(() => PassB)
   private passB: PassB;
 
-  public constructor(props: Props & WithStyles<keyof typeof styles>) {
+  public constructor(props: InnerProps) {
     super(props);
 
     this.filterNodes = debounce(this.filterNodes.bind(this), 50);
   }
 
   public componentDidMount(): void {
-    this.passB.getRootNode()
-      .then((rootNode: EntryNode) =>
-        this.setState({rootNode}, () => this.recalculateContextualEntries()),
-      );
+    this.recalculateContextualEntries(this.props);
+  }
+
+  public componentWillReceiveProps(newProps: InnerProps): void {
+    if (newProps.url !== this.props.url || newProps.rootNode !== this.props.rootNode) {
+      this.recalculateContextualEntries(newProps);
+    }
   }
 
   public render(): JSX.Element {
-    const {classes} = this.props;
-    const {rootNode, contextualRootNode, filteredRootNode} = this.state;
+    const {classes, rootNode} = this.props;
+    const {contextualRootNode, filteredRootNode} = this.state;
 
     return (
       <List>
@@ -107,28 +123,29 @@ class ListViewComponent extends React.Component<Props & WithStyles<keyof typeof 
   }
 
   private filterNodes(filter: string): void {
-    const newNode = JSON.parse(JSON.stringify(this.state.rootNode));
-    const flattened: EntryNode[] = flattenEntryNode(newNode);
-    const filteredNodes = flattened.filter((node: EntryNode) => node.fullPath.includes(filter));
-    deepFilterEntryNodes(newNode, filteredNodes);
+    const {rootNode} = this.props;
+    const flattened: EntryNode[] = flattenEntryNode(rootNode);
+    const filteredNodes = flattened.filter((node: EntryNode) => node.get('fullPath').includes(filter));
 
-    this.setState({filteredRootNode: newNode});
+    this.setState({filteredRootNode: deepFilterEntryNodes(rootNode, filteredNodes)});
 
   }
 
-  private async recalculateContextualEntries(): Promise<void> {
-    if (!this.props.url || !this.state.rootNode) {
+  private async recalculateContextualEntries(props: InnerProps): Promise<void> {
+    const {rootNode, url} = props;
+    if (!url || !rootNode) {
       return;
     }
 
-    const newNode = JSON.parse(JSON.stringify(this.state.rootNode));
-    const flattened: EntryNode[] = flattenEntryNode(newNode);
     const matcher = await this.passB.getMatcher();
-    const filteredNodes = await matcher.filterEntries(this.props.url || '', flattened);
-    deepFilterEntryNodes(newNode, filteredNodes);
-
-    this.setState({contextualRootNode: newNode});
+    const filteredNodes = await matcher.filterEntries(url, flattenEntryNode(rootNode));
+    this.setState({contextualRootNode: deepFilterEntryNodes(rootNode, filteredNodes)});
   }
 }
 
-export const ListView = withStyles<keyof typeof styles>(styles)(ListViewComponent);
+export const ListView = compose<InnerProps, Props>(
+  withStyles<keyof typeof styles>(styles),
+  connect<ConnectedProps>((state: StoreContents) => ({
+    rootNode: getCombinedPassEntries(state),
+  })),
+)(ListViewComponent);

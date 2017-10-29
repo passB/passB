@@ -2,9 +2,18 @@ import {fromJS, List, Map} from 'immutable';
 
 type SimpleValues = string | number | boolean | RegExp;
 
-type AllowedValue = SimpleValues | List<SimpleValues> | AllowedMap | undefined;
+type AllowedValue =
+  SimpleValues |
+  AllowedMap |
+  AllowedList |
+  TypedMap<any> | // tslint:disable-line:no-any
+  undefined;
 
-interface AllowedMap extends Map<string, AllowedValue> {}
+interface AllowedList extends List<AllowedValue> {
+}
+
+interface AllowedMap extends Map<string, AllowedValue> {
+}
 
 export type MapTypeAllowedData<DataType> = {
   [K in keyof DataType]: AllowedValue;
