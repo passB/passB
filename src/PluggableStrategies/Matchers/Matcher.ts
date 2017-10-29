@@ -1,7 +1,7 @@
 import {Token} from 'typedi';
-import {EntryNode} from 'PassB';
 import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
-import {StrategyName} from 'State/Options/Interfaces';
+import {StrategyName} from 'State/Interfaces';
+import {EntryNode} from 'State/PassEntries/Interfaces';
 import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
 
 export abstract class Matcher<OptionType extends MapTypeAllowedData<OptionType>> extends BaseStrategy<OptionType> {

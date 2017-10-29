@@ -3,18 +3,20 @@ import {
 } from 'redux';
 import {persistReducer, persistStore, Persistor} from 'redux-persist';
 import immutableTransform = require('redux-persist-transform-immutable');
-import { composeWithDevTools } from 'remote-redux-devtools';
+import {composeWithDevTools} from 'remote-redux-devtools';
 import {Service} from 'typedi';
-import {LazyInject} from '../Decorators/LazyInject';
+import {getExecutionContext} from 'Decorators/ExecuteInContext';
+import {LazyInject} from 'Decorators/LazyInject';
 import {storageSyncListener, storageSyncMiddleware} from './syncMiddleware';
 import {BrowserStorageAdapter, StorageAdaper} from './BrowserStorageAdapter';
 import {reducer as OptionsReducer, OptionsState} from './Options';
+import {PassEntryState} from './PassEntries/Interfaces';
+import {reducer as PassEntryReducer} from './PassEntries/Reducers';
 
 export interface StoreContents {
   options: OptionsState;
+  passEntries: PassEntryState;
 }
-
-export const getOptionsFromState = (state: StoreContents) => state.options;
 
 @Service()
 export class State {
@@ -34,12 +36,17 @@ export class State {
       },
       combineReducers({
         options: OptionsReducer,
+        passEntries: PassEntryReducer,
       }),
     );
 
     this.store = createStore(
       reducer,
-      composeWithDevTools(
+      composeWithDevTools({
+        hostname: 'localhost',
+        port: 8000,
+        name: `PassB - ${getExecutionContext()}`,
+      })(
         applyMiddleware(
           storageSyncMiddleware(this.storageAdapter),
         ),
@@ -50,7 +57,8 @@ export class State {
     this.hydrated = new Promise((done: () => void) => {
       let unsubscribe: () => void;
       const checkHydrated = () => {
-        if (this.persistor.getState()) {
+        const persistorState = this.persistor.getState();
+        if (persistorState && persistorState.bootstrapped) {
           if (unsubscribe) {
             unsubscribe();
           }
@@ -64,8 +72,8 @@ export class State {
     storageSyncListener(this.store, this.storageAdapter);
   }
 
-  public getOptions(): OptionsState {
-    return getOptionsFromState(this.store.getState());
+  public getState(): StoreContents {
+    return this.store.getState();
   }
 
   public getPersistor(): Persistor {

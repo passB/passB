@@ -7,7 +7,6 @@ import {PersistGate} from 'redux-persist/es/integration/react';
 import {Container} from 'typedi';
 import {executionContext} from 'Constants';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
-import {PassB} from 'PassB';
 import {State} from 'State/State';
 import {AddonOptions} from './Components/AddonOptions';
 
@@ -15,8 +14,6 @@ import 'typeface-roboto';
 import './style.scss';
 
 setExecutionContext(executionContext.options);
-
-Container.get(PassB).initialize();
 
 const theme = createMuiTheme({
   overrides: {

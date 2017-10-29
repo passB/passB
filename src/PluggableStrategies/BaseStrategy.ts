@@ -2,9 +2,10 @@ import {executionContext} from 'Constants';
 import {getExecutionContext} from 'Decorators/ExecuteInContext';
 import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {getStrategyOptions, setStrategyDefaultOptions, StrategyName, StrategyType, TypedMap} from 'State/Options';
+import {StrategyName, StrategyType} from 'State/Interfaces';
+import {getStrategyOptions, setStrategyDefaultOptions} from 'State/Options';
 import {State} from 'State/State';
-import {MapTypeAllowedData} from 'State/Types/TypedMap';
+import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
 
 export abstract class BaseStrategy<OptionType extends MapTypeAllowedData<OptionType>> {
   public abstract readonly OptionsPanel?: OptionsPanelType<OptionType>;
@@ -29,6 +30,6 @@ export abstract class BaseStrategy<OptionType extends MapTypeAllowedData<OptionT
   }
 
   protected get options(): TypedMap<OptionType> {
-    return getStrategyOptions(this.state.getOptions(), this.type, this.name) as TypedMap<OptionType>;
+    return getStrategyOptions(this.state.getState(), this.type, this.name) as TypedMap<OptionType>;
   }
 }

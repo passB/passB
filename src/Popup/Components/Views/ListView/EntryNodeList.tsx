@@ -4,7 +4,8 @@ import Avatar from 'material-ui/Avatar';
 import * as React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
 import {LazyInject} from 'Decorators/LazyInject';
-import {Action, EntryNode, PassB} from 'PassB';
+import {PassB} from 'PassB';
+import {Action, EntryNode} from 'State/PassEntries/Interfaces';
 import {CollapsibleListItem} from './CollapsibleListItem';
 
 interface Props {
@@ -18,48 +19,48 @@ class UnconnectedEntryNodeList extends React.Component<Props & RouteComponentPro
   public render(): JSX.Element {
     const {root, history} = this.props;
 
-    const actionItems = root.actions.map((action: Action) => (
+    const actionItems = root.get('actions').map((action: Action) => (
       <ListItem
         button={true}
-        key={`${action.extension}/${action.action}`}
+        key={`${action.get('extension')}/${action.get('action')}`}
         onClick={() =>
-          this.passB.getExtension(action.extension).executeAction(
-            action.action,
-            root.fullPath,
+          this.passB.getExtension(action.get('extension')).executeAction(
+            action.get('action'),
+            root.get('fullPath'),
             {navigateTo: (newUrl: string, state: {}) => history.push(newUrl, state)},
           )
         }
       >
         <ListItemText
           primary={
-            browser.i18n.getMessage(this.passB.getExtension(action.extension).getLabelForAction(action.action))
+            browser.i18n.getMessage(this.passB.getExtension(action.get('extension')).getLabelForAction(action.get('action')))
           }
         />
       </ListItem>
     ));
 
-    const childItems = Object.values(root.children).map((child: EntryNode) => (
+    const childItems = root.get('children').map((child: EntryNode) => (
       <CollapsibleListItem
-        key={child.fullPath}
+        key={child.get('fullPath')}
         CollapsedChildren={() => <UnconnectedEntryNodeList {...this.props} root={child}/>}
       >
         {[
           <Avatar key="avatar">
-            {child.fullPath.endsWith('/') ?
+            {child.get('fullPath').endsWith('/') ?
               <Folder/> :
               <InsertDriveFile/>
             }
           </Avatar>,
-          <ListItemText key="text" primary={child.fullPath.replace(/\//g, '/\u200b')}/>,
+          <ListItemText key="text" primary={child.get('fullPath').replace(/\//g, '/\u200b')}/>,
         ]}
       </CollapsibleListItem>
     ));
 
     return (
       <List>
-        {actionItems}
-        {actionItems.length > 0 && childItems.length > 0 && <Divider/>}
-        {childItems}
+        {Array.from(actionItems.values())}
+        {actionItems.count() > 0 && childItems.count() > 0 && <Divider/>}
+        {Array.from(childItems.values())}
       </List>
     );
   }

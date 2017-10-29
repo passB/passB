@@ -6,8 +6,9 @@ import {LazyInject} from 'Decorators/LazyInject';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {PassB} from 'PassB';
 import {PassCli} from 'PassCli';
+import {EntryAction} from 'State/PassEntries/Interfaces';
 import {createTypedMap} from 'State/Types/TypedMap';
-import {ExecutionOptions, Extension, ExtensionTag, RegisterEntryCallback} from '..';
+import {ExecutionOptions, Extension, ExtensionTag} from '..';
 import {Show} from './Views';
 
 interface Options {
@@ -37,16 +38,17 @@ export class PassExtension extends Extension<Options> {
     super('Pass', createTypedMap({}));
   }
 
-  public async initializeList(registerEntryCallback: RegisterEntryCallback): Promise<void> {
-    for (const label of await this.passCli.list()) {
-      if (label === '' || label.endsWith('/')) {
+  public async initializeList(): Promise<void> {
+    const entries: EntryAction[] = [];
+
+    for (const fullPath of await this.passCli.list()) {
+      if (fullPath === '' || fullPath.endsWith('/')) {
         continue;
       }
-      registerEntryCallback({
-        label,
-        actions: this.actions,
-      });
+
+      entries.push(...this.actions.map((action: string) => ({fullPath, action })));
     }
+    this.setEntries(entries);
   }
 
   public getLabelForAction(action: string): string {

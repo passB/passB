@@ -1,7 +1,7 @@
 import {score} from 'fuzzaldrin-plus';
 import {Service} from 'typedi';
 import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {EntryNode} from 'PassB';
+import {EntryNode} from 'State/PassEntries/Interfaces';
 import {createTypedMap} from 'State/Types/TypedMap';
 import {Matcher, MatcherTag} from '../';
 import {OptionsPanel} from './OptionsPanel';
@@ -48,7 +48,7 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
     return entries
       .map((entry: EntryNode): ScoredEntry => {
         let accumulatedScore = 0;
-        for (const part of entry.fullPath.split('/')) {
+        for (const part of entry.get('fullPath').split('/')) {
           accumulatedScore += score(url, part, void 0, fuzzOptions);
         }
 

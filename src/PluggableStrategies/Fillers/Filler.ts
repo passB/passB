@@ -1,7 +1,7 @@
 import Tab = browser.tabs.Tab;
 import {Token} from 'typedi';
 import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
-import {StrategyName} from 'State/Options/Interfaces';
+import {StrategyName} from 'State/Interfaces';
 import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
 
 export abstract class Filler<OptionType extends MapTypeAllowedData<OptionType>> extends BaseStrategy<OptionType> {
