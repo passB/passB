@@ -77,4 +77,10 @@ export class PassB {
       .all(enabledExtensions.map((extension: Extension<{}>) => extension.initializeList()))
       .then(() => this);
   }
+
+  @executeInCorrectContext(executionContext.background)
+  public async reloadExtension(): Promise<{}> {
+    browser.runtime.reload();
+    return {};
+  }
 }

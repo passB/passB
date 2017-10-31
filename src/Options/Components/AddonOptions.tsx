@@ -3,10 +3,14 @@ import {
   Card,
   CardContent,
   Checkbox,
-  List, ListItem, ListItemText,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   Tab,
   Tabs,
 } from 'material-ui';
+import {Clear} from 'material-ui-icons';
 import {withStyles, StyleRules, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {connect} from 'react-redux';
@@ -37,7 +41,7 @@ import {BaseStrategy} from '../../PluggableStrategies/BaseStrategy';
 import {ExtensionName, StrategyName, StrategyType} from '../../State/Interfaces';
 import {StrategyTab} from './StrategyTab';
 
-type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat';
+type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat' | 'other';
 
 interface Props {
 }
@@ -122,43 +126,43 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
               label={browser.i18n.getMessage(tabLabel)}
             />
           ))}
+          <Tab value="other" label={browser.i18n.getMessage('options_tab_other')}/>
         </Tabs>
-        {selectedTab === 'Extensions' && <div>
-          <List>
-            {passB.getAllExtensions().map((extension: Extension<{}>) => {
-              const extensionName = extension.name;
-              const enabled = enabledExtensions.includes(extensionName);
-              const OptionsPanel = extension.OptionsPanel;
-              return (
-                <ListItem
-                  key={extensionName}
-                  className={classes.wrap}
-                >
-                  <Checkbox
-                    checked={enabled}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>, newValue: boolean) =>
-                      (newValue ? enableExtension : disableExtension)({extensionName})
-                    }
-                  />
-                  <ListItemText primary={extensionName}/>
-                  {enabled && OptionsPanel && (
-                    <Card className={classes.breakBefore}>
-                      <CardContent>
-                        <OptionsPanel
-                          options={extensionOptions.get(extensionName)!}
-                          updateOptions={(options: TypedMap<{}>) => setExtensionOptions({
-                            extensionName,
-                            options,
-                          })}
-                        />
-                      </CardContent>
-                    </Card>
-                  )}
-                </ListItem>
-              );
-            })}
-          </List>
-        </div>
+        {selectedTab === 'Extensions' &&
+        <List>
+          {passB.getAllExtensions().map((extension: Extension<{}>) => {
+            const extensionName = extension.name;
+            const enabled = enabledExtensions.includes(extensionName);
+            const OptionsPanel = extension.OptionsPanel;
+            return (
+              <ListItem
+                key={extensionName}
+                className={classes.wrap}
+              >
+                <Checkbox
+                  checked={enabled}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>, newValue: boolean) =>
+                    (newValue ? enableExtension : disableExtension)({extensionName})
+                  }
+                />
+                <ListItemText primary={extensionName}/>
+                {enabled && OptionsPanel && (
+                  <Card className={classes.breakBefore}>
+                    <CardContent>
+                      <OptionsPanel
+                        options={extensionOptions.get(extensionName)!}
+                        updateOptions={(options: TypedMap<{}>) => setExtensionOptions({
+                          extensionName,
+                          options,
+                        })}
+                      />
+                    </CardContent>
+                  </Card>
+                )}
+              </ListItem>
+            );
+          })}
+        </List>
         }
         {strategyTabs
           .filter(({strategyType}: StrategyTabData) => strategyType === selectedTab)
@@ -178,6 +182,27 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
               />
             );
           })}
+        {selectedTab === 'other' &&
+        <List>
+          <ListItem
+            button={true}
+            onClick={() => {
+              if (window.confirm(browser.i18n.getMessage('options_reset_extension_confirm'))) {
+                browser.storage.local.clear();
+                this.passB.reloadExtension();
+                browser.tabs.getCurrent().then((tab: browser.tabs.Tab) => {
+                  if (tab && tab.id) {
+                    browser.tabs.remove(tab.id);
+                  }
+                });
+              }
+            }}
+          >
+            <ListItemIcon><Clear/></ListItemIcon>
+            <ListItemText primary={browser.i18n.getMessage('options_reset_extension')}/>
+          </ListItem>
+        </List>
+        }
       </div>
     );
   }
