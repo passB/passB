@@ -19,3 +19,26 @@
     },
   },
 };
+
+interface Equalable {
+  equals(other: Equalable): boolean;
+}
+
+expect.extend({
+  toEqualImmutable(received: Equalable, argument: Equalable): ({ pass: boolean; message(): string }) {
+    const pass = received.equals(argument);
+    if (pass) {
+      return {
+        message: () => (
+          `expected ${received} not to be equal to ${argument}`
+        ),
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => (`expected ${received} to be equal to ${argument}`),
+        pass: false,
+      };
+    }
+  },
+});

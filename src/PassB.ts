@@ -38,7 +38,7 @@ export class PassB {
   }
 
   public getMatcher(): Matcher<{}> {
-    const selected = OptionsSelectors.getSelectedStrategy(this.state.getState(), 'Matcher');
+    const selected = OptionsSelectors.getSelectedStrategy(this.state.getStore().getState(), 'Matcher');
     return this.matchers.find((strategy: Matcher<{}>) => strategy.name === selected)
       || this.matchers[0];
   }
@@ -48,7 +48,7 @@ export class PassB {
   }
 
   public getFiller(): Filler<{}> {
-    const selected = OptionsSelectors.getSelectedStrategy(this.state.getState(), 'Filler');
+    const selected = OptionsSelectors.getSelectedStrategy(this.state.getStore().getState(), 'Filler');
     return this.fillers.find((strategy: Filler<{}>) => strategy.name === selected)
       || this.fillers[0];
   }
@@ -58,7 +58,7 @@ export class PassB {
   }
 
   public getFileFormat(): FileFormat<{}> {
-    const selected =  OptionsSelectors.getSelectedStrategy(this.state.getState(), 'FileFormat');
+    const selected =  OptionsSelectors.getSelectedStrategy(this.state.getStore().getState(), 'FileFormat');
     return this.fileFormats.find((strategy: FileFormat<{}>) => strategy.name === selected)
       || this.fileFormats[0];
   }
@@ -69,7 +69,7 @@ export class PassB {
 
   @executeInCorrectContext(executionContext.background)
   public reloadEntries(): Promise<this> {
-    const enabledExtensionNames = OptionsSelectors.getEnabledExtensions(this.state.getState());
+    const enabledExtensionNames = OptionsSelectors.getEnabledExtensions(this.state.getStore().getState());
     const enabledExtensions = this.extensions
       .filter((extension: Extension<{}>) => enabledExtensionNames.includes(extension.name));
 

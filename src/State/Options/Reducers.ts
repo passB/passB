@@ -49,7 +49,7 @@ const setStrategyOptions =
 const setSelectedStrategy = (oldState: OptionsState, {strategyType, strategyName}: StrategyNameArgs): OptionsState =>
   oldState.updateIn(['selectedStrategies', strategyType], () => strategyName);
 
-const initialState: OptionsState = createTypedMap({
+export const initialState: OptionsState = createTypedMap({
   enabledExtensions: List<ExtensionName>(['Pass']),
   extensionsDefaultOptions: Map<ExtensionName, TypedMap<{}>>(),
   extensionsOptions: Map<ExtensionName, TypedMap<{}>>(),
