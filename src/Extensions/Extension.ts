@@ -29,6 +29,7 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
 
   @LazyInject(() => State)
   private state: State;
+  private lastOptions: TypedMap<OptionType>;
 
   // tslint:disable:no-parameter-properties
   // as these properties have to be accessed in this base class constructor, they have to be passed up by the inheriting class
@@ -37,8 +38,17 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
     public readonly defaultOptions: TypedMap<OptionType>,
   ) {
     if (getExecutionContext() === executionContext.background) {
-      this.state.dispatch(setExtensionDefaultOptions({extensionName: name, options: defaultOptions}));
+      this.state.getStore().dispatch(setExtensionDefaultOptions({extensionName: name, options: defaultOptions}));
     }
+
+    this.lastOptions = this.options;
+    this.state.getStore().subscribe(() => {
+      const {lastOptions, options} = this;
+      if (!options.equals(lastOptions)) {
+        this.lastOptions = options;
+        this.onOptionsUpdate(lastOptions);
+      }
+    });
   }
 
   public abstract initializeList(): Promise<void>;
@@ -46,11 +56,25 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
   public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 
   protected get options(): TypedMap<OptionType> {
-    return getExtensionOptions(this.state.getState(), this.name) as TypedMap<OptionType>;
+    return getExtensionOptions(this.state.getStore().getState(), this.name) as TypedMap<OptionType>;
   }
 
   protected setEntries(entries: EntryAction[]): void {
-    this.state.dispatch(setEntries({extensionName: this.name, entries}));
+    this.state.getStore().dispatch(setEntries({extensionName: this.name, entries}));
+  }
+
+  /**
+   * Will trigger when options are updated.
+   * Keep in mind that this will be triggered in all currently active contexts, so most likely in background and
+   * options.
+   * You will most likely want to react in a certain context like
+   * @example
+   * if (getExecutionContext() === executionContext.background) {
+   *   // your code here
+   * }
+   */
+  protected onOptionsUpdate(lastOptions: TypedMap<OptionType>): void {
+    return;
   }
 }
 

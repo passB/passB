@@ -40,7 +40,7 @@ describe('FirstLineFileFormat', () => {
     const dispatch = jest.fn();
 
     setExecutionContext(executionContext.background);
-    Container.set(State, {dispatch});
+    Container.set(State, {getStore: () => ({dispatch})});
     Container.remove(FirstLineFileFormat);
     Container.get(FirstLineFileFormat);
 

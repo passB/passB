@@ -72,19 +72,11 @@ export class State {
     storageSyncListener(this.store, this.storageAdapter);
   }
 
-  public getState(): StoreContents {
-    return this.store.getState();
-  }
-
   public getPersistor(): Persistor {
     return this.persistor;
   }
 
   public getStore(): Store<StoreContents> {
     return this.store;
-  }
-
-  public dispatch(action: Action): void {
-    this.hydrated.then(() => this.store.dispatch(action));
   }
 }

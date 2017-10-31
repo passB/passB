@@ -67,7 +67,9 @@ const setEntries = (oldState: PassEntryState, {extensionName, entries}: Extensio
     getEntryNode({name: '', fullPath: ''}),
   ));
 
-export const reducer = reducerWithInitialState(OrderedMap() as PassEntryState)
+export const initialState: PassEntryState = OrderedMap();
+
+export const reducer = reducerWithInitialState(initialState)
   .case(Actions.resetEntries, resetEntries)
   .case(Actions.setEntries, setEntries)
   .build();

@@ -21,7 +21,7 @@ export abstract class BaseStrategy<OptionType extends MapTypeAllowedData<OptionT
     public readonly defaultOptions: TypedMap<OptionType>,
   ) {
     if (getExecutionContext() === executionContext.background) {
-      this.state.dispatch(setStrategyDefaultOptions({
+      this.state.getStore().dispatch(setStrategyDefaultOptions({
         strategyType: this.type,
         strategyName: this.name,
         options: this.defaultOptions,
@@ -30,6 +30,6 @@ export abstract class BaseStrategy<OptionType extends MapTypeAllowedData<OptionT
   }
 
   protected get options(): TypedMap<OptionType> {
-    return getStrategyOptions(this.state.getState(), this.type, this.name) as TypedMap<OptionType>;
+    return getStrategyOptions(this.state.getStore().getState(), this.type, this.name) as TypedMap<OptionType>;
   }
 }

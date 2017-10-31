@@ -15,6 +15,7 @@
     "@types/enzyme": "^3.1.0",
     "@types/enzyme-adapter-react-16": "^1.0.0",
     "@types/react-test-renderer": "^16.0.0",
+    "@types/redux-mock-store": "^0.0.12",
     "@types/remote-redux-devtools": "0.5.0",
     "awesome-typescript-loader": "^3.2.2",
     "coveralls": "^3.0.0",
