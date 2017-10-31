@@ -1,5 +1,5 @@
 import {AppBar, Button, Card, CardContent, Toolbar, Typography, WithStyles} from 'material-ui';
-import {AddToQueue, Settings} from 'material-ui-icons';
+import {Refresh, Settings} from 'material-ui-icons';
 import {withStyles, StyleRules} from 'material-ui/styles';
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
@@ -61,12 +61,11 @@ class ClassLessPopup extends React.Component<Props & WithStyles<keyof typeof sty
               <Button
                 color="contrast"
                 onClick={() => {
-                  browser.storage.local.clear();
-                  browser.runtime.reload();
+                  this.passB.reloadEntries();
                   window.close();
                 }}
               >
-                <AddToQueue/>
+                <Refresh/>
               </Button>
               <Button
                 color="contrast"
