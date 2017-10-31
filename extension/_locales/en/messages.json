@@ -38,5 +38,15 @@
   "options_tab_fillers": {
     "message": "Filling Strategy",
     "description": "Label for 'Filling Strategies' Tab in the Option menu"
+  },
+  "options_tab_other": {
+    "message": "other",
+    "description": "label for 'other' Tab in the Option menu"
+  },
+  "options_reset_extension": {
+    "message": "reset all options and reload passB"
+  },
+  "options_reset_extension_confirm": {
+    "message": "This will reset all options and reload passB. Are you sure?"
   }
 }
