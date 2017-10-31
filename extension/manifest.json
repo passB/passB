@@ -26,5 +26,5 @@
       "built/background-script.js"
     ]
   },
-  "permissions": ["nativeMessaging", "tabs", "activeTab", "storage"]
+  "permissions": ["nativeMessaging", "tabs", "activeTab", "storage", "unlimitedStorage"]
 }
