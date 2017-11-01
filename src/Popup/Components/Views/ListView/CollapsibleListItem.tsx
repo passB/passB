@@ -6,7 +6,7 @@ import * as React from 'react';
 
 interface Props {
   children: JSX.Element | JSX.Element[] | React.ReactNode;
-  CollapsedChildren: React.ComponentType<{}>;
+  CollapsedChildren: JSX.Element | JSX.Element[] | React.ReactNode;
   initiallyExpanded?: boolean;
 }
 
@@ -58,7 +58,7 @@ export const CollapsibleListItem = withStyles<styleClasses>(styles)(
         </ListItem>,
         <Collapse key="collapsible" in={!collapsed} transitionDuration="auto" unmountOnExit={true} className="collapse-container">
           <div className={classes.nested}>
-            <CollapsedChildren />
+            {CollapsedChildren}
           </div>
         </Collapse>,
       ];

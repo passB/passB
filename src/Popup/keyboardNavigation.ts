@@ -11,7 +11,7 @@ enum keys {
   l = 'l',
 }
 
-const scrollTo = (element: Element) => scrollIntoViewIfNeeded(element, false, {})
+const scrollTo = (element: Element) => scrollIntoViewIfNeeded(element, false, {});
 
 const isPureNavigationKey = (event: KeyboardEvent) => (
   event.key === keys.ArrowUp ||

@@ -9,7 +9,7 @@ export abstract class Matcher<OptionType extends MapTypeAllowedData<OptionType>>
     super('Matcher', name, defaultOptions);
   }
 
-  public abstract filterEntries(url: string, entries: EntryNode[]): Promise<EntryNode[]>;
+  public abstract filterEntries(url: string, entries: EntryNode[]): EntryNode[];
 }
 
 export const MatcherTag = new Token<Matcher<{}>>();
