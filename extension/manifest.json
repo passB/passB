@@ -26,5 +26,12 @@
       "built/background-script.js"
     ]
   },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+P"
+      }
+    }
+  },
   "permissions": ["nativeMessaging", "tabs", "activeTab", "storage", "unlimitedStorage"]
 }
