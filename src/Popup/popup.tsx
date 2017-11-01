@@ -13,6 +13,8 @@ import {Popup} from './Components/Popup';
 import 'typeface-roboto';
 import './style.scss';
 
+import './keyboardNavigation';
+
 setExecutionContext(executionContext.popup);
 
 const theme = createMuiTheme();

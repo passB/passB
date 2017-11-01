@@ -48,14 +48,15 @@ export const CollapsibleListItem = withStyles<styleClasses>(styles)(
           button={true}
           key="item"
           onClick={() => this.setState({collapsed: !collapsed})}
+          className={collapsed ? 'collapsed' : 'opened'}
         >
           {children}
           {collapsed ?
-            <ExpandMore/> :
-            <ExpandLess/>
+            <ExpandMore /> :
+            <ExpandLess />
           }
         </ListItem>,
-        <Collapse key="collapsible" in={!collapsed} transitionDuration="auto" unmountOnExit={true}>
+        <Collapse key="collapsible" in={!collapsed} transitionDuration="auto" unmountOnExit={true} className="collapse-container">
           <div className={classes.nested}>
             <CollapsedChildren />
           </div>

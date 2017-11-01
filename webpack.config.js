@@ -6,7 +6,10 @@ const production = process.env.NODE_ENV === 'production';
 module.exports = {
   entry: {
     'background-script': './src/background-script.ts',
-    'popup': './src/Popup/popup.tsx',
+    'popup': [
+      './src/Popup/popup.tsx',
+      './src/Popup/_focus_hotfix.ts'
+    ],
     'options': './src/Options/page.tsx',
   },
   output: {
