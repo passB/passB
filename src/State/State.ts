@@ -1,5 +1,5 @@
 import {
-  applyMiddleware, combineReducers, createStore, Action, Reducer, Store,
+  applyMiddleware, combineReducers, createStore, Reducer, Store,
 } from 'redux';
 import {persistReducer, persistStore, Persistor} from 'redux-persist';
 import immutableTransform = require('redux-persist-transform-immutable');

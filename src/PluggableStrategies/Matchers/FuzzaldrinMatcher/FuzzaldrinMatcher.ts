@@ -35,7 +35,7 @@ export class FuzzaldrinMatcher extends Matcher<Options> {
     );
   }
 
-  public async filterEntries(url: string, entries: EntryNode[]): Promise<EntryNode[]> {
+  public filterEntries(url: string, entries: EntryNode[]): EntryNode[] {
     url = url.replace(FuzzaldrinMatcher.URL_CLEAN_REGEX, '');
     const {maxResults, minScore} = this.options.toJS();
 

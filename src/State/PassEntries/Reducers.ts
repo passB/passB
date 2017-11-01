@@ -21,10 +21,11 @@ export const defaultRootNodeValues: EntryNodeInterface = {
 
 export const defaultRootNode: EntryNode = createTypedMap(defaultRootNodeValues);
 
-const getEntryNode = (data: Pick<EntryNodeInterface, 'name' | 'fullPath'> & Partial<EntryNodeInterface>): EntryNode => createTypedMap({
-  ...defaultRootNodeValues,
-  ...data,
-});
+export const getEntryNode = (data: Pick<EntryNodeInterface, 'name' | 'fullPath'> & Partial<EntryNodeInterface>): EntryNode =>
+  createTypedMap({
+    ...defaultRootNodeValues,
+    ...data,
+  });
 
 const resetEntries =
   (oldState: PassEntryState, {extensionName}: ExtensionNameArgs): PassEntryState =>

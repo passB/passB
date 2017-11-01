@@ -18,6 +18,9 @@
       addListener: jest.fn(),
     },
   },
+  i18n: {
+    getMessage: (orig: string) => `${orig}_translated`,
+  },
 };
 
 interface Equalable {

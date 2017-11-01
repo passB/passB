@@ -1,0 +1,270 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContextualRootNode mapStateToProps calls the matcher on all entries 1`] = `
+Array [
+  Array [
+    "testUrl",
+    Array [
+      Immutable.Map {
+        "name": "",
+        "fullPath": "",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "example.com/": Immutable.Map {
+            "name": "example.com/",
+            "fullPath": "example.com/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "login1/": Immutable.Map {
+                "name": "login1/",
+                "fullPath": "example.com/login1/",
+                "actions": Immutable.List [],
+                "children": Immutable.OrderedMap {
+                  "testUser": Immutable.Map {
+                    "name": "testUser",
+                    "fullPath": "example.com/login1/testUser",
+                    "actions": Immutable.List [
+                      Immutable.Map {
+                        "extension": "testExtension",
+                        "action": "test",
+                      },
+                    ],
+                    "children": Immutable.OrderedMap {},
+                  },
+                },
+              },
+              "logout1/": Immutable.Map {
+                "name": "logout1/",
+                "fullPath": "example.com/logout1/",
+                "actions": Immutable.List [],
+                "children": Immutable.OrderedMap {
+                  "testUser": Immutable.Map {
+                    "name": "testUser",
+                    "fullPath": "example.com/logout1/testUser",
+                    "actions": Immutable.List [
+                      Immutable.Map {
+                        "extension": "testExtension",
+                        "action": "test",
+                      },
+                    ],
+                    "children": Immutable.OrderedMap {},
+                  },
+                },
+              },
+              "logout2/": Immutable.Map {
+                "name": "logout2/",
+                "fullPath": "example.com/logout2/",
+                "actions": Immutable.List [],
+                "children": Immutable.OrderedMap {
+                  "testUser": Immutable.Map {
+                    "name": "testUser",
+                    "fullPath": "example.com/logout2/testUser",
+                    "actions": Immutable.List [
+                      Immutable.Map {
+                        "extension": "testExtension",
+                        "action": "test",
+                      },
+                    ],
+                    "children": Immutable.OrderedMap {},
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      Immutable.Map {
+        "name": "example.com/",
+        "fullPath": "example.com/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "login1/": Immutable.Map {
+            "name": "login1/",
+            "fullPath": "example.com/login1/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "testUser": Immutable.Map {
+                "name": "testUser",
+                "fullPath": "example.com/login1/testUser",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+          "logout1/": Immutable.Map {
+            "name": "logout1/",
+            "fullPath": "example.com/logout1/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "testUser": Immutable.Map {
+                "name": "testUser",
+                "fullPath": "example.com/logout1/testUser",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+          "logout2/": Immutable.Map {
+            "name": "logout2/",
+            "fullPath": "example.com/logout2/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "testUser": Immutable.Map {
+                "name": "testUser",
+                "fullPath": "example.com/logout2/testUser",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+        },
+      },
+      Immutable.Map {
+        "name": "login1/",
+        "fullPath": "example.com/login1/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "testUser": Immutable.Map {
+            "name": "testUser",
+            "fullPath": "example.com/login1/testUser",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "extension": "testExtension",
+                "action": "test",
+              },
+            ],
+            "children": Immutable.OrderedMap {},
+          },
+        },
+      },
+      Immutable.Map {
+        "name": "testUser",
+        "fullPath": "example.com/login1/testUser",
+        "actions": Immutable.List [
+          Immutable.Map {
+            "extension": "testExtension",
+            "action": "test",
+          },
+        ],
+        "children": Immutable.OrderedMap {},
+      },
+      Immutable.Map {
+        "name": "logout1/",
+        "fullPath": "example.com/logout1/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "testUser": Immutable.Map {
+            "name": "testUser",
+            "fullPath": "example.com/logout1/testUser",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "extension": "testExtension",
+                "action": "test",
+              },
+            ],
+            "children": Immutable.OrderedMap {},
+          },
+        },
+      },
+      Immutable.Map {
+        "name": "testUser",
+        "fullPath": "example.com/logout1/testUser",
+        "actions": Immutable.List [
+          Immutable.Map {
+            "extension": "testExtension",
+            "action": "test",
+          },
+        ],
+        "children": Immutable.OrderedMap {},
+      },
+      Immutable.Map {
+        "name": "logout2/",
+        "fullPath": "example.com/logout2/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "testUser": Immutable.Map {
+            "name": "testUser",
+            "fullPath": "example.com/logout2/testUser",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "extension": "testExtension",
+                "action": "test",
+              },
+            ],
+            "children": Immutable.OrderedMap {},
+          },
+        },
+      },
+      Immutable.Map {
+        "name": "testUser",
+        "fullPath": "example.com/logout2/testUser",
+        "actions": Immutable.List [
+          Immutable.Map {
+            "extension": "testExtension",
+            "action": "test",
+          },
+        ],
+        "children": Immutable.OrderedMap {},
+      },
+    ],
+  ],
+]
+`;
+
+exports[`ContextualRootNode mapStateToProps filters the tree up to the matched entries 1`] = `
+Object {
+  "root": Immutable.Map {
+    "name": "",
+    "fullPath": "",
+    "actions": Immutable.List [],
+    "children": Immutable.OrderedMap {
+      "example.com/": Immutable.Map {
+        "name": "example.com/",
+        "fullPath": "example.com/",
+        "actions": Immutable.List [],
+        "children": Immutable.OrderedMap {
+          "logout1/": Immutable.Map {
+            "name": "logout1/",
+            "fullPath": "example.com/logout1/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {
+              "testUser": Immutable.Map {
+                "name": "testUser",
+                "fullPath": "example.com/logout1/testUser",
+                "actions": Immutable.List [
+                  Immutable.Map {
+                    "extension": "testExtension",
+                    "action": "test",
+                  },
+                ],
+                "children": Immutable.OrderedMap {},
+              },
+            },
+          },
+          "logout2/": Immutable.Map {
+            "name": "logout2/",
+            "fullPath": "example.com/logout2/",
+            "actions": Immutable.List [],
+            "children": Immutable.OrderedMap {},
+          },
+        },
+      },
+    },
+  },
+}
+`;

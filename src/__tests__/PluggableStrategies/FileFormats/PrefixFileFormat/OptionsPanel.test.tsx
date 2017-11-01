@@ -25,8 +25,7 @@ describe('PrefixFileFormat OptionsPanel', () => {
 
       it('passwordFirstLine is checked correctly', () => {
         expect(
-          shallow(panel.find('#passwordFirstLine').prop('control'))
-            .prop('checked'),
+          (panel.find('#passwordFirstLine').prop('control') as JSX.Element).props.checked,
         ).toBe(testOptions.get('passwordFirstLine'));
       });
 
@@ -46,8 +45,7 @@ describe('PrefixFileFormat OptionsPanel', () => {
 
       it('trimWhitespace is checked correctly', () => {
         expect(
-          shallow(panel.find('#trimWhitespace').prop('control'))
-            .prop('checked'),
+          (panel.find('#trimWhitespace').prop('control') as JSX.Element).props.checked,
         ).toBe(testOptions.get('trimWhitespace'));
       });
     }
