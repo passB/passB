@@ -1,41 +1,32 @@
+import {injectable, unmanaged} from 'inversify';
 import {RouteProps} from 'react-router';
-import {Token} from 'typedi';
 import {executionContext} from 'Constants';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {getExecutionContext} from 'Decorators/ExecuteInContext';
-import {LazyInject} from 'Decorators/LazyInject';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
+import {ExecutionOptions} from 'InjectableInterfaces/Extension';
+import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {ExtensionName} from 'State/Interfaces';
 import {getExtensionOptions, setExtensionDefaultOptions} from 'State/Options';
 import {setEntries} from 'State/PassEntries/Actions';
 import {EntryAction} from 'State/PassEntries/Interfaces';
-import {State} from 'State/State';
 import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
 
-export interface EntryActions {
-  label: string;
-  actions: string[];
-}
-
-export interface ExecutionOptions {
-  navigateTo: (newUrl: string, state: {}) => void;
-}
-
-export type RegisterEntryCallback = (entry: EntryActions) => void;
-
-export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType>> {
-  public static readonly routes: RouteProps[] = [];
+@injectable()
+export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType>> implements Interfaces.Extension<OptionType> {
+  public abstract readonly routes: RouteProps[];
   public abstract readonly OptionsPanel?: OptionsPanelType<OptionType>;
   public abstract readonly actions: string[];
 
-  @LazyInject(() => State)
-  private state: State;
+  @lazyInject(Symbols.State)
+  private state: Interfaces.State;
   private lastOptions: TypedMap<OptionType>;
 
   // tslint:disable:no-parameter-properties
   // as these properties have to be accessed in this base class constructor, they have to be passed up by the inheriting class
   public constructor(
-    public readonly name: ExtensionName,
-    public readonly defaultOptions: TypedMap<OptionType>,
+    @unmanaged() public readonly name: ExtensionName,
+    @unmanaged() public readonly defaultOptions: TypedMap<OptionType>,
   ) {
     if (getExecutionContext() === executionContext.background) {
       this.state.getStore().dispatch(setExtensionDefaultOptions({extensionName: name, options: defaultOptions}));
@@ -52,7 +43,9 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
   }
 
   public abstract initializeList(): Promise<void>;
+
   public abstract getLabelForAction(action: string): string;
+
   public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 
   protected get options(): TypedMap<OptionType> {
@@ -77,5 +70,3 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
     return;
   }
 }
-
-export const ExtensionTag = new Token<Extension<{}>>();

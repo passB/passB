@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {RouteComponentProps} from 'react-router';
-import {LazyInject} from 'Decorators/LazyInject';
-import {PassCli} from 'PassCli';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 
 interface LocationStateProps {
   location: {
@@ -20,8 +20,8 @@ export class Show extends React.Component<RouteComponentProps<{}> & LocationStat
     contents: [],
   };
 
-  @LazyInject(() => PassCli)
-  private passCli: PassCli;
+  @lazyInject(Symbols.PassCli)
+  private passCli: Interfaces.PassCli;
 
   public async componentDidMount(): Promise<void> {
     const {location: {state: {entry}}} = this.props;

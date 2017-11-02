@@ -3,7 +3,7 @@ import {ListItemText} from 'material-ui';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {createSelector} from 'reselect';
-import {Matcher} from 'PluggableStrategies/Matchers/Matcher';
+import {Matcher} from 'InjectableInterfaces/Matcher';
 import {EntryNode} from 'State/PassEntries/Interfaces';
 import {getCombinedPassEntries} from 'State/PassEntries/Selectors';
 import {StoreContents} from 'State/State';

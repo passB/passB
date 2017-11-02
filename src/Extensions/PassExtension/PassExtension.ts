@@ -1,25 +1,23 @@
+import {injectable} from 'inversify';
 import {RouteProps} from 'react-router';
-import {Service} from 'typedi';
 import {executionContext} from 'Constants';
-import {executeInCorrectContext, AsynchronousCallableServiceFactory} from 'Decorators/ExecuteInContext';
-import {LazyInject} from 'Decorators/LazyInject';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {PassB} from 'PassB';
-import {PassCli} from 'PassCli';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
+import {executeInCorrectContext, AsynchronousCallable} from 'Decorators/ExecuteInContext';
+import {ExecutionOptions} from 'InjectableInterfaces/Extension';
+import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {EntryAction} from 'State/PassEntries/Interfaces';
 import {createTypedMap} from 'State/Types/TypedMap';
-import {ExecutionOptions, Extension, ExtensionTag} from '..';
+import {Extension} from '..';
 import {Show} from './Views';
 
 interface Options {
 }
 
-@Service({
-  tags: [ExtensionTag],
-  factory: AsynchronousCallableServiceFactory(PassExtension),
-})
+@AsynchronousCallable()
+@injectable()
 export class PassExtension extends Extension<Options> {
-  public static readonly routes: RouteProps[] = [
+  public readonly routes: RouteProps[] = [
     {
       path: '/extension/Pass/Show',
       component: Show,
@@ -28,11 +26,11 @@ export class PassExtension extends Extension<Options> {
   public readonly actions: string[] = ['show', 'fill'];
   public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
 
-  @LazyInject(() => PassB)
-  private passB: PassB;
+  @lazyInject(Symbols.PassB)
+  private passB: Interfaces.PassB;
 
-  @LazyInject(() => PassCli)
-  private passCli: PassCli;
+  @lazyInject(Symbols.PassCli)
+  private passCli: Interfaces.PassCli;
 
   public constructor() {
     super('Pass', createTypedMap({}));
@@ -46,7 +44,7 @@ export class PassExtension extends Extension<Options> {
         continue;
       }
 
-      entries.push(...this.actions.map((action: string) => ({fullPath, action })));
+      entries.push(...this.actions.map((action: string) => ({fullPath, action})));
     }
     this.setEntries(entries);
   }

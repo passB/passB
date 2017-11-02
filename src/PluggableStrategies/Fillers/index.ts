@@ -1,3 +1,1 @@
-export {Filler, FillerTag} from './Filler';
-
-import './FillPasswordInputs';
+export {Filler} from './Filler';

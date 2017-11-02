@@ -1,9 +1,9 @@
 import {score} from 'fuzzaldrin-plus';
-import {Service} from 'typedi';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
+import {injectable} from 'inversify';
+import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {EntryNode} from 'State/PassEntries/Interfaces';
 import {createTypedMap} from 'State/Types/TypedMap';
-import {Matcher, MatcherTag} from '../';
+import {Matcher} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
 interface ScoredEntry {
@@ -19,7 +19,7 @@ export interface Options {
 /**
  * these matches are not very good but it serves as a proof of concept
  */
-@Service({tags: [MatcherTag]})
+@injectable()
 export class FuzzaldrinMatcher extends Matcher<Options> {
   public static readonly URL_CLEAN_REGEX: RegExp = /^(http|ftp)s?:\/\//;
 

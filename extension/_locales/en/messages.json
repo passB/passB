@@ -48,5 +48,17 @@
   },
   "options_reset_extension_confirm": {
     "message": "This will reset all options and reload passB. Are you sure?"
+  },
+  "label_fuzzaldrinmatcher": {
+    "message": "FuzzAldrin"
+  },
+  "label_prefixfileformat": {
+    "message": "Prefix-Based"
+  },
+  "label_firstlinefileformat": {
+    "message": "First Line"
+  },
+  "label_fillpasswordinputs": {
+    "message": "Password Fields"
   }
 }

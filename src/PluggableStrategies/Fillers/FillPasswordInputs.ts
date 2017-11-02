@@ -1,8 +1,8 @@
 import Tab = browser.tabs.Tab;
-import {Service} from 'typedi';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
+import {injectable} from 'inversify';
+import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {createTypedMap} from 'State/Types/TypedMap';
-import {Filler, FillerTag} from './Filler';
+import {Filler} from './Filler';
 
 // tslint:disable:max-classes-per-file
 declare global {
@@ -26,7 +26,7 @@ export const fillPasswordInputs = (password: string) => {
   return i;
 };
 
-@Service({tags: [FillerTag]})
+@injectable()
 export class FillPasswordInputs extends Filler<{}> {
   public readonly OptionsPanel?: OptionsPanelType<{}> = void 0;
 

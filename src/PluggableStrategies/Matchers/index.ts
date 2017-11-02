@@ -1,3 +1,1 @@
-export {Matcher, MatcherTag} from './Matcher';
-
-import './FuzzaldrinMatcher';
+export {Matcher} from './Matcher';

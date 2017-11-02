@@ -1,13 +1,13 @@
 import {FormControl, InputLabel, MenuItem, Select} from 'material-ui';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
-import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
+import {Strategy} from 'InjectableInterfaces/Strategy';
 import {StrategyName} from 'State/Interfaces';
 import {TypedMap} from 'State/Types/TypedMap';
 
 interface Props {
   label: string;
-  strategies: Array<BaseStrategy<{}>>;
+  strategies: Array<Strategy<{}>>;
   strategyOptions: TypedMap<{}>;
   selectedStrategyName: StrategyName;
   updateOptions: (newOptions: TypedMap<{}>) => void;
@@ -33,7 +33,7 @@ export const StrategyTab = withStyles<keyof typeof styles>(styles)(
       } = this.props;
 
       const selectedStrategy = strategies.find(
-        (strategy: BaseStrategy<{}>) => strategy.name === selectedStrategyName,
+        (strategy: Strategy<{}>) => strategy.name === selectedStrategyName,
       )!;
 
       const {OptionsPanel} = selectedStrategy;
@@ -46,7 +46,7 @@ export const StrategyTab = withStyles<keyof typeof styles>(styles)(
               value={selectedStrategyName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateSelectedStrategyName(e.target.value)}
             >
-              {strategies.map((strategy: BaseStrategy<{}>, index: number) => (
+              {strategies.map((strategy: Strategy<{}>, index: number) => (
                 <MenuItem key={index} value={strategy.name}>
                   {browser.i18n.getMessage(`label_${strategy.name}`) || strategy.name}
                 </MenuItem>

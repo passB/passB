@@ -1,14 +1,12 @@
-import {
-  applyMiddleware, combineReducers, createStore, Reducer, Store,
-} from 'redux';
+import {injectable} from 'inversify';
+import {applyMiddleware, combineReducers, createStore, Reducer, Store} from 'redux';
 import {persistReducer, persistStore, Persistor} from 'redux-persist';
 import immutableTransform = require('redux-persist-transform-immutable');
 import {composeWithDevTools} from 'remote-redux-devtools';
-import {Service} from 'typedi';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {getExecutionContext} from 'Decorators/ExecuteInContext';
-import {LazyInject} from 'Decorators/LazyInject';
 import {storageSyncListener, storageSyncMiddleware} from './syncMiddleware';
-import {BrowserStorageAdapter, StorageAdaper} from './BrowserStorageAdapter';
 import {reducer as OptionsReducer, OptionsState} from './Options';
 import {PassEntryState} from './PassEntries/Interfaces';
 import {reducer as PassEntryReducer} from './PassEntries/Reducers';
@@ -18,14 +16,14 @@ export interface StoreContents {
   passEntries: PassEntryState;
 }
 
-@Service()
+@injectable()
 export class State {
   public readonly hydrated: Promise<void>;
   private store: Store<StoreContents>;
   private persistor: Persistor;
 
-  @LazyInject(() => BrowserStorageAdapter)
-  private storageAdapter: StorageAdaper;
+  @lazyInject(Symbols.StorageAdapter)
+  private storageAdapter: Interfaces.StorageAdaper;
 
   public constructor() {
     const reducer: Reducer<StoreContents> = persistReducer(
@@ -70,6 +68,8 @@ export class State {
     });
 
     storageSyncListener(this.store, this.storageAdapter);
+
+    this.store.subscribe(() => console.log('store changed', getExecutionContext(), this.store.getState()));
   }
 
   public getPersistor(): Persistor {

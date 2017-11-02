@@ -1,6 +1,6 @@
 import {Checkbox, FormControl, FormControlLabel, TextField} from 'material-ui';
 import * as React from 'react';
-import {OptionPanelProps} from 'Options/OptionsReceiver';
+import {OptionPanelProps} from 'InjectableInterfaces/OptionsPanel';
 import {Options} from './PrefixFileFormat';
 
 export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {

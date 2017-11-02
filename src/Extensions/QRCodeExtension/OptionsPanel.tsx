@@ -2,7 +2,7 @@ import {FormControl, FormControlLabel, FormLabel, Grid, Input, List, ListItem, R
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {QRCode} from 'react-qr-svg';
-import {OptionPanelProps} from 'Options/OptionsReceiver';
+import {OptionPanelProps} from 'InjectableInterfaces/OptionsPanel';
 import {Level, Options} from './QRCodeExtension';
 
 const styles = {

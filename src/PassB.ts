@@ -1,29 +1,24 @@
-import {InjectTagged, Service} from 'typedi';
+import {injectable, multiInject} from 'inversify';
 import {executionContext} from 'Constants';
-import {
-  executeInCorrectContext,
-  AsynchronousCallableServiceFactory,
-} from 'Decorators/ExecuteInContext';
-import {LazyInject} from 'Decorators/LazyInject';
-import {Extension, ExtensionTag} from 'Extensions';
-import {FileFormat, FileFormatTag} from 'PluggableStrategies/FileFormats';
-import {Filler, FillerTag} from 'PluggableStrategies/Fillers';
-import {Matcher, MatcherTag} from 'PluggableStrategies/Matchers';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
+import {executeInCorrectContext, AsynchronousCallable} from 'Decorators/ExecuteInContext';
+import {Extension, FileFormat, Filler, Matcher} from 'InjectableInterfaces';
 import * as OptionsSelectors from 'State/Options/Selectors';
-import {State} from 'State/State';
 
-@Service({factory: AsynchronousCallableServiceFactory(PassB)})
-export class PassB {
-  @InjectTagged(ExtensionTag)
+@AsynchronousCallable()
+@injectable()
+export class PassB implements Interfaces.PassB {
+  @multiInject(Symbols.Extension)
   protected extensions: Array<Extension<{}>>;
-  @InjectTagged(FileFormatTag)
+  @multiInject(Symbols.FileFormat)
   protected fileFormats: Array<FileFormat<{}>>;
-  @InjectTagged(MatcherTag)
+  @multiInject(Symbols.Matcher)
   protected matchers: Array<Matcher<{}>>;
-  @InjectTagged(FillerTag)
+  @multiInject(Symbols.Filler)
   protected fillers: Array<Filler<{}>>;
-  @LazyInject(() => State)
-  protected state: State;
+  @lazyInject(Symbols.State)
+  protected state: Interfaces.State;
 
   public getAllExtensions(): Array<Extension<{}>> {
     return this.extensions;
@@ -58,7 +53,7 @@ export class PassB {
   }
 
   public getFileFormat(): FileFormat<{}> {
-    const selected =  OptionsSelectors.getSelectedStrategy(this.state.getStore().getState(), 'FileFormat');
+    const selected = OptionsSelectors.getSelectedStrategy(this.state.getStore().getState(), 'FileFormat');
     return this.fileFormats.find((strategy: FileFormat<{}>) => strategy.name === selected)
       || this.fileFormats[0];
   }

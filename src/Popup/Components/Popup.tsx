@@ -4,9 +4,8 @@ import {withStyles, StyleRules} from 'material-ui/styles';
 import * as React from 'react';
 import Tab = browser.tabs.Tab;
 import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from 'react-router';
-import {LazyInject} from 'Decorators/LazyInject';
-import {Extension} from 'Extensions';
-import {PassB} from 'PassB';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {ListView} from './Views/ListView';
 
 interface Props {
@@ -31,8 +30,8 @@ class ClassLessPopup extends React.Component<Props & WithStyles<keyof typeof sty
   public state: State = {};
   private gatheredRoutes: RouteProps[] = this.gatherRoutes();
 
-  @LazyInject(() => PassB)
-  private passB: PassB;
+  @lazyInject(Symbols.PassB)
+  private passB: Interfaces.PassB;
 
   public componentDidMount(): void {
     browser.tabs.query({
@@ -101,7 +100,7 @@ class ClassLessPopup extends React.Component<Props & WithStyles<keyof typeof sty
   private gatherRoutes(): RouteProps[] {
     const gatheredRoutes: RouteProps[] = [];
     for (const extension of this.passB.getAllExtensions()) {
-      for (const route of (extension.constructor as typeof Extension).routes) {
+      for (const route of extension.routes) {
         if (!(route.path || '').startsWith(`/extension/${extension.name}/`)) {
           throw Error(
             `every route path for extension ${extension.name} has to start with "/extension/${extension.name}/"`,
