@@ -61,6 +61,8 @@
     "fuzzaldrin-plus": "^0.4.1",
     "ignore-loader": "^0.1.2",
     "immutable": "4.0.0-rc.9",
+    "inversify": "^4.5.0",
+    "inversify-inject-decorators": "^3.0.1",
     "jest": "^21.2.1",
     "lodash.debounce": "^4.0.8",
     "lodash.memoize": "^4.1.2",
@@ -79,7 +81,6 @@
     "scroll-into-view-if-needed": "^1.2.2",
     "ts-jest": "^21.1.3",
     "tslint-react": "^3.2.0",
-    "typedi": "https://github.com/phryneas/typedi.git#cfed2307672a880b99f164825a5b5ac165842624",
     "typeface-roboto": "^0.0.35",
     "typescript-fsa": "^2.5.0",
     "typescript-fsa-reducers": "^0.4.4"

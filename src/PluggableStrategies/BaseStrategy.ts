@@ -1,24 +1,26 @@
+import {injectable, unmanaged} from 'inversify';
 import {executionContext} from 'Constants';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {getExecutionContext} from 'Decorators/ExecuteInContext';
-import {LazyInject} from 'Decorators/LazyInject';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
 import {StrategyName, StrategyType} from 'State/Interfaces';
 import {getStrategyOptions, setStrategyDefaultOptions} from 'State/Options';
-import {State} from 'State/State';
 import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
+import {OptionsPanelType} from '../InjectableInterfaces/OptionsPanel';
 
-export abstract class BaseStrategy<OptionType extends MapTypeAllowedData<OptionType>> {
+@injectable()
+export abstract class BaseStrategy<OptionType extends MapTypeAllowedData<OptionType>> implements Interfaces.Strategy<OptionType> {
   public abstract readonly OptionsPanel?: OptionsPanelType<OptionType>;
 
-  @LazyInject(() => State)
-  private state: State;
+  @lazyInject(Symbols.State)
+  private state: Interfaces.State;
 
   // tslint:disable:no-parameter-properties
   // as these properties have to be accessed in this base class constructor, they have to be passed up by the inheriting class
   public constructor(
-    public readonly type: StrategyType,
-    public readonly name: StrategyName,
-    public readonly defaultOptions: TypedMap<OptionType>,
+    @unmanaged() public readonly type: StrategyType,
+    @unmanaged() public readonly name: StrategyName,
+    @unmanaged() public readonly defaultOptions: TypedMap<OptionType>,
   ) {
     if (getExecutionContext() === executionContext.background) {
       this.state.getStore().dispatch(setStrategyDefaultOptions({

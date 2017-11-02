@@ -1,11 +1,12 @@
+import {injectable} from 'inversify';
 import {RouteProps} from 'react-router';
-import {Service} from 'typedi';
-import {LazyInject} from 'Decorators/LazyInject';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
-import {PassCli} from 'PassCli';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
+import {ExecutionOptions} from 'InjectableInterfaces/Extension';
+import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {EntryAction} from 'State/PassEntries/Interfaces';
 import {createTypedMap} from 'State/Types/TypedMap';
-import {ExecutionOptions, Extension, ExtensionTag} from '..';
+import {Extension} from '..';
 import {OptionsPanel} from './OptionsPanel';
 import {Show} from './Views/Show';
 
@@ -17,9 +18,9 @@ export interface Options {
   level: Level;
 }
 
-@Service({tags: [ExtensionTag]})
+@injectable()
 export class QRCodeExtension extends Extension<Options> {
-  public static readonly routes: RouteProps[] = [
+  public readonly routes: RouteProps[] = [
     {
       path: '/extension/QRCode/Show',
       component: Show,
@@ -28,11 +29,11 @@ export class QRCodeExtension extends Extension<Options> {
   public readonly actions: string[] = ['show'];
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 
-  @LazyInject(() => PassCli)
-  private passCli: PassCli;
+  @lazyInject(Symbols.PassCli)
+  private passCli: Interfaces.PassCli;
 
   public constructor() {
-    super('QRCode',  createTypedMap({
+    super('QRCode', createTypedMap({
       bgColor: '#FFFFFF',
       fgColor: '#000000',
       level: 'Q' as Level,
@@ -47,7 +48,7 @@ export class QRCodeExtension extends Extension<Options> {
         continue;
       }
 
-      entries.push(...this.actions.map((action: string) => ({fullPath, action })));
+      entries.push(...this.actions.map((action: string) => ({fullPath, action})));
     }
     this.setEntries(entries);
   }

@@ -1,7 +1,7 @@
 import * as Immutable from 'immutable';
 import {AnyAction, Dispatch, Middleware, Store} from 'redux';
 import {immutable} from 'remotedev-serialize';
-import {StorageAdaper} from './BrowserStorageAdapter';
+import {Interfaces} from 'Container';
 
 const STORAGE_KEY = 'LAST_REDUX_ACTION';
 
@@ -29,7 +29,7 @@ const enrichAction = async (action: AnyAction): Promise<EnrichedAction> => ({
   __contextIdentifier: await currentContextIdentifier,
 });
 
-export const storageSyncMiddleware = (storageAdapter: StorageAdaper): Middleware =>
+export const storageSyncMiddleware = (storageAdapter: Interfaces.StorageAdaper): Middleware =>
   <S>(/*{dispatch, getState}: MiddlewareAPI<S>*/) =>
     (next: Dispatch<S>) =>
       <A extends AnyAction>(action: A): A => {
@@ -40,7 +40,7 @@ export const storageSyncMiddleware = (storageAdapter: StorageAdaper): Middleware
         return next(action);
       };
 
-export function storageSyncListener<T>(store: Store<T>, storageAdapter: StorageAdaper): void {
+export function storageSyncListener<T>(store: Store<T>, storageAdapter: Interfaces.StorageAdaper): void {
   storageAdapter.addListener(
     async (changes: browser.storage.ChangeDict/*, areaName: browser.storage.StorageName*/) => {
       if (changes && changes[STORAGE_KEY]) {

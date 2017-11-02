@@ -15,9 +15,11 @@ import {withStyles, StyleRules, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'recompose';
-import {LazyInject} from 'Decorators/LazyInject';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {Extension} from 'Extensions/Extension';
-import {PassB} from 'PassB';
+import {Strategy} from 'InjectableInterfaces/Strategy';
+import {ExtensionName, StrategyName, StrategyType} from 'State/Interfaces';
 import {
   disableExtension,
   enableExtension,
@@ -37,8 +39,6 @@ import {
 } from 'State/Options/Selectors';
 import {StoreContents} from 'State/State';
 import {TypedMap} from 'State/Types/TypedMap';
-import {BaseStrategy} from '../../PluggableStrategies/BaseStrategy';
-import {ExtensionName, StrategyName, StrategyType} from '../../State/Interfaces';
 import {StrategyTab} from './StrategyTab';
 
 type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat' | 'other';
@@ -74,7 +74,7 @@ const styles: StyleRules<'wrap' | 'breakBefore'> = {
 
 interface StrategyTabData {
   strategyType: StrategyType;
-  strategies: Array<BaseStrategy<{}>>;
+  strategies: Array<Strategy<{}>>;
   tabLabel: string;
 }
 
@@ -83,8 +83,8 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
     selectedTab: 'Extensions',
   };
 
-  @LazyInject(() => PassB)
-  private passB: PassB;
+  @lazyInject(Symbols.PassB)
+  private passB: Interfaces.PassB;
 
   public componentDidCatch(error: Error, info: React.ErrorInfo): void {
     // TODO: better error handling

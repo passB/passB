@@ -56,7 +56,7 @@ export const CollapsibleListItem = withStyles<styleClasses>(styles)(
             <ExpandLess />
           }
         </ListItem>,
-        <Collapse key="collapsible" in={!collapsed} transitionDuration="auto" unmountOnExit={true} className="collapse-container">
+        <Collapse key="collapsible" in={!collapsed} transitionDuration={0} unmountOnExit={true} className="collapse-container">
           <div className={classes.nested}>
             {CollapsedChildren}
           </div>

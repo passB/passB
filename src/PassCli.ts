@@ -1,4 +1,5 @@
-import {Service} from 'typedi';
+import {injectable} from 'inversify';
+import {Interfaces} from 'Container';
 import {memoizeWithTTL} from 'Decorators/memoizeWithTTL';
 
 interface PassReply {
@@ -7,8 +8,8 @@ interface PassReply {
   returnCode: number;
 }
 
-@Service()
-export class PassCli {
+@injectable()
+export class PassCli implements Interfaces.PassCli {
   @memoizeWithTTL(5000) // cache list calls for 5 seconds
   public async list(): Promise<string[]> {
     const response = await this.executeCommand('list-entries');

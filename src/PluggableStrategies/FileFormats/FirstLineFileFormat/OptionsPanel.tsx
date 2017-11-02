@@ -1,7 +1,7 @@
 import {FormControl, FormControlLabel, FormLabel} from 'material-ui';
 import {default as Radio, RadioGroup} from 'material-ui/Radio';
 import * as React from 'react';
-import {OptionPanelProps} from 'Options/OptionsReceiver';
+import {OptionPanelProps} from 'InjectableInterfaces/OptionsPanel';
 import {Options, UsernameStyle} from './FirstLineFileFormat';
 
 export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {

@@ -4,10 +4,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/es/integration/react';
-import {Container} from 'typedi';
 import {executionContext} from 'Constants';
+import {Container, Interfaces, Symbols} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
-import {State} from 'State/State';
 import {Popup} from './Components/Popup';
 
 import 'typeface-roboto';
@@ -19,7 +18,7 @@ setExecutionContext(executionContext.popup);
 
 const theme = createMuiTheme();
 
-const state = Container.get(State);
+const state = Container.get<Interfaces.State>(Symbols.State);
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

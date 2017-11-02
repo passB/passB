@@ -3207,6 +3207,14 @@ invariant@^2.0.0, invariant@^2.2.1, invariant@^2.2.2:
   dependencies:
     loose-envify "^1.0.0"
 
+inversify-inject-decorators@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/inversify-inject-decorators/-/inversify-inject-decorators-3.0.1.tgz#de46df46ba72642eacac79451ec5c101e4dbcb00"
+
+inversify@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/inversify/-/inversify-4.5.0.tgz#1a575ddf1db216ed3292d9b0f70f497de275874e"
+
 invert-kv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-1.0.0.tgz#104a8e4aaca6d3d8cd157a8ef8bfab2d7a3ffdb6"
@@ -7218,10 +7226,6 @@ type-is@~1.6.15:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
-
-"typedi@https://github.com/phryneas/typedi.git#cfed2307672a880b99f164825a5b5ac165842624":
-  version "0.5.2-patched-phryneas-1"
-  resolved "https://github.com/phryneas/typedi.git#cfed2307672a880b99f164825a5b5ac165842624"
 
 typeface-roboto@^0.0.35:
   version "0.0.35"

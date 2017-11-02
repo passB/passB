@@ -3,8 +3,8 @@ import {Folder, InsertDriveFile} from 'material-ui-icons';
 import Avatar from 'material-ui/Avatar';
 import * as React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router';
-import {LazyInject} from 'Decorators/LazyInject';
-import {PassB} from 'PassB';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {Action, EntryNode} from 'State/PassEntries/Interfaces';
 import {CollapsibleListItem} from './CollapsibleListItem';
 
@@ -13,8 +13,8 @@ interface Props {
 }
 
 class UnconnectedEntryNodeList extends React.Component<Props & RouteComponentProps<{}>> {
-  @LazyInject(() => PassB)
-  private passB: PassB;
+  @lazyInject(Symbols.PassB)
+  private passB: Interfaces.PassB;
 
   public render(): JSX.Element {
     const {root, history} = this.props;

@@ -1,7 +1,7 @@
-import {Service} from 'typedi';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
+import { injectable} from 'inversify';
+import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {createTypedMap} from 'State/Types/TypedMap';
-import {FileFormat, FileFormatTag} from '../';
+import {FileFormat} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
 export interface Options {
@@ -11,7 +11,7 @@ export interface Options {
   trimWhitespace: boolean;
 }
 
-@Service({tags: [FileFormatTag]})
+@injectable()
 export class PrefixFileFormat extends FileFormat<Options> {
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 

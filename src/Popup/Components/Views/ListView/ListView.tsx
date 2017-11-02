@@ -1,8 +1,8 @@
 import {List, ListItem, TextField} from 'material-ui';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
-import {LazyInject} from 'Decorators/LazyInject';
-import {PassB} from 'PassB';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {ContextualRootNode} from './ContextualRootNode';
 import {FilteredRootNode} from './FilteredRootNode';
 
@@ -27,8 +27,8 @@ class ListViewComponent extends React.Component<InnerProps, State> {
     filter: '',
   };
 
-  @LazyInject(() => PassB)
-  private passB: PassB;
+  @lazyInject(Symbols.PassB)
+  private passB: Interfaces.PassB;
 
   public constructor(props: InnerProps) {
     super(props);
