@@ -68,8 +68,6 @@ export class State {
     });
 
     storageSyncListener(this.store, this.storageAdapter);
-
-    this.store.subscribe(() => console.log('store changed', getExecutionContext(), this.store.getState()));
   }
 
   public getPersistor(): Persistor {
