@@ -6,7 +6,7 @@ import {createSelector} from 'reselect';
 import {Matcher} from 'InjectableInterfaces/Matcher';
 import {EntryNode} from 'State/PassEntries/Interfaces';
 import {getCombinedPassEntries} from 'State/PassEntries/Selectors';
-import {StoreContents} from 'State/State';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {deepFilterEntryNodes, flattenEntryNode} from './entryNodeMethods';
 import {CollapsibleListItem} from './CollapsibleListItem';
 import {EntryNodeList} from './EntryNodeList';

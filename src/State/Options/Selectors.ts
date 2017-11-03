@@ -2,7 +2,7 @@ import {List, Map} from 'immutable';
 import {createSelector} from 'reselect';
 import {ExtensionName, StrategyName, StrategyType} from 'State/Interfaces';
 import {getOptionsState} from 'State/Selectors';
-import {StoreContents} from 'State/State';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {TypedMap} from 'State/Types/TypedMap';
 import {OptionsState} from './Interfaces';
 

@@ -1,6 +1,6 @@
 import getDecorators from 'inversify-inject-decorators';
-import {Container} from 'Container';
+import {container} from 'Container';
 
-const {lazyInject} = getDecorators(Container);
+const {lazyInject} = getDecorators(container);
 
 export {lazyInject};

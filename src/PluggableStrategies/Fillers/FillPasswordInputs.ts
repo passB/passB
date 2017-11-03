@@ -27,7 +27,7 @@ export const fillPasswordInputs = (password: string) => {
 };
 
 @injectable()
-export class FillPasswordInputs extends Filler<{}> {
+export class FillPasswordInputs extends Filler<{foo?: string}> {
   public readonly OptionsPanel?: OptionsPanelType<{}> = void 0;
 
   public constructor() {

@@ -1,17 +1,21 @@
 // tslint:disable:no-unused-expression max-classes-per-file
+import {injectable} from 'inversify';
+import {RouteProps} from 'react-router';
 import {Store} from 'redux';
-import {Container, Service} from 'typedi';
 import {getMockStore} from '__test_helpers__/getMockStore';
 import {executionContext} from 'Constants';
+import {container, Symbols} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
-import {ExecutionOptions, Extension} from 'Extensions/Extension';
-import {OptionsPanelType} from 'Options/OptionsReceiver';
+import {Extension} from 'Extensions/Extension';
+import {ExecutionOptions} from 'InjectableInterfaces/Extension';
+import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {setExtensionDefaultOptions, setExtensionOptions} from 'State/Options/Actions';
-import {State, StoreContents} from 'State/State';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {createTypedMap} from 'State/Types/TypedMap';
 
-@Service()
+@injectable()
 class TestExtension extends Extension<{}> {
+  public routes: RouteProps[] = [];
   public OptionsPanel: OptionsPanelType<{}>;
   public actions: string[];
 
@@ -38,13 +42,12 @@ describe('Extension base class', () => {
 
   beforeAll(() => {
     state = {getStore: jest.fn((): Store<StoreContents> => store)};
+    container.rebind(Symbols.State).toConstantValue(state);
   });
 
   beforeEach(() => {
     state.getStore = jest.fn((): Store<StoreContents> => store);
     store = getMockStore();
-    Container.set(State, state);
-    Container.remove(TestExtension);
   });
 
   describe('constructor', () => {
@@ -52,7 +55,7 @@ describe('Extension base class', () => {
       setExecutionContext(executionContext.background);
       const spy = jest.spyOn(store, 'dispatch');
 
-      Container.get(TestExtension);
+      container.resolve(TestExtension);
 
       expect(spy.mock.calls).toMatchSnapshot();
     });
@@ -62,7 +65,7 @@ describe('Extension base class', () => {
         setExecutionContext(context);
         const spy = jest.spyOn(store, 'dispatch');
 
-        Container.get(TestExtension);
+        container.resolve(TestExtension);
 
         expect(spy).not.toHaveBeenCalled();
       });
@@ -74,7 +77,7 @@ describe('Extension base class', () => {
     it('should be triggered when options change', () => {
       const triggered = jest.fn();
 
-      const extension = Container.get(class extends TestExtension {
+      const extension = container.resolve(class extends TestExtension {
         public onOptionsUpdate(): void {
           triggered(arguments);
         }
@@ -90,7 +93,7 @@ describe('Extension base class', () => {
   });
   describe('setEntries method', () => {
     it('should dispatch setEntries Action', () => {
-      const extension = Container.get(TestExtension);
+      const extension = container.resolve(TestExtension);
       const spy = jest.spyOn(store, 'dispatch');
 
       (extension as any) // tslint:disable-line:no-any
@@ -110,7 +113,7 @@ describe('Extension base class', () => {
       store = getMockStore();
       store.dispatch(setExtensionDefaultOptions({extensionName: 'testExtension', options: defaultOptions}));
 
-      const extension = Container.get(TestExtension);
+      const extension = container.resolve(TestExtension);
 
       expect(
         (extension as any).options, // tslint:disable-line:no-any
@@ -125,7 +128,7 @@ describe('Extension base class', () => {
       store.dispatch(setExtensionDefaultOptions({extensionName: 'testExtension', options: defaultOptions}));
       store.dispatch(setExtensionOptions({extensionName: 'testExtension', options: explicitOptions}));
 
-      const extension = Container.get(TestExtension);
+      const extension = container.resolve(TestExtension);
 
       expect(
         (extension as any).options, // tslint:disable-line:no-any

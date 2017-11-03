@@ -1,106 +1,134 @@
 // tslint:disable:no-var-requires max-classes-per-file
-import {PassB as PassBType} from 'PassB';
-import {Extension} from '../Extensions/Extension';
-import {BaseStrategy} from '../PluggableStrategies/BaseStrategy';
-
-/**
- * prevent side-effect imports
- * usually importing one of these would register all their implementations as tagged services
- */
-function mockPreventSideEffects(): void {
-  jest.setMock('Extensions', require('Extensions/Extension'));
-  jest.setMock('PluggableStrategies/FileFormats', require('PluggableStrategies/FileFormats/FileFormat'));
-  jest.setMock('PluggableStrategies/Fillers', require('PluggableStrategies/Fillers/Filler'));
-  jest.setMock('PluggableStrategies/Matchers', require('PluggableStrategies/Matchers/Matcher'));
-}
+import {injectable} from 'inversify';
+import {executionContext} from 'Constants';
+import {container, Symbols} from 'Container';
+import {setExecutionContext} from 'Decorators/ExecuteInContext';
+import {PassB} from 'PassB';
 
 describe('PassB', () => {
-  let {Container} = require('typedi');
-  let {PassB} = require('PassB');
-  let {setExecutionContext} = require('Decorators/ExecuteInContext');
-
   beforeEach(() => {
-    jest.resetModules();
-    setExecutionContext = require('Decorators/ExecuteInContext').setExecutionContext;
-    Container = require('typedi').Container;
-    PassB = require('PassB').PassB;
+    setExecutionContext('test1');
+    container.snapshot();
   });
 
-  describe('tagged injections', () => {
-    let passB: PassBType;
-    beforeAll(() => {
-      setExecutionContext('test1');
-      passB = Container.get(PassB);
-    });
+  afterEach(() => {
+    container.restore();
+  });
 
-    const mapToClassName = (item: BaseStrategy<{}> | Extension<{}>) => item.name;
+  describe('construction', () => {
+    it('triggers instantiation of all bound extensions and strategies', () => {
+      const spies: jest.Mock[] = [];
 
-    it('receives Extensions', () => {
-      expect(passB.getAllExtensions().map(mapToClassName)).toMatchSnapshot();
-    });
+      function getMockClass(): any { // tslint:disable-line:no-any
+        const spy = jest.fn();
+        spies.push(spy);
+        return injectable()(class {
+          public constructor() {
+            spy();
+          }
+        });
+      }
 
-    it('receives FileFormats', () => {
-      expect(passB.getAllFileFormats().map(mapToClassName)).toMatchSnapshot();
-    });
+      container.rebind(Symbols.Extension).to(getMockClass());
+      container.bind(Symbols.Extension).to(getMockClass());
+      container.rebind(Symbols.FileFormat).to(getMockClass());
+      container.bind(Symbols.FileFormat).to(getMockClass());
+      container.rebind(Symbols.Filler).to(getMockClass());
+      container.bind(Symbols.Filler).to(getMockClass());
+      container.rebind(Symbols.Matcher).to(getMockClass());
+      container.bind(Symbols.Matcher).to(getMockClass());
 
-    it('receives Fillers', () => {
-      expect(passB.getAllFillers().map(mapToClassName)).toMatchSnapshot();
-    });
+      expect(spies.length).toBe(8);
 
-    it('receives Matchers', () => {
-      expect(passB.getAllMatchers().map(mapToClassName)).toMatchSnapshot();
+      container.resolve(PassB);
+
+      for (const spy of spies) {
+        expect(spy).toHaveBeenCalledTimes(1);
+      }
     });
   });
 
-  describe('extension behaviour', () => {
-    beforeAll(mockPreventSideEffects);
+  describe('getter methods', () => {
+    describe('getAllExtensions', () => {
+      it('receives extensions from the container', () => {
+        container.unbind(Symbols.Extension);
+        container.bind(Symbols.Extension).toConstantValue('testExtension1');
+        container.bind(Symbols.Extension).toConstantValue('testExtension2');
 
-    describe('extension injection', () => {
-
-      it('receives extensions via the ExtensionTag', () => {
-        const {Service} = require('typedi');
-        const {ExtensionTag} = require('Extensions');
-
-        @Service({tags: [ExtensionTag]})
-        class Extension1 {
-        }
-
-        @Service({tags: [ExtensionTag]})
-        class Extension2 {
-        }
-
-        setExecutionContext('background');
-        const passB = Container.get(PassB);
-
-        expect(passB.getAllExtensions().some((item: {}) => item instanceof Extension1)).toBeTruthy();
-        expect(passB.getAllExtensions().some((item: {}) => item instanceof Extension2)).toBeTruthy();
-        expect(passB.getAllExtensions().length).toBe(2);
+        expect(container.resolve(PassB).getAllExtensions()).toEqual(['testExtension1', 'testExtension2']);
       });
-
-      it('receives FileFormats wia the FileFormatTag');
-      it('receives Fillers wia the FillerTag');
-      it('receives Matchers wia the MatcherTag');
-
     });
 
-    it('validates that all extensions and strategies are of correct type at initialization');
+    describe('getExtension', () => {
+      it('returns Extension by name');
+    });
 
-    describe('injection of options', () => {
-      //
+    describe('getEnabledExtensions', () => {
+      it('returns all enabled Extensions');
+    });
+
+    describe('getAllFileFormats', () => {
+      it('receives FileFormats from the container', () => {
+        container.unbind(Symbols.FileFormat);
+        container.bind(Symbols.FileFormat).toConstantValue('testStrategy1');
+        container.bind(Symbols.FileFormat).toConstantValue('testStrategy2');
+
+        expect(container.resolve(PassB).getAllFileFormats()).toEqual(['testStrategy1', 'testStrategy2']);
+      });
+    });
+
+    describe('getFileFormat', () => {
+      it('returns selected FileFormat');
+      it('returns first FileFormat when there is not selected FileFormat');
+    });
+
+    describe('getAllFillers', () => {
+      it('receives Fillers from the container', () => {
+        container.unbind(Symbols.Filler);
+        container.bind(Symbols.Filler).toConstantValue('testStrategy1');
+        container.bind(Symbols.Filler).toConstantValue('testStrategy2');
+
+        expect(container.resolve(PassB).getAllFillers()).toEqual(['testStrategy1', 'testStrategy2']);
+      });
+    });
+
+    describe('getFiller', () => {
+      it('returns selected Filler');
+      it('returns first Filler when there is not selected Filler');
+    });
+
+    describe('getAllMatchers', () => {
+      it('receives Matchers from the container', () => {
+        container.unbind(Symbols.Matcher);
+        container.bind(Symbols.Matcher).toConstantValue('testStrategy1');
+        container.bind(Symbols.Matcher).toConstantValue('testStrategy2');
+
+        expect(container.resolve(PassB).getAllMatchers()).toEqual(['testStrategy1', 'testStrategy2']);
+      });
+    });
+
+    describe('getMatcher', () => {
+      it('returns selected Matcher');
+      it('returns first Matcher when there is not selected Matcher');
     });
   });
 
-  describe('context-specific behaviour', () => {
-    it('injects options into children at initialize in any context');
-    it('only starts loading entries in background context');
-  });
-
-  describe('loading on entries', () => {
-    it('only triggers initializeList on enabled extensions');
-    it('does not execute two extensions\' initializeList at the same time');
+  describe('reloadEntries', () => {
+    it('triggers initializeList on enabled extensions');
     it('waits for all extensions\' initializeList to finish');
-    describe('builds a correct tree from the returned entries', () => {
-      //
+  });
+
+  describe('reloadExtension', () => {
+    it('triggers a browser extension reload', () => {
+      setExecutionContext(executionContext.background);
+      container.rebind(Symbols.Extension).toConstantValue('dummy');
+      container.rebind(Symbols.Filler).toConstantValue('dummy');
+      container.rebind(Symbols.FileFormat).toConstantValue('dummy');
+      container.rebind(Symbols.Matcher).toConstantValue('dummy');
+
+      expect(browser.runtime.reload).not.toHaveBeenCalled();
+      container.resolve(PassB).reloadExtension();
+      expect(browser.runtime.reload).toHaveBeenCalled();
     });
   });
 });

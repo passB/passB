@@ -24,6 +24,12 @@ export class PassB implements Interfaces.PassB {
     return this.extensions;
   }
 
+  public getEnabledExtensions(): Array<Extension<{}>> {
+    const enabledExtensionNames = OptionsSelectors.getEnabledExtensions(this.state.getStore().getState());
+    return this.extensions
+      .filter((extension: Extension<{}>) => enabledExtensionNames.includes(extension.name));
+  }
+
   public getExtension(name: string): Extension<{}> {
     const extension = this.extensions.find((item: Extension<{}>) => item.name === name);
     if (!extension) {
@@ -64,12 +70,8 @@ export class PassB implements Interfaces.PassB {
 
   @executeInCorrectContext(executionContext.background)
   public reloadEntries(): Promise<this> {
-    const enabledExtensionNames = OptionsSelectors.getEnabledExtensions(this.state.getStore().getState());
-    const enabledExtensions = this.extensions
-      .filter((extension: Extension<{}>) => enabledExtensionNames.includes(extension.name));
-
     return Promise
-      .all(enabledExtensions.map((extension: Extension<{}>) => extension.initializeList()))
+      .all(this.getEnabledExtensions().map((extension: Extension<{}>) => extension.initializeList()))
       .then(() => this);
   }
 

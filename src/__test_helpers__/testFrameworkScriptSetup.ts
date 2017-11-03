@@ -5,6 +5,7 @@
     onMessage: {
       addListener: jest.fn(),
     },
+    reload: jest.fn(),
   },
   tabs: {
     executeScript: jest.fn(),

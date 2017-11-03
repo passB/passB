@@ -7,6 +7,7 @@ import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
 export abstract class Filler<OptionType extends MapTypeAllowedData<OptionType>>
   extends BaseStrategy<OptionType>
   implements Interfaces.Filler<OptionType> {
+
   public constructor(name: StrategyName, defaultOptions: TypedMap<OptionType>) {
     super('Filler', name, defaultOptions);
   }

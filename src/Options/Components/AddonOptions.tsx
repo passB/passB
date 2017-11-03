@@ -37,7 +37,7 @@ import {
   getAllExtensionOptions, getAllStrategyOptions, getEnabledExtensions,
   getSelectedStrategies,
 } from 'State/Options/Selectors';
-import {StoreContents} from 'State/State';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {TypedMap} from 'State/Types/TypedMap';
 import {StrategyTab} from './StrategyTab';
 

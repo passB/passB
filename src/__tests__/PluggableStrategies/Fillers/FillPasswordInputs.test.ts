@@ -1,5 +1,5 @@
 import 'jest';
-import {Container} from 'typedi';
+import {container, Interfaces, Symbols} from 'Container';
 import {fillPasswordInputs, FillPasswordInputs} from 'PluggableStrategies/Fillers/FillPasswordInputs';
 
 describe('FillPasswordInputs', () => {
@@ -42,6 +42,13 @@ describe('FillPasswordInputs', () => {
     expect(pwInput2.value).toBe(after.pwInput2);
   }
 
+  it('is registered as Filler', () => {
+    const instances = container.getAll<Interfaces.Filler<{}>>(Symbols.Filler);
+    expect(
+      instances.some((instance: Interfaces.Filler<{}>) => instance instanceof FillPasswordInputs),
+    ).toBeTruthy();
+  });
+
   it('should fill a password', async () => {
     const executeScript = jest.fn(
       async (unused: {}, {code}: { code: string }) => {
@@ -52,7 +59,7 @@ describe('FillPasswordInputs', () => {
     );
     browser.tabs.executeScript = executeScript;
 
-    const filler = Container.get(FillPasswordInputs);
+    const filler = container.resolve(FillPasswordInputs);
 
     await expectBeforeAfter(
       {input1: 'foo', pwInput1: 'foo', pwInput2: 'foo'},
@@ -81,7 +88,7 @@ describe('FillPasswordInputs', () => {
     );
     browser.tabs.executeScript = executeScript;
 
-    const filler = Container.get(FillPasswordInputs);
+    const filler = container.resolve(FillPasswordInputs);
 
     await expectBeforeAfter(
       {input1: 'foo', pwInput1: 'foo', pwInput2: 'foo'},
@@ -93,7 +100,7 @@ describe('FillPasswordInputs', () => {
   });
 
   it('should not fill usernames', async () => {
-    const filler = Container.get(FillPasswordInputs);
+    const filler = container.resolve(FillPasswordInputs);
 
     await expectBeforeAfter(
       {input1: 'foo', pwInput1: 'foo', pwInput2: 'foo'},
