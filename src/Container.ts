@@ -13,7 +13,7 @@ const Symbols = {
 
 import {Container} from 'inversify';
 
-const container = new Container();
+const container = new Container({defaultScope: 'Singleton'});
 
 import {PassB as PassBImplementation} from 'PassB';
 import {PassCli as PassCliImplementation} from 'PassCli';
@@ -38,11 +38,11 @@ container.bind<Interfaces.Filler<{}>>(Symbols.Filler).to(FillPasswordInputs);
 import {FirstLineFileFormat} from 'PluggableStrategies/FileFormats/FirstLineFileFormat';
 import {PrefixFileFormat} from 'PluggableStrategies/FileFormats/PrefixFileFormat';
 
-container.bind<Interfaces.FileFormat<{}>>(Symbols.FileFormat).to(PrefixFileFormat);
 container.bind<Interfaces.FileFormat<{}>>(Symbols.FileFormat).to(FirstLineFileFormat);
+container.bind<Interfaces.FileFormat<{}>>(Symbols.FileFormat).to(PrefixFileFormat);
 
 import {FuzzaldrinMatcher} from 'PluggableStrategies/Matchers/FuzzaldrinMatcher';
 
 container.bind<Interfaces.Matcher<{}>>(Symbols.Matcher).to(FuzzaldrinMatcher);
 
-export {container as Container, Interfaces, Symbols};
+export {container, Interfaces, Symbols};

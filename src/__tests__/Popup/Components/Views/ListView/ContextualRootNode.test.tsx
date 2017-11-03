@@ -10,7 +10,7 @@ import {reducer} from 'State/PassEntries';
 import {setEntries} from 'State/PassEntries/Actions';
 import {EntryAction, EntryNode} from 'State/PassEntries/Interfaces';
 import {getEntryNode} from 'State/PassEntries/Reducers';
-import {StoreContents} from 'State/State';
+import {StoreContents} from 'InjectableInterfaces/State';
 
 function mockRoot(entries: EntryAction[]): EntryNode {
   return reducer(undefined!, setEntries({

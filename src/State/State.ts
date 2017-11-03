@@ -6,15 +6,10 @@ import {composeWithDevTools} from 'remote-redux-devtools';
 import {Interfaces, Symbols} from 'Container';
 import {lazyInject} from 'Decorators/lazyInject';
 import {getExecutionContext} from 'Decorators/ExecuteInContext';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {storageSyncListener, storageSyncMiddleware} from './syncMiddleware';
-import {reducer as OptionsReducer, OptionsState} from './Options';
-import {PassEntryState} from './PassEntries/Interfaces';
+import {reducer as OptionsReducer} from './Options';
 import {reducer as PassEntryReducer} from './PassEntries/Reducers';
-
-export interface StoreContents {
-  options: OptionsState;
-  passEntries: PassEntryState;
-}
 
 @injectable()
 export class State {

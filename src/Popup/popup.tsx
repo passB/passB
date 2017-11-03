@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/es/integration/react';
 import {executionContext} from 'Constants';
-import {Container, Interfaces, Symbols} from 'Container';
+import {container, Interfaces, Symbols} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
 import {Popup} from './Components/Popup';
 
@@ -18,7 +18,7 @@ setExecutionContext(executionContext.popup);
 
 const theme = createMuiTheme();
 
-const state = Container.get<Interfaces.State>(Symbols.State);
+const state = container.get<Interfaces.State>(Symbols.State);
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>

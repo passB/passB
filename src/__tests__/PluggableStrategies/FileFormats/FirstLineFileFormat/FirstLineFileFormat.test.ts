@@ -1,12 +1,14 @@
-import {Container} from 'typedi';
+import {Store} from 'redux';
+import {getMockStore} from '__test_helpers__/getMockStore';
 import {executionContext} from 'Constants';
+import {container, Interfaces, Symbols} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {
   FirstLineFileFormat,
   Options,
   UsernameStyle,
 } from 'PluggableStrategies/FileFormats/FirstLineFileFormat/FirstLineFileFormat';
-import {State} from 'State/State';
 import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 
 const passwordFileName1 = 'test/file/path';
@@ -24,56 +26,47 @@ const getOptions = (partial: Partial<Options> = {}): TypedMap<Options> => create
 });
 
 describe('FirstLineFileFormat', () => {
-  const optionsGetter = jest.fn(getOptions);
-
   beforeEach(() => {
-    optionsGetter.mockReset();
-    Container.remove(FirstLineFileFormat);
-    Object.defineProperty(
-      Container.get(FirstLineFileFormat),
-      'options',
-      {get: optionsGetter},
-    );
+    container.snapshot();
+    setExecutionContext('test');
+  });
+
+  afterEach(() => {
+    container.restore();
   });
 
   it('dispatches expected defaultOptions in background context', () => {
     const dispatch = jest.fn();
 
     setExecutionContext(executionContext.background);
-    Container.set(State, {getStore: () => ({dispatch})});
-    Container.remove(FirstLineFileFormat);
-    Container.get(FirstLineFileFormat);
+    container.rebind(Symbols.State).toConstantValue({getStore: () => ({dispatch})})
+    container.resolve(FirstLineFileFormat);
 
     expect(dispatch).toHaveBeenCalled();
     expect(dispatch.mock.calls).toMatchSnapshot();
-
-    Container.remove(State);
   });
 
   it('returns the first line as password', () => {
-    const fileFormat = Container.get(FirstLineFileFormat);
+    const fileFormat = container.resolve(FirstLineFileFormat);
     expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe('firstLinePw');
   });
 
   it('returns undefined on usernameStyle None', () => {
-    optionsGetter.mockReturnValue(getOptions({usernameStyle: 'None'}));
-
-    const fileFormat = Container.get(FirstLineFileFormat);
-    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe(void 0);
+    const instance = container.resolve(FirstLineFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({usernameStyle: 'None'})});
+    expect(instance.getUsername(passwordFile1, passwordFileName1)).toBe(void 0);
   });
 
   test('returns the second line on usernameStyle SecondLine', () => {
-    optionsGetter.mockReturnValue(getOptions({usernameStyle: 'SecondLine'}));
-
-    const fileFormat = Container.get(FirstLineFileFormat);
-    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe('testUser');
+    const instance = container.resolve(FirstLineFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({usernameStyle: 'SecondLine'})});
+    expect(instance.getUsername(passwordFile1, passwordFileName1)).toBe('testUser');
   });
 
   test('returns the last path part at usernameStyle LastPathPart', () => {
-    optionsGetter.mockReturnValue(getOptions({usernameStyle: 'LastPathPart'}));
-
-    const fileFormat = Container.get(FirstLineFileFormat);
-    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe('path');
+    const instance = container.resolve(FirstLineFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({usernameStyle: 'LastPathPart'})});
+    expect(instance.getUsername(passwordFile1, passwordFileName1)).toBe('path');
   });
 
 });

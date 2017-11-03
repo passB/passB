@@ -1,8 +1,7 @@
-import {Container} from 'typedi';
 import {executionContext} from 'Constants';
+import {container, Symbols} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
 import {Options, PrefixFileFormat} from 'PluggableStrategies/FileFormats/PrefixFileFormat/PrefixFileFormat';
-import {State} from 'State/State';
 import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 
 const passwordFileName1 = 'test/file/path';
@@ -24,84 +23,83 @@ const getOptions = (partial: Partial<Options> = {}): TypedMap<Options> => create
 
 describe('PrefixFileFormat', () => {
 
-  const optionsGetter = jest.fn(getOptions);
-
   beforeEach(() => {
-    optionsGetter.mockReset();
-    Container.remove(PrefixFileFormat);
-    Object.defineProperty(
-      Container.get(PrefixFileFormat),
-      'options',
-      {get: optionsGetter},
-    );
+    container.snapshot();
+    setExecutionContext('test');
+  });
+
+  afterEach(() => {
+    container.restore();
   });
 
   it('dispatches expected defaultOptions in background context', () => {
     const dispatch = jest.fn();
 
     setExecutionContext(executionContext.background);
-    Container.set(State, {getStore: () => ({dispatch})});
-    Container.remove(PrefixFileFormat);
-    Container.get(PrefixFileFormat);
+    container.rebind(Symbols.State).toConstantValue({getStore: () => ({dispatch})});
+    container.resolve(PrefixFileFormat);
 
     expect(dispatch).toHaveBeenCalled();
     expect(dispatch.mock.calls).toMatchSnapshot();
-
-    Container.remove(State);
   });
 
   it('should return first line when passwordFirstLine is true', () => {
-    optionsGetter.mockReturnValue(getOptions({
+    const instance = container.resolve(PrefixFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({
       passwordFirstLine: true,
-    }));
+    })});
 
-    expect(Container.get(PrefixFileFormat).getPassword(passwordFile1, passwordFileName1)).toBe('firstLinePw');
+    expect(instance.getPassword(passwordFile1, passwordFileName1)).toBe('firstLinePw');
   });
 
   it('should return password when passwordPrefix is found', () => {
-    optionsGetter.mockReturnValue(getOptions({
+    const instance = container.resolve(PrefixFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({
       passwordFirstLine: false,
       passwordPrefix: 'password:',
-    }));
+    })});
 
-    expect(Container.get(PrefixFileFormat).getPassword(passwordFile1, passwordFileName1)).toBe('specifiedPw');
+    expect(instance.getPassword(passwordFile1, passwordFileName1)).toBe('specifiedPw');
   });
 
   it('should return undefined when passwordPrefix is not present', () => {
-    optionsGetter.mockReturnValue(getOptions({
+    const instance = container.resolve(PrefixFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({
       passwordFirstLine: false,
       passwordPrefix: 'password_not_present:',
-    }));
+    })});
 
-    expect(Container.get(PrefixFileFormat).getPassword(passwordFile1, passwordFileName1)).toBeUndefined();
+    expect(instance.getPassword(passwordFile1, passwordFileName1)).toBeUndefined();
   });
 
   it('should return username when usernamePrefix is found', () => {
-    optionsGetter.mockReturnValue(getOptions({
+    const instance = container.resolve(PrefixFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({
       usernamePrefix: 'username:',
-    }));
+    })});
 
-    expect(Container.get(PrefixFileFormat).getUsername(passwordFile1, passwordFileName1)).toBe('testUser');
+    expect(instance.getUsername(passwordFile1, passwordFileName1)).toBe('testUser');
   });
 
   it('should return undefined when usernamePrefix is not present', () => {
-    optionsGetter.mockReturnValue(getOptions({
+    const instance = container.resolve(PrefixFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({
       usernamePrefix: 'username_not_present:',
-    }));
+    })});
 
-    expect(Container.get(PrefixFileFormat).getUsername(passwordFile1, passwordFileName1)).toBeUndefined();
+    expect(instance.getUsername(passwordFile1, passwordFileName1)).toBeUndefined();
   });
 
   it('should not trim matches when trimWhitespace is set to false', () => {
-    optionsGetter.mockReturnValue(getOptions({
+    const instance = container.resolve(PrefixFileFormat);
+    Object.defineProperty(instance, 'options', {value: getOptions({
       passwordFirstLine: false,
       usernamePrefix: 'username:',
       trimWhitespace: false,
       passwordPrefix: 'password:',
-    }));
+    })});
 
-    const fileFormat = Container.get(PrefixFileFormat);
-    expect(fileFormat.getPassword(passwordFile1, passwordFileName1)).toBe(' specifiedPw');
-    expect(fileFormat.getUsername(passwordFile1, passwordFileName1)).toBe(' testUser');
+    expect(instance.getPassword(passwordFile1, passwordFileName1)).toBe(' specifiedPw');
+    expect(instance.getUsername(passwordFile1, passwordFileName1)).toBe(' testUser');
   });
 });

@@ -1,7 +1,6 @@
 import {shallow, ShallowWrapper} from 'enzyme';
 import * as React from 'react';
-import {Container} from 'typedi';
-import {PassB} from 'PassB';
+import {container, Symbols} from 'Container';
 import {ListView} from 'Popup/Components/Views/ListView';
 import {ContextualRootNode} from 'Popup/Components/Views/ListView/ContextualRootNode';
 import {FilteredRootNode} from 'Popup/Components/Views/ListView/FilteredRootNode';
@@ -13,7 +12,7 @@ const contextualQuery = ContextualRootNode;
 describe('ListView Component', () => {
 
   beforeAll(() => {
-    Container.set(PassB, {getMatcher: () => 'mockedMatcher'});
+    container.rebind(Symbols.PassB).toConstantValue({getMatcher: () => 'mockedMatcher'});
   });
 
   it('renders', () => {
