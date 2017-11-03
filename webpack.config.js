@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -27,11 +28,13 @@ module.exports = {
     loaders: [
       {
         test: /\.tsx?$/,
-        exclude: [
-          //
-        ],
         use: [
-          'awesome-typescript-loader',
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              configFileName: 'tsconfig.webpack.json',
+            },
+          },
           {
             loader: 'tslint-loader',
             options: {
@@ -103,6 +106,7 @@ module.exports = {
       name: "shared",
       filename: "shared.js",
     }),
+    new CheckerPlugin(),
   ],
 };
 

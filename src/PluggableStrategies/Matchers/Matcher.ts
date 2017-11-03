@@ -1,9 +1,9 @@
+import {injectable, unmanaged} from 'inversify';
 import {Interfaces} from 'Container';
 import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
 import {StrategyName} from 'State/Interfaces';
 import {EntryNode} from 'State/PassEntries/Interfaces';
 import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
-import {injectable, unmanaged} from 'inversify';
 
 @injectable()
 export abstract class Matcher<OptionType extends MapTypeAllowedData<OptionType>>

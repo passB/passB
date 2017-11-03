@@ -25,7 +25,7 @@ const theme = createMuiTheme({
 });
 
 const state = Container.get<Interfaces.State>(Symbols.State);
-console.log(state);
+
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <PersistGate persistor={state.getPersistor()} loading={'loading'}>
