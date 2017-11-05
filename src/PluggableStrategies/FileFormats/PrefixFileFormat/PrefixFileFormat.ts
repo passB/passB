@@ -1,6 +1,7 @@
 import { injectable} from 'inversify';
 import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
-import {createTypedMap} from 'State/Types/TypedMap';
+import {StrategyName} from 'State/Interfaces';
+import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 import {FileFormat} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
@@ -14,18 +15,13 @@ export interface Options {
 @injectable()
 export class PrefixFileFormat extends FileFormat<Options> {
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
-
-  public constructor() {
-    super(
-      'PrefixFileFormat',
-      createTypedMap({
-        passwordFirstLine: true,
-        passwordPrefix: '',
-        usernamePrefix: 'login:',
-        trimWhitespace: true,
-      }),
-    );
-  }
+  public readonly name: StrategyName = 'PrefixFileFormat';
+  public readonly defaultOptions: TypedMap<Options> =  createTypedMap({
+    passwordFirstLine: true,
+    passwordPrefix: '',
+    usernamePrefix: 'login:',
+    trimWhitespace: true,
+  });
 
   public getPassword(lines: string[], entryName: string): string | undefined {
     if (this.options.get('passwordFirstLine')) {

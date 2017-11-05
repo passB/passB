@@ -2,13 +2,13 @@ import {shallow} from 'enzyme';
 import * as React from 'react';
 import {Store} from 'redux';
 import {getMockStore} from '__test_helpers__/getMockStore';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {CollapsibleListItem} from 'Popup/Components/Views/ListView/CollapsibleListItem';
 import {mapStateToProps, FilteredRootNodeComponent} from 'Popup/Components/Views/ListView/FilteredRootNode';
 import {enableExtension} from 'State/Options/Actions';
 import {reducer} from 'State/PassEntries';
 import {setEntries} from 'State/PassEntries/Actions';
 import {EntryAction, EntryNode} from 'State/PassEntries/Interfaces';
-import {StoreContents} from 'InjectableInterfaces/State';
 
 function mockRoot(entries: EntryAction[]): EntryNode {
   return reducer(undefined!, setEntries({

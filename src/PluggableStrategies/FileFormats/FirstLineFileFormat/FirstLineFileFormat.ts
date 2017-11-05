@@ -1,6 +1,7 @@
 import {injectable} from 'inversify';
 import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
-import {createTypedMap} from 'State/Types/TypedMap';
+import {StrategyName} from 'State/Interfaces';
+import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 import {FileFormat} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
@@ -13,15 +14,10 @@ export interface Options {
 @injectable()
 export class FirstLineFileFormat extends FileFormat<Options> {
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
-
-  public constructor() {
-    super(
-      'FirstLineFileFormat',
-      createTypedMap({
-        usernameStyle: 'SecondLine' as UsernameStyle,
-      }),
-    );
-  }
+  public readonly name: StrategyName = 'FirstLineFileFormat';
+  public readonly defaultOptions: TypedMap<Options> =  createTypedMap({
+    usernameStyle: 'SecondLine' as UsernameStyle,
+  });
 
   public getPassword(lines: string[], entryName: string): string | undefined {
     return lines[0];

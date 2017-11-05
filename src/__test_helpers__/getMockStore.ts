@@ -1,7 +1,7 @@
 import {combineReducers, createStore, Store} from 'redux';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {initialState as initialOptionsState, reducer as OptionsReducer} from 'State/Options/Reducers';
 import {initialState as initialPassEntriesState, reducer as PassEntryReducer} from 'State/PassEntries/Reducers';
-import {StoreContents} from 'InjectableInterfaces/State';
 
 const reducer = combineReducers<StoreContents>({
   options: OptionsReducer,

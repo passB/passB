@@ -1,14 +1,14 @@
 import {Interfaces} from 'Container';
 import {BaseStrategy} from 'PluggableStrategies/BaseStrategy';
-import {StrategyName} from 'State/Interfaces';
+import {StrategyName, StrategyType} from 'State/Interfaces';
 import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
 
 export abstract class FileFormat<OptionType extends MapTypeAllowedData<OptionType>>
   extends BaseStrategy<OptionType>
   implements Interfaces.FileFormat<OptionType> {
-  public constructor(name: StrategyName, defaultOptions: TypedMap<OptionType>) {
-    super('FileFormat', name, defaultOptions);
-  }
+  public readonly type: StrategyType = 'FileFormat';
+  public abstract readonly name: StrategyName;
+  public abstract readonly defaultOptions: TypedMap<OptionType>;
 
   public abstract getPassword(lines: string[], entryName: string): string | undefined;
 

@@ -1,8 +1,9 @@
 import {score} from 'fuzzaldrin-plus';
 import {injectable} from 'inversify';
 import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
+import {StrategyName} from 'State/Interfaces';
 import {EntryNode} from 'State/PassEntries/Interfaces';
-import {createTypedMap} from 'State/Types/TypedMap';
+import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 import {Matcher} from '../';
 import {OptionsPanel} from './OptionsPanel';
 
@@ -22,18 +23,12 @@ export interface Options {
 @injectable()
 export class FuzzaldrinMatcher extends Matcher<Options> {
   public static readonly URL_CLEAN_REGEX: RegExp = /^(http|ftp)s?:\/\//;
-
+  public readonly name: StrategyName = 'FuzzaldrinMatcher';
+  public readonly defaultOptions: TypedMap<Options> = createTypedMap({
+    minScore: 1,
+    maxResults: 20,
+  });
   public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
-
-  public constructor() {
-    super(
-      'FuzzaldrinMatcher',
-      createTypedMap({
-        minScore: 1,
-        maxResults: 20,
-      }),
-    );
-  }
 
   public filterEntries(url: string, entries: EntryNode[]): EntryNode[] {
     url = url.replace(FuzzaldrinMatcher.URL_CLEAN_REGEX, '');

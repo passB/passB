@@ -1,9 +1,5 @@
-import {Store} from 'redux';
-import {getMockStore} from '__test_helpers__/getMockStore';
-import {executionContext} from 'Constants';
-import {container, Interfaces, Symbols} from 'Container';
+import {container} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
-import {StoreContents} from 'InjectableInterfaces/State';
 import {
   FirstLineFileFormat,
   Options,
@@ -33,17 +29,6 @@ describe('FirstLineFileFormat', () => {
 
   afterEach(() => {
     container.restore();
-  });
-
-  it('dispatches expected defaultOptions in background context', () => {
-    const dispatch = jest.fn();
-
-    setExecutionContext(executionContext.background);
-    container.rebind(Symbols.State).toConstantValue({getStore: () => ({dispatch})})
-    container.resolve(FirstLineFileFormat);
-
-    expect(dispatch).toHaveBeenCalled();
-    expect(dispatch.mock.calls).toMatchSnapshot();
   });
 
   it('returns the first line as password', () => {

@@ -1,7 +1,8 @@
 import Tab = browser.tabs.Tab;
 import {injectable} from 'inversify';
 import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
-import {createTypedMap} from 'State/Types/TypedMap';
+import {StrategyName} from 'State/Interfaces';
+import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 import {Filler} from './Filler';
 
 // tslint:disable:max-classes-per-file
@@ -27,15 +28,10 @@ export const fillPasswordInputs = (password: string) => {
 };
 
 @injectable()
-export class FillPasswordInputs extends Filler<{foo?: string}> {
+export class FillPasswordInputs extends Filler<{}> {
   public readonly OptionsPanel?: OptionsPanelType<{}> = void 0;
-
-  public constructor() {
-    super(
-      'FillPasswordInputs',
-      createTypedMap({}),
-    );
-  }
+  public readonly name: StrategyName = 'FillPasswordInputs';
+  public readonly defaultOptions: TypedMap<{}> = createTypedMap({});
 
   public fillUsername(activeTab: Tab, username: string): Promise<void> {
     // not supported by this filler, just skip it
