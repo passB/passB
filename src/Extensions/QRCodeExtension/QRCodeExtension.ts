@@ -53,12 +53,10 @@ export class QRCodeExtension extends Extension<Options> {
     this.setEntries(entries);
   }
 
-  public getLabelForAction(action: string): string {
+  public getLabelForAction(action: string): string | undefined {
     switch (action) {
       case 'show':
         return 'extension_qrcode_action_show';
-      default:
-        return '';
     }
   }
 
@@ -66,9 +64,6 @@ export class QRCodeExtension extends Extension<Options> {
     switch (action) {
       case 'show':
         navigateTo('/extension/QRCode/Show', {entry, options: this.options.toJS()});
-        break;
-      default:
-        console.error('unknown action:', action);
         break;
     }
   }

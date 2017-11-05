@@ -37,7 +37,7 @@ ShallowWrapper {
                 "tabIndex": 0,
               }
             }
-            label="popup_search_translated"
+            label="Search..."
             margin="none"
             onChange={[Function]}
             required={false}
@@ -71,7 +71,7 @@ ShallowWrapper {
                 "tabIndex": 0,
               }
             }
-            label="popup_search_translated"
+            label="Search..."
             margin="none"
             onChange={[Function]}
             required={false}
@@ -93,7 +93,7 @@ ShallowWrapper {
               "autoFocus": true,
               "tabIndex": 0,
             },
-            "label": "popup_search_translated",
+            "label": "Search...",
             "margin": "none",
             "onChange": [Function],
             "required": false,
@@ -152,7 +152,7 @@ ShallowWrapper {
                   "tabIndex": 0,
                 }
               }
-              label="popup_search_translated"
+              label="Search..."
               margin="none"
               onChange={[Function]}
               required={false}
@@ -186,7 +186,7 @@ ShallowWrapper {
                   "tabIndex": 0,
                 }
               }
-              label="popup_search_translated"
+              label="Search..."
               margin="none"
               onChange={[Function]}
               required={false}
@@ -208,7 +208,7 @@ ShallowWrapper {
                 "autoFocus": true,
                 "tabIndex": 0,
               },
-              "label": "popup_search_translated",
+              "label": "Search...",
               "margin": "none",
               "onChange": [Function],
               "required": false,

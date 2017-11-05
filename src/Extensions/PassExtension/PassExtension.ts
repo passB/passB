@@ -49,14 +49,12 @@ export class PassExtension extends Extension<Options> {
     this.setEntries(entries);
   }
 
-  public getLabelForAction(action: string): string {
+  public getLabelForAction(action: string): string | undefined {
     switch (action) {
       case 'show':
         return 'extension_pass_action_show';
       case 'fill':
         return 'extension_pass_action_fill';
-      default:
-        return '';
     }
   }
 
@@ -68,9 +66,6 @@ export class PassExtension extends Extension<Options> {
       case 'fill':
         this.executeFillAction(entry);
         window.close();
-        break;
-      default:
-        console.error('unknown action:', action);
         break;
     }
   }
@@ -87,14 +82,14 @@ export class PassExtension extends Extension<Options> {
     const finalUrl = activeTab.url;
 
     if (typeof finalUrl !== 'undefined' && initialUrl !== finalUrl) {
-      console.info('url changed from request to receive of password. not filling');
+      console.warn('url changed from request to receive of password. not filling');
       return {};
     }
 
     const filler = await this.passB.getFiller();
     const fileFormat = await this.passB.getFileFormat();
 
-    return Promise.all([
+    return await Promise.all([
       filler.fillPassword(activeTab, fileFormat.getPassword(entryContents, entry)),
       filler.fillUsername(activeTab, fileFormat.getUsername(entryContents, entry)),
     ]);

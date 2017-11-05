@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PassExtension initializeList method registers actions only on files, not on folders 1`] = `
+Array [
+  Array [
+    Array [
+      Object {
+        "action": "show",
+        "fullPath": "file",
+      },
+      Object {
+        "action": "fill",
+        "fullPath": "file",
+      },
+      Object {
+        "action": "show",
+        "fullPath": "sub/file",
+      },
+      Object {
+        "action": "fill",
+        "fullPath": "sub/file",
+      },
+    ],
+  ],
+]
+`;
