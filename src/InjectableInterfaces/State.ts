@@ -1,7 +1,7 @@
 import {Store} from 'redux';
 import {Persistor} from 'redux-persist';
-import {OptionsState} from '../State/Options/Interfaces';
-import {PassEntryState} from '../State/PassEntries/Interfaces';
+import {OptionsState} from 'State/Options/Interfaces';
+import {PassEntryState} from 'State/PassEntries/Interfaces';
 
 export interface StoreContents {
   options: OptionsState;

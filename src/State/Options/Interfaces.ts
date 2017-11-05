@@ -4,10 +4,8 @@ import {TypedMap} from 'State/Types/TypedMap';
 
 export interface IOptionsState {
   enabledExtensions: List<ExtensionName>;
-  extensionsDefaultOptions: Map<ExtensionName, TypedMap<{}>>;
   extensionsOptions: Map<ExtensionName, TypedMap<{}>>;
   selectedStrategies: Map<StrategyType, StrategyName>;
-  strategyDefaultOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
   strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
 }
 

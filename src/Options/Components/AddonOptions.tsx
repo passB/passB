@@ -17,27 +17,21 @@ import {connect} from 'react-redux';
 import {compose} from 'recompose';
 import {Interfaces, Symbols} from 'Container';
 import {lazyInject} from 'Decorators/lazyInject';
-import {Extension} from 'Extensions/Extension';
-import {Strategy} from 'InjectableInterfaces/Strategy';
+import {Extension, Strategy} from 'InjectableInterfaces';
+import {StoreContents} from 'InjectableInterfaces/State';
 import {ExtensionName, StrategyName, StrategyType} from 'State/Interfaces';
 import {
   disableExtension,
   enableExtension,
   setExtensionOptions,
-  setSelectedStrategy,
-  setStrategyOptions,
 } from 'State/Options/Actions';
 import {
   ExtensionNameArgs,
   ExtensionOptionsArgs,
-  StrategyNameArgs,
-  StrategyOptionsArgs,
 } from 'State/Options/Interfaces';
 import {
-  getAllExtensionOptions, getAllStrategyOptions, getEnabledExtensions,
-  getSelectedStrategies,
+  getAllExtensionOptions, getEnabledExtensions, getExtensionOptions,
 } from 'State/Options/Selectors';
-import {StoreContents} from 'InjectableInterfaces/State';
 import {TypedMap} from 'State/Types/TypedMap';
 import {StrategyTab} from './StrategyTab';
 
@@ -49,13 +43,11 @@ interface Props {
 interface MappedProps {
   enabledExtensions: Set<ExtensionName>;
   extensionOptions: Map<ExtensionName, TypedMap<{}>>;
-  selectedStrategies: Map<StrategyType, StrategyName>;
   strategyOptions: Map<StrategyType, Map<StrategyName, TypedMap<{}>>>;
   enableExtension: (args: ExtensionNameArgs) => void;
   disableExtension: (args: ExtensionNameArgs) => void;
   setExtensionOptions: (args: ExtensionOptionsArgs) => void;
-  setSelectedStrategy: (args: StrategyNameArgs) => void;
-  setStrategyOptions: (args: StrategyOptionsArgs) => void;
+
 }
 
 interface State {
@@ -97,14 +89,10 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
       classes,
       enabledExtensions,
       extensionOptions,
-      selectedStrategies,
-      strategyOptions,
       // tslint:disable:no-shadowed-variable
       enableExtension,
       disableExtension,
       setExtensionOptions,
-      setSelectedStrategy,
-      setStrategyOptions,
       // tslint:enable:no-shadowed-variable
     } = this.props;
     const passB = this.passB;
@@ -150,7 +138,7 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
                   <Card className={classes.breakBefore}>
                     <CardContent>
                       <OptionsPanel
-                        options={extensionOptions.get(extensionName)!}
+                        options={getExtensionOptions(extensionOptions, extension)}
                         updateOptions={(options: TypedMap<{}>) => setExtensionOptions({
                           extensionName,
                           options,
@@ -166,22 +154,15 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
         }
         {strategyTabs
           .filter(({strategyType}: StrategyTabData) => strategyType === selectedTab)
-          .map(({strategyType, tabLabel, strategies}: StrategyTabData) => {
-            const selectedStrategy = selectedStrategies.get(strategyType, strategies[0].name);
-            return (
+          .map(({strategyType, tabLabel, strategies}: StrategyTabData) =>
+            (
               <StrategyTab
                 key={`tabContents_${strategyType}`}
                 label={tabLabel}
                 strategies={strategies}
-                selectedStrategyName={selectedStrategy}
-                strategyOptions={strategyOptions.getIn([strategyType, selectedStrategy], Map())}
-                updateSelectedStrategyName={(strategyName: string) =>
-                  setSelectedStrategy({strategyType, strategyName})}
-                updateOptions={(options: TypedMap<{}>) =>
-                  setStrategyOptions({strategyType, strategyName: selectedStrategy, options})}
+                strategyType={strategyType}
               />
-            );
-          })}
+            ))}
         {selectedTab === 'other' &&
         <List>
           <ListItem
@@ -214,15 +195,11 @@ export const AddonOptions: React.ComponentClass<Props> = compose(
     (state: StoreContents) => ({
       enabledExtensions: getEnabledExtensions(state),
       extensionOptions: getAllExtensionOptions(state),
-      selectedStrategies: getSelectedStrategies(state),
-      strategyOptions: getAllStrategyOptions(state),
     }),
     {
       enableExtension,
       disableExtension,
       setExtensionOptions,
-      setSelectedStrategy,
-      setStrategyOptions,
     },
   ),
 )(ClassLessAddonOptions);

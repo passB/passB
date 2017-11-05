@@ -11,10 +11,6 @@ import {
   StrategyOptionsArgs,
   } from './Interfaces';
 
-const setExtensionDefaultOptions =
-  (oldState: OptionsState, {extensionName, options}: ExtensionOptionsArgs): OptionsState =>
-    oldState.updateIn(['extensionsDefaultOptions', extensionName], () => options);
-
 const setExtensionOptions =
   (oldState: OptionsState, {extensionName, options}: ExtensionOptionsArgs): OptionsState =>
     oldState.updateIn(['extensionsOptions', extensionName], () => options);
@@ -38,10 +34,6 @@ const disableExtension = (oldState: OptionsState, {extensionName}: ExtensionName
     },
   );
 
-const setStrategyDefaultOptions =
-  (oldState: OptionsState, {strategyType, strategyName, options}: StrategyOptionsArgs): OptionsState =>
-    oldState.updateIn(['strategyDefaultOptions', strategyType, strategyName], () => options);
-
 const setStrategyOptions =
   (oldState: OptionsState, {strategyType, strategyName, options}: StrategyOptionsArgs): OptionsState =>
     oldState.updateIn(['strategyOptions', strategyType, strategyName], () => options);
@@ -59,11 +51,9 @@ export const initialState: OptionsState = createTypedMap({
 });
 
 export const reducer = reducerWithInitialState(initialState)
-  .case(Actions.setExtensionDefaultOptions, setExtensionDefaultOptions)
   .case(Actions.setExtensionOptions, setExtensionOptions)
   .case(Actions.enableExtension, enableExtension)
   .case(Actions.disableExtension, disableExtension)
-  .case(Actions.setStrategyDefaultOptions, setStrategyDefaultOptions)
   .case(Actions.setStrategyOptions, setStrategyOptions)
   .case(Actions.setSelectedStrategy, setSelectedStrategy)
   .build();

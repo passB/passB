@@ -1,27 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Extension base class constructor should dispatch defaultOptions in background context 1`] = `
-Array [
-  Array [
-    Object {
-      "payload": Object {
-        "extensionName": "testExtension",
-        "options": Immutable.Map {
-          "defaultOption1": "value1",
-        },
-      },
-      "type": "OPTIONS/SET_EXTENSION_DEFAULT_OPTIONS",
-    },
-  ],
-]
-`;
-
 exports[`Extension base class onOptionsUpdate method should be triggered when options change 1`] = `
 Array [
   Array [
-    Arguments [
-      Immutable.Map {},
-    ],
+    Immutable.Map {
+      "defaultOption1": "value1",
+    },
+  ],
+  Array [
+    Immutable.Map {
+      "defaultOption1": "value1",
+      "foo": "bar",
+    },
   ],
 ]
 `;

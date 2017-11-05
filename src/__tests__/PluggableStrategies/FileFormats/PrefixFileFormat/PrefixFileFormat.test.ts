@@ -1,5 +1,4 @@
-import {executionContext} from 'Constants';
-import {container, Symbols} from 'Container';
+import {container} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';
 import {Options, PrefixFileFormat} from 'PluggableStrategies/FileFormats/PrefixFileFormat/PrefixFileFormat';
 import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
@@ -30,17 +29,6 @@ describe('PrefixFileFormat', () => {
 
   afterEach(() => {
     container.restore();
-  });
-
-  it('dispatches expected defaultOptions in background context', () => {
-    const dispatch = jest.fn();
-
-    setExecutionContext(executionContext.background);
-    container.rebind(Symbols.State).toConstantValue({getStore: () => ({dispatch})});
-    container.resolve(PrefixFileFormat);
-
-    expect(dispatch).toHaveBeenCalled();
-    expect(dispatch.mock.calls).toMatchSnapshot();
   });
 
   it('should return first line when passwordFirstLine is true', () => {

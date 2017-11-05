@@ -1,13 +1,12 @@
 import {injectable, unmanaged} from 'inversify';
 import {RouteProps} from 'react-router';
-import {executionContext} from 'Constants';
 import {Interfaces, Symbols} from 'Container';
 import {lazyInject} from 'Decorators/lazyInject';
-import {getExecutionContext} from 'Decorators/ExecuteInContext';
 import {ExecutionOptions} from 'InjectableInterfaces/Extension';
 import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {ExtensionName} from 'State/Interfaces';
-import {getExtensionOptions, setExtensionDefaultOptions} from 'State/Options';
+import {getExtensionOptions} from 'State/Options';
+import {getAllExtensionOptions} from 'State/Options/Selectors';
 import {setEntries} from 'State/PassEntries/Actions';
 import {EntryAction} from 'State/PassEntries/Interfaces';
 import {MapTypeAllowedData, TypedMap} from 'State/Types/TypedMap';
@@ -28,10 +27,6 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
     @unmanaged() public readonly name: ExtensionName,
     @unmanaged() public readonly defaultOptions: TypedMap<OptionType>,
   ) {
-    if (getExecutionContext() === executionContext.background) {
-      this.state.getStore().dispatch(setExtensionDefaultOptions({extensionName: name, options: defaultOptions}));
-    }
-
     this.lastOptions = this.options;
     this.state.getStore().subscribe(() => {
       const {lastOptions, options} = this;
@@ -49,7 +44,7 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
   public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 
   protected get options(): TypedMap<OptionType> {
-    return getExtensionOptions(this.state.getStore().getState(), this.name) as TypedMap<OptionType>;
+    return getExtensionOptions(getAllExtensionOptions(this.state.getStore().getState()), this);
   }
 
   protected setEntries(entries: EntryAction[]): void {
