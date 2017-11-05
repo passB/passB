@@ -33,7 +33,7 @@ class UnconnectedEntryNodeList extends React.Component<Props & RouteComponentPro
       >
         <ListItemText
           primary={
-            browser.i18n.getMessage(this.passB.getExtension(action.get('extension')).getLabelForAction(action.get('action')))
+            browser.i18n.getMessage(this.passB.getExtension(action.get('extension')).getLabelForAction(action.get('action')) || '')
           }
         />
       </ListItem>

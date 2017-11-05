@@ -39,7 +39,7 @@ export abstract class Extension<OptionType extends MapTypeAllowedData<OptionType
 
   public abstract initializeList(): Promise<void>;
 
-  public abstract getLabelForAction(action: string): string;
+  public abstract getLabelForAction(action: string): string | undefined;
 
   public abstract executeAction(action: string, entry: string, options: ExecutionOptions): void;
 

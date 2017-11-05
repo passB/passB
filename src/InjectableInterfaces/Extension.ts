@@ -10,7 +10,7 @@ export interface Extension<OptionType extends MapTypeAllowedData<OptionType>> {
   readonly name: ExtensionName;
   readonly defaultOptions: TypedMap<OptionType>;
   initializeList(): Promise<void>;
-  getLabelForAction(action: string): string;
+  getLabelForAction(action: string): string | undefined;
   executeAction(action: string, entry: string, options: ExecutionOptions): void;
 
 }
