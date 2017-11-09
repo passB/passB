@@ -53,7 +53,9 @@ class ListViewComponent extends React.Component<InnerProps, State> {
           />
         </ListItem>
         <FilteredRootNode filter={filter} />
+        {url &&
         <ContextualRootNode url={url} matcher={this.passB.getMatcher()} />
+        }
       </List>
     );
   }

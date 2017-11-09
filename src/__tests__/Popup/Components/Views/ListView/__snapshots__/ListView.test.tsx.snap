@@ -49,10 +49,7 @@ ShallowWrapper {
         <Connect(Component)
           filter=""
         />,
-        <Connect(Component)
-          matcher="mockedMatcher"
-          url=""
-        />,
+        "",
       ],
     },
     "ref": null,
@@ -118,18 +115,7 @@ ShallowWrapper {
         "rendered": null,
         "type": [Function],
       },
-      Object {
-        "instance": null,
-        "key": null,
-        "nodeType": "class",
-        "props": Object {
-          "matcher": "mockedMatcher",
-          "url": "",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
+      "",
     ],
     "type": [Function],
   },
@@ -164,10 +150,7 @@ ShallowWrapper {
           <Connect(Component)
             filter=""
           />,
-          <Connect(Component)
-            matcher="mockedMatcher"
-            url=""
-          />,
+          "",
         ],
       },
       "ref": null,
@@ -233,18 +216,7 @@ ShallowWrapper {
           "rendered": null,
           "type": [Function],
         },
-        Object {
-          "instance": null,
-          "key": null,
-          "nodeType": "class",
-          "props": Object {
-            "matcher": "mockedMatcher",
-            "url": "",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
+        "",
       ],
       "type": [Function],
     },

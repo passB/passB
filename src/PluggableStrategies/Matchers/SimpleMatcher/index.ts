@@ -1,0 +1,1 @@
+export {SimpleMatcher} from './SimpleMatcher';

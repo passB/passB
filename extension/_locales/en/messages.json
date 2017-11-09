@@ -49,6 +49,9 @@
   "options_reset_extension_confirm": {
     "message": "This will reset all options and reload passB. Are you sure?"
   },
+  "label_simplematcher": {
+    "message": "Simple Matcher"
+  },
   "label_fuzzaldrinmatcher": {
     "message": "FuzzAldrin"
   },
