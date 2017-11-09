@@ -4,8 +4,9 @@ import {StrategyName} from 'State/Interfaces';
 import {EntryNode} from 'State/PassEntries/Interfaces';
 import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 import {Matcher} from '../';
+import {OptionsPanel} from './OptionsPanel';
 
-interface Options {
+export interface Options {
   autoWww: boolean;
   matchInSubDirs: boolean;
   ignoreLastPart: boolean;
@@ -22,7 +23,7 @@ export class SimpleMatcher extends Matcher<Options> {
     ignoreLastPart: false,
     requireFullMatch: false,
   });
-  public readonly OptionsPanel: OptionsPanelType<Options>;
+  public readonly OptionsPanel: OptionsPanelType<Options> = OptionsPanel;
 
   public filterEntries(url: string, entries: EntryNode[]): EntryNode[] {
     url = url.replace(SimpleMatcher.URL_CLEAN_REGEX, '$1');

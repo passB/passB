@@ -52,7 +52,7 @@ const StrategyTabComponent = (
       >
         {strategies.map((strategy: Strategy<{}>, index: number) => (
           <MenuItem key={index} value={strategy.name}>
-            {browser.i18n.getMessage(`label_${strategy.name}`)}
+            {browser.i18n.getMessage(`options_${strategy.name}_label`)}
           </MenuItem>
         ))}
       </Select>
