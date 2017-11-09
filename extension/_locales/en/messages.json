@@ -49,19 +49,31 @@
   "options_reset_extension_confirm": {
     "message": "This will reset all options and reload passB. Are you sure?"
   },
-  "label_simplematcher": {
+  "options_simplematcher_label": {
     "message": "Simple Matcher"
   },
-  "label_fuzzaldrinmatcher": {
+  "options_simplematcher_autoWww": {
+    "message": "Ignore wwww. prefix"
+  },
+  "options_simplematcher_matchInSubDirs": {
+    "message": "Also match in subdirectories"
+  },
+  "options_simplematcher_ignoreLastPart": {
+    "message": "Ignore the last part of the password path (if you are using it as your login name)"
+  },
+  "options_simplematcher_requireFullMatch": {
+    "message": "Require exact match"
+  },
+  "options_fuzzaldrinmatcher_label": {
     "message": "FuzzAldrin"
   },
-  "label_prefixfileformat": {
+  "options_prefixfileformat_label": {
     "message": "Prefix-Based"
   },
-  "label_firstlinefileformat": {
+  "options_firstlinefileformat_label": {
     "message": "First Line"
   },
-  "label_fillpasswordinputs": {
+  "options_fillpasswordinputs_label": {
     "message": "Password Fields"
   }
 }
