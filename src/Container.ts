@@ -42,7 +42,9 @@ container.bind<Interfaces.FileFormat<{}>>(Symbols.FileFormat).to(FirstLineFileFo
 container.bind<Interfaces.FileFormat<{}>>(Symbols.FileFormat).to(PrefixFileFormat);
 
 import {FuzzaldrinMatcher} from 'PluggableStrategies/Matchers/FuzzaldrinMatcher';
+import {SimpleMatcher} from 'PluggableStrategies/Matchers/SimpleMatcher';
 
+container.bind<Interfaces.Matcher<{}>>(Symbols.Matcher).to(SimpleMatcher);
 container.bind<Interfaces.Matcher<{}>>(Symbols.Matcher).to(FuzzaldrinMatcher);
 
 export {container, Interfaces, Symbols};

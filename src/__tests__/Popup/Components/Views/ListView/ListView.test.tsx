@@ -57,6 +57,11 @@ describe('ListView Component', () => {
   });
 
   describe('Contextual Node', () => {
+    it('is not present if the url is empty', () => {
+      const rendered = shallow(<ListView url=""/>).dive();
+      expect(rendered.find(contextualQuery).length).toBe(0);
+    });
+
     it('is present if the url is not empty', () => {
       const rendered = shallow(<ListView url="test"/>).dive();
       expect(rendered.find(contextualQuery).length).toBe(1);
