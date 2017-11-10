@@ -87,7 +87,7 @@ describe('SimpleMatcher', () => {
     });
 
     it('www.example.com', () => {
-      expect(getFullPaths(matcher.filterEntries('https://example.com', getTestData()))).toEqual([
+      expect(getFullPaths(matcher.filterEntries('https://www.example.com', getTestData()))).toEqual([
         'www.example.com',
         'example.com',
         'example.com/username',
@@ -302,7 +302,7 @@ describe('SimpleMatcher', () => {
     });
 
     it('www.example.com', () => {
-      expect(getFullPaths(matcher.filterEntries('https://example.com', getTestData()))).toEqual([
+      expect(getFullPaths(matcher.filterEntries('https://www.example.com', getTestData()))).toEqual([
         'www.example.com',
         'example.com',
       ]);
