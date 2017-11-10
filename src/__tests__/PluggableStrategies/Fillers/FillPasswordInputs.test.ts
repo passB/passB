@@ -1,6 +1,7 @@
 import 'jest';
 import {container, Interfaces, Symbols} from 'Container';
 import {fillPasswordInputs, FillPasswordInputs} from 'PluggableStrategies/Fillers/FillPasswordInputs';
+import {testFixtures} from './testFixtures';
 
 describe('FillPasswordInputs', () => {
 
@@ -107,5 +108,20 @@ describe('FillPasswordInputs', () => {
       () => filler.fillUsername({id: 0} as any, 'username'), // tslint:disable-line:no-any
       {input1: 'foo', pwInput1: 'foo', pwInput2: 'foo'},
     );
+  });
+
+  describe('fixture tests', () => {
+    const executeScript = jest.fn(
+      async (unused: {}, {code}: { code: string }) => {
+        // necessary for code coverage - see https://github.com/gotwarlost/istanbul/issues/674
+        code = code.replace(/cov_\w+\.\w(\[\d+])+\+\+[,;]/g, '');
+        eval(code);  // tslint:disable-line:no-eval
+      },
+    );
+    browser.tabs.executeScript = executeScript;
+
+    const filler = container.resolve(FillPasswordInputs);
+
+    testFixtures(filler, false);
   });
 });

@@ -89,6 +89,8 @@
     "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
+      "!src/__tests__/**",
+      "!src/__test_helpers__/**",
       "!**/node_modules/**"
     ],
     "modulePaths": [
