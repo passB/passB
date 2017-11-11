@@ -5,12 +5,6 @@ import {StrategyName} from 'State/Interfaces';
 import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 import {Filler} from './Filler';
 
-// tslint:disable:max-classes-per-file
-declare global {
-  class InputEvent extends Event {
-  }
-}
-
 export const fillPasswordInputs = (password: string) => {
   let i = 0;
   for (const passwordInput of Array.from(document.querySelectorAll('input[type="password"]'))) {
@@ -33,12 +27,12 @@ export class FillPasswordInputs extends Filler<{}> {
   public readonly name: StrategyName = 'FillPasswordInputs';
   public readonly defaultOptions: TypedMap<{}> = createTypedMap({});
 
-  public fillUsername(activeTab: Tab, username: string): Promise<void> {
+  public fillUsername(): Promise<void> {
     // not supported by this filler, just skip it
     return Promise.resolve();
   }
 
-  public fillPassword(activeTab: Tab, password: string): Promise<void> {
+  public fillPassword(activeTab: Tab, password?: string): Promise<void> {
     if (!password) {
       // no password provided, nothing to fill
       return Promise.resolve();

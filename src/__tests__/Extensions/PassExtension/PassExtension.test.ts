@@ -74,13 +74,13 @@ describe('PassExtension', () => {
     });
 
     describe('fill', () => {
-      let tabSpy: jest.Mock<Promise<[{url: string}]>>;
+      let tabSpy: jest.Mock<Promise<[{ url: string }]>>;
       let passCli: { show: jest.Mock<Promise<string[]>> };
       let fileFormat: { getUsername: jest.Mock<string>; getPassword: jest.Mock<string> };
       let filler: { fillUsername: jest.Mock<Promise<void>>; fillPassword: jest.Mock<Promise<void>> };
 
       beforeEach(() => {
-        tabSpy = ((global as any).browser.tabs.query as jest.Mock<Promise<[{url: string}]>>); // tslint:disable-line:no-any
+        tabSpy = ((global as any).browser.tabs.query as jest.Mock<Promise<[{ url: string }]>>); // tslint:disable-line:no-any
         tabSpy.mockReset();
         tabSpy.mockReturnValue(Promise.resolve([{url: 'https://example.com'}]));
 
@@ -113,8 +113,12 @@ describe('PassExtension', () => {
         expect(passCli.show).toHaveBeenCalledWith('my/test/entry');
         expect(fileFormat.getPassword).toHaveBeenCalledWith(['firstLine', 'secondLine'], 'my/test/entry');
         expect(fileFormat.getUsername).toHaveBeenCalledWith(['firstLine', 'secondLine'], 'my/test/entry');
-        expect(filler.fillUsername).toHaveBeenCalledWith({url: 'https://example.com'}, 'user');
-        expect(filler.fillPassword).toHaveBeenCalledWith({url: 'https://example.com'}, 'pass');
+        expect(filler.fillUsername).toHaveBeenCalledWith(
+          {url: 'https://example.com'}, 'user', {entryContents: ['firstLine', 'secondLine'], entryName: 'my/test/entry'},
+        );
+        expect(filler.fillPassword).toHaveBeenCalledWith(
+          {url: 'https://example.com'}, 'pass', {entryContents: ['firstLine', 'secondLine'], entryName: 'my/test/entry'},
+        );
       });
 
       it('does not fill when url changes while pass contents are received', async () => {

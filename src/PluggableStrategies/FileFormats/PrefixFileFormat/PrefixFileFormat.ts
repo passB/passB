@@ -37,7 +37,7 @@ export class PrefixFileFormat extends FileFormat<Options> {
   private getEntryByPrefix(lines: string[], prefix: string): string | undefined {
     for (const line of lines) {
       if (line.startsWith(prefix)) {
-        let entry = line.substr(prefix.length);
+        let entry = line.slice(prefix.length);
         if (this.options.get('trimWhitespace')) {
           entry = entry.trim();
         }

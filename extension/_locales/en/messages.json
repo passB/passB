@@ -75,5 +75,8 @@
   },
   "options_fillpasswordinputs_label": {
     "message": "Password Fields"
+  },
+  "options_selectorfiller_label": {
+    "message": "By CSS Selector"
   }
 }
