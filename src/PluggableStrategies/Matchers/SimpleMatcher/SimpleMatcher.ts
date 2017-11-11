@@ -30,7 +30,7 @@ export class SimpleMatcher extends Matcher<Options> {
     const {autoWww, matchInSubDirs, ignoreLastPart, requireFullMatch} = this.options.toJS();
 
     if (autoWww && url.startsWith('www.')) {
-      url = url.substring(4);
+      url = url.slice(4);
     }
 
     return entries
@@ -50,13 +50,13 @@ export class SimpleMatcher extends Matcher<Options> {
         if (ignoreLastPart) {
           for (const val of Array.from(filterVals)) {
             if (val.lastIndexOf('/') !== -1) {
-              filterVals.add(val.substring(0, val.lastIndexOf('/')));
+              filterVals.add(val.slice(0, val.lastIndexOf('/')));
             }
           }
         }
 
         if (autoWww) {
-          filterVals = new Set(Array.from(filterVals).map((val: string) => val.startsWith('www.') ? val.substring(4) : val));
+          filterVals = new Set(Array.from(filterVals).map((val: string) => val.startsWith('www.') ? val.slice(4) : val));
         }
 
         if (requireFullMatch) {

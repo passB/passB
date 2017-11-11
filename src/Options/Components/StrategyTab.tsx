@@ -28,6 +28,9 @@ const styles = {
   fullWidth: {
     width: '100%',
   },
+  minHeight: {
+    minHeight: '200px',
+  },
 };
 
 const StrategyTabComponent = (
@@ -43,7 +46,7 @@ const StrategyTabComponent = (
     classes,
   }: Props & ConnectedProps & WithStyles<keyof typeof styles>,
 ): JSX.Element => (
-  <div>
+  <div className={classes.minHeight}>
     <FormControl className={classes.fullWidth}>
       <InputLabel>Selected Strategy:</InputLabel>
       <Select

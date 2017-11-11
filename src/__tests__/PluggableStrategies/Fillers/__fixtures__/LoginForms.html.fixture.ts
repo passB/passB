@@ -1,4 +1,12 @@
-export const googleUsernameStep = `
+export interface LoginFormFixture {
+  html: string;
+  usernameSelector: string;
+  passwordSelector: string;
+}
+
+export const Fixtures: { [name: string]: LoginFormFixture } = {
+  googleUsernameStep: {
+    html: `
 <form>
     <input class="whsOnd zHQkBf" jsname="YPqjbf" autocomplete="username" spellcheck="false" tabindex="0"
     aria-label="E-Mail oder Telefonnummer" name="identifier" id="identifierId" dir="ltr" data-initial-dir="ltr"
@@ -9,9 +17,12 @@ export const googleUsernameStep = `
     data-initial-value="" type="text">
     <input jsname="SBlSod" name="ct" id="ct" type="hidden">
 </form>
-`;
-
-export const googlePasswordStep = `
+`,
+    usernameSelector: '#identifierId',
+    passwordSelector: 'input[name="hiddenPassword"]',
+  },
+  googlePasswordStep: {
+    html: `
 <form>
     <input id="hiddenEmail" class="cNPTrc" name="identifier" spellcheck="false" aria-hidden="true"
     value="" readonly="" autocomplete="off" type="email">
@@ -23,16 +34,24 @@ export const googlePasswordStep = `
      data-initial-value="" type="text">
     <input jsname="SBlSod" name="ct" id="ct" type="hidden">
 </form>
-`;
-
-export const facebookLogin = `
+`,
+    usernameSelector: '#hiddenEmail',
+    passwordSelector: 'input[name="password"]',
+  },
+  facebookLogin: {
+    html: `
 <form id="login_form">
 					<input class="inputtext" name="email" id="email" tabindex="1" data-testid="royal_email" type="email">
 					<input class="inputtext" name="pass" id="pass" tabindex="2" data-testid="royal_pass" type="password">
   				<input value="Log In" tabindex="4" data-testid="royal_login_button" id="u_0_2" type="submit">
-</form>`;
+</form>
+`,
+    usernameSelector: 'input[name="email"]',
+    passwordSelector: '#pass',
+  },
 
-export const amazonLogin = `
+  amazonLogin: {
+    html: `
 <form name="signIn">
     <input name="appActionToken" value="sdfg" type="hidden">
     <input name="appAction" value="SIGNIN" type="hidden">
@@ -58,9 +77,12 @@ export const amazonLogin = `
     <input name="rememberMe" value="true" tabindex="4" type="checkbox">
     <i class="a-icon a-icon-checkbox">
 </form>
-`;
-
-export const wikipediaLogin = `
+`,
+    usernameSelector: '#ap_email',
+    passwordSelector: '#ap_password',
+  },
+  wikipediaLogin: {
+    html: `
 <form class="mw-htmlform mw-ui-vform mw-ui-container"
 action="/w/index.php?title=Special:UserLogin&amp;returnto=Main+Page" method="post" name="userlogin">
     <input id="wpName1" name="wpName" size="20" class="loginText mw-ui-input"
@@ -76,9 +98,12 @@ action="/w/index.php?title=Special:UserLogin&amp;returnto=Main+Page" method="pos
     <input name="wpForceHttps" value="1" type="hidden">
     <input name="wpFromhttp" value="1" type="hidden">
 </form>
-`;
-
-export const twitterLogin = `
+`,
+    usernameSelector: '#wpName1',
+    passwordSelector: '#wpPassword1',
+  },
+  twitterLogin: {
+    html: `
 <form action="https://twitter.com/sessions" class="t1-form clearfix signin js-signin" method="post">
     <input class="js-username-field email-input js-initial-focus" name="session[username_or_email]"
     autocomplete="on" value="" placeholder="Telefon, E-Mail oder Nutzername" type="text">
@@ -90,9 +115,12 @@ export const twitterLogin = `
     <input value="21f1681439ec1e45edee1c0ab2a106726b83cd24" name="authenticity_token" type="hidden">
     <input value="1" name="remember_me" checked="checked" type="checkbox">
 </form>
-`;
-
-export const instagramLogin = `
+`,
+    usernameSelector: 'input.js-username-field',
+    passwordSelector: 'input.js-password-field',
+  },
+  instagramLogin: {
+    html: `
 <form class="_3jvtb">
     <input class="_ph6vk _o716c" aria-describedby="" aria-label="Telefonnummer, Benutzername oder E-Mail-Adresse"
     aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="username"
@@ -100,9 +128,13 @@ export const instagramLogin = `
     <input class="_ph6vk _o716c" aria-describedby="" aria-label="Passwort" aria-required="true"
     autocapitalize="off" autocorrect="off" name="password" placeholder="Passwort" value="" type="password">
 </form>
-`;
+`,
+    usernameSelector: 'input[name="username"]',
+    passwordSelector: 'input[name="password"]',
+  },
 
-export const ebayLogin = `
+  ebayLogin: {
+    html: `
 <form name="SignInForm" id="SignInForm" method="post" class="mgn20">
 	<input name="bcv" id="awer" value="dfgh" type="hidden">
 	<input name="refId" id="refId" value="" type="hidden">
@@ -153,4 +185,25 @@ export const ebayLogin = `
 	<input value="1" name="keepMeSignInOption" id="signInKMSITextbox" type="hidden">
 	<input id="htmid" name="htmid" value="slwaegrue" type="hidden">
 </form>
-`;
+`,
+    usernameSelector: '#userid_otp',
+    passwordSelector: '#pass',
+  },
+};
+export const SpecialFixtures: { [name: string]: LoginFormFixture } = {
+  multiplePasswordFields: {
+    html: `
+<form id="login_form">
+					<input name="email" class="email" type="email">
+					<input name="pass" class="pass" type="password">
+</form>
+<form id="other_form">
+					<input name="email" class="email" type="email">
+					<input name="pass" class="pass" type="password">
+  				<input type="submit">
+</form>
+`,
+    usernameSelector: '.email',
+    passwordSelector: '.pass',
+  },
+};

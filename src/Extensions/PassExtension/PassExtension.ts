@@ -90,8 +90,8 @@ export class PassExtension extends Extension<Options> {
     const fileFormat = await this.passB.getFileFormat();
 
     return await Promise.all([
-      filler.fillPassword(activeTab, fileFormat.getPassword(entryContents, entry)),
-      filler.fillUsername(activeTab, fileFormat.getUsername(entryContents, entry)),
+      filler.fillPassword(activeTab, fileFormat.getPassword(entryContents, entry), {entryName: entry, entryContents}),
+      filler.fillUsername(activeTab, fileFormat.getUsername(entryContents, entry), {entryName: entry, entryContents}),
     ]);
   }
 }

@@ -1,7 +1,11 @@
 import 'jest';
 import {container, Interfaces, Symbols} from 'Container';
 import {fillPasswordInputs, FillPasswordInputs} from 'PluggableStrategies/Fillers/FillPasswordInputs';
-import {testFixtures} from './testFixtures';
+import {Filler} from '../../../InjectableInterfaces/Filler';
+import {testLoginForm} from './testFixtures';
+import {Fixtures} from './__fixtures__/LoginForms.html.fixture';
+
+const emptyMetadata = {entryName:'', entryContents: []};
 
 describe('FillPasswordInputs', () => {
 
@@ -101,11 +105,11 @@ describe('FillPasswordInputs', () => {
   });
 
   it('should not fill usernames', async () => {
-    const filler = container.resolve(FillPasswordInputs);
+    const filler: Filler<{}> = container.resolve(FillPasswordInputs);
 
     await expectBeforeAfter(
       {input1: 'foo', pwInput1: 'foo', pwInput2: 'foo'},
-      () => filler.fillUsername({id: 0} as any, 'username'), // tslint:disable-line:no-any
+      () => filler.fillUsername({id: 0} as any, 'username', emptyMetadata), // tslint:disable-line:no-any
       {input1: 'foo', pwInput1: 'foo', pwInput2: 'foo'},
     );
   });
@@ -122,6 +126,8 @@ describe('FillPasswordInputs', () => {
 
     const filler = container.resolve(FillPasswordInputs);
 
-    testFixtures(filler, false);
+    for (const [name, fixture] of Object.entries(Fixtures)) {
+      testLoginForm(name, filler, fixture, emptyMetadata, true);
+    }
   });
 });

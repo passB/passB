@@ -32,8 +32,10 @@ container.bind<Interfaces.Extension<{}>>(Symbols.Extension).to(PassExtension);
 container.bind<Interfaces.Extension<{}>>(Symbols.Extension).to(QRCodeExtension);
 
 import {FillPasswordInputs} from 'PluggableStrategies/Fillers/FillPasswordInputs';
+import {SelectorFiller} from 'PluggableStrategies/Fillers/SelectorFiller/SelectorFiller';
 
 container.bind<Interfaces.Filler<{}>>(Symbols.Filler).to(FillPasswordInputs);
+container.bind<Interfaces.Filler<{}>>(Symbols.Filler).to(SelectorFiller);
 
 import {FirstLineFileFormat} from 'PluggableStrategies/FileFormats/FirstLineFileFormat';
 import {PrefixFileFormat} from 'PluggableStrategies/FileFormats/PrefixFileFormat';
