@@ -1,11 +1,11 @@
-import {TextField} from 'material-ui';
+import {FormControl, TextField} from 'material-ui';
 import * as React from 'react';
 import {OptionPanelProps} from 'InjectableInterfaces/OptionsPanel';
 import {Options} from './FuzzaldrinMatcher';
 
 export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {
   return (
-    <div>
+    <FormControl fullWidth={true}>
       <TextField
         label="Minimum score:"
         helperText=""
@@ -25,6 +25,6 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
         }
         type="number"
       />
-    </div>
+    </FormControl>
   );
 }

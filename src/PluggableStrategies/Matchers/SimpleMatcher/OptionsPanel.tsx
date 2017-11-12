@@ -5,7 +5,7 @@ import {Options} from './SimpleMatcher';
 
 export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {
   return (
-    <FormControl>
+    <FormControl fullWidth={true}>
       <FormControlLabel
         id="autoWww"
         control={

@@ -69,6 +69,7 @@ ShallowWrapper {
           label="Require exact match"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -187,6 +188,7 @@ ShallowWrapper {
             label="Require exact match"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [
@@ -337,6 +339,7 @@ ShallowWrapper {
           label="Require exact match"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -455,6 +458,7 @@ ShallowWrapper {
             label="Require exact match"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [
@@ -605,6 +609,7 @@ ShallowWrapper {
           label="Require exact match"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -723,6 +728,7 @@ ShallowWrapper {
             label="Require exact match"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [
@@ -873,6 +879,7 @@ ShallowWrapper {
           label="Require exact match"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -991,6 +998,7 @@ ShallowWrapper {
             label="Require exact match"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [
@@ -1141,6 +1149,7 @@ ShallowWrapper {
           label="Require exact match"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -1259,6 +1268,7 @@ ShallowWrapper {
             label="Require exact match"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [

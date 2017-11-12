@@ -43,7 +43,7 @@ describe('SelectorFiller', () => {
       const filler = container.resolve(SelectorFiller);
       Object.defineProperty(filler, 'options', {value: filler.defaultOptions});
 
-      await filler.fillPassword({id: 0} as any, '', {entryName:'', entryContents: []}); // tslint:disable-line:no-any
+      await filler.fillPassword({id: 0} as any, '', {entryName: '', entryContents: []}); // tslint:disable-line:no-any
 
       expect((browser.tabs.executeScript as jest.Mock<void>).mock.calls.length).toBe(callCountBefore);
     });
@@ -136,5 +136,40 @@ passwordSelector: ${fixture.passwordSelector}
         );
       }
     }
+  });
+
+  describe('falls back to default value when the file contains no prefix', () => {
+    const filler = container.resolve(SelectorFiller);
+    Object.defineProperty(filler, 'options', {
+      value: filler.defaultOptions.merge({
+        usernameSelectorPrefix: 'usernameSelector:',
+        passwordSelectorPrefix: 'passwordSelector:',
+      }),
+    });
+
+    const name = 'googlePasswordStep';
+    const fixture = Fixtures[name];
+    const entryContents = `myPassword
+username: foo
+`;
+    const fillerSpy = jest.spyOn((filler as any), 'fillSelect'); // tslint:disable-line:no-any
+
+    testLoginForm(
+      name,
+      filler,
+      fixture,
+      {entryName: `${name}/username`, entryContents: entryContents.split('\n')},
+      false,
+      [
+        () => it('falls back to default password selector', () => {
+          expect(fillerSpy.mock.calls[fillerSpy.mock.calls.length - 1][1].trim())
+            .toBe(filler.defaultOptions.get('defaultPasswordSelector'));
+        }),
+        () => it('falls back to default username selector', () => {
+          expect(fillerSpy.mock.calls[fillerSpy.mock.calls.length - 1][1].trim())
+            .toBe(filler.defaultOptions.get('defaultUsernameSelector'));
+        }),
+      ],
+    );
   });
 });
