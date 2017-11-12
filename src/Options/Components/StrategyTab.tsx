@@ -1,4 +1,4 @@
-import {FormControl, InputLabel, MenuItem, Select} from 'material-ui';
+import {FormControl, MenuItem, Select, Typography} from 'material-ui';
 import {withStyles, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {connect} from 'react-redux';
@@ -31,6 +31,12 @@ const styles = {
   minHeight: {
     minHeight: '200px',
   },
+  padding: {
+    padding: '24px',
+  },
+  topPadding: {
+    paddingTop: '24px',
+  },
 };
 
 const StrategyTabComponent = (
@@ -46,9 +52,11 @@ const StrategyTabComponent = (
     classes,
   }: Props & ConnectedProps & WithStyles<keyof typeof styles>,
 ): JSX.Element => (
-  <div className={classes.minHeight}>
+  <div className={`${classes.minHeight} ${classes.padding}`}>
+    <Typography type="title" gutterBottom={true}>
+      Selected Strategy
+    </Typography>
     <FormControl className={classes.fullWidth}>
-      <InputLabel>Selected Strategy:</InputLabel>
       <Select
         value={selectedStrategy.name}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSelectedStrategy({strategyType, strategyName: e.target.value})}
@@ -60,7 +68,11 @@ const StrategyTabComponent = (
         ))}
       </Select>
     </FormControl>
-    <br/>
+    {selectedStrategy.OptionsPanel &&
+    <Typography type="title" gutterBottom={true} className={classes.topPadding}>
+      Strategy Options
+    </Typography>
+    }
     {selectedStrategy.OptionsPanel && (
       <selectedStrategy.OptionsPanel
         options={selectedStrategyOptions}

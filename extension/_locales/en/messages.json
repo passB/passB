@@ -78,5 +78,32 @@
   },
   "options_selectorfiller_label": {
     "message": "By CSS Selector"
+  },
+  "options_selectorfiller_defaultUsernameSelector": {
+    "message": "Default username input css selector"
+  },
+  "options_selectorfiller_defaultUsernameSelector_helperText": {
+    "message": "Leave empty to only fill if there's a selector specified in the pass file"
+  },
+  "options_selectorfiller_defaultPasswordSelector": {
+    "message": "Default password input css selector"
+  },
+  "options_selectorfiller_defaultPasswordSelector_helperText": {
+    "message": "Leave empty to only fill if there's a selector specified in the pass file"
+  },
+  "options_selectorfiller_fillOnlyFirstMatchingField": {
+    "message": "Fill only the first matching input field"
+  },
+  "options_selectorfiller_prefix_heading": {
+    "message": "Selectors from pass file"
+  },
+  "options_selectorfiller_prefix_explanation": {
+    "message": "If the pass file contains a line starting with one of these prefixes, that selector will be used instead."
+  },
+  "options_selectorfiller_usernameSelectorPrefix": {
+    "message": "username selector prefix"
+  },
+  "options_selectorfiller_passwordSelectorPrefix": {
+    "message": "password selector prefix"
   }
 }

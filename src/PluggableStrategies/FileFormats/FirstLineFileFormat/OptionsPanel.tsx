@@ -6,21 +6,19 @@ import {Options, UsernameStyle} from './FirstLineFileFormat';
 
 export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>): JSX.Element {
   return (
-    <div>
-      <FormControl>
-        <FormLabel>Get username from:</FormLabel>
-        <RadioGroup
-          name="FirstLineFileFormat_usernameStyle"
-          value={options.get('usernameStyle')}
-          onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: UsernameStyle) =>
-            updateOptions(options.set('usernameStyle', value))
-          }
-        >
-          <FormControlLabel value="None" control={<Radio/>} label="None"/>
-          <FormControlLabel value="SecondLine" control={<Radio/>} label="SecondLine"/>
-          <FormControlLabel value="LastPathPart" control={<Radio/>} label="LastPathPart"/>
-        </RadioGroup>
-      </FormControl>
-    </div>
+    <FormControl fullWidth={true}>
+      <FormLabel>Get username from:</FormLabel>
+      <RadioGroup
+        name="FirstLineFileFormat_usernameStyle"
+        value={options.get('usernameStyle')}
+        onChange={(event: React.InputHTMLAttributes<HTMLInputElement>, value: UsernameStyle) =>
+          updateOptions(options.set('usernameStyle', value))
+        }
+      >
+        <FormControlLabel value="None" control={<Radio/>} label="None"/>
+        <FormControlLabel value="SecondLine" control={<Radio/>} label="SecondLine"/>
+        <FormControlLabel value="LastPathPart" control={<Radio/>} label="LastPathPart"/>
+      </RadioGroup>
+    </FormControl>
   );
 }

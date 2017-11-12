@@ -5,6 +5,7 @@ import {OptionsPanelType} from 'InjectableInterfaces/OptionsPanel';
 import {StrategyName} from 'State/Interfaces';
 import {createTypedMap, TypedMap} from 'State/Types/TypedMap';
 import {Filler} from '../Filler';
+import {OptionsPanel} from './OptionsPanel';
 
 export const fillSelectorTarget = (selector: string, newValue: string, onlyFirst: boolean) => {
   let i = 0;
@@ -38,7 +39,7 @@ export interface Options {
 
 @injectable()
 export class SelectorFiller extends Filler<Options> {
-  public readonly OptionsPanel?: OptionsPanelType<Options> = void 0;
+  public readonly OptionsPanel?: OptionsPanelType<Options> = OptionsPanel;
   public readonly name: StrategyName = 'SelectorFiller';
   public readonly defaultOptions: TypedMap<Options> = createTypedMap({
     defaultUsernameSelector: 'input[autocomplete="username"],input[type="email"]',

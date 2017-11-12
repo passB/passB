@@ -65,6 +65,7 @@ ShallowWrapper {
           label="Trim whitespace"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -179,6 +180,7 @@ ShallowWrapper {
             label="Trim whitespace"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [
@@ -318,6 +320,7 @@ ShallowWrapper {
           label="Trim whitespace"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -410,6 +413,7 @@ ShallowWrapper {
             label="Trim whitespace"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [
@@ -541,6 +545,7 @@ ShallowWrapper {
           label="Trim whitespace"
         />,
       ],
+      "fullWidth": true,
     },
     "ref": null,
     "rendered": Array [
@@ -655,6 +660,7 @@ ShallowWrapper {
             label="Trim whitespace"
           />,
         ],
+        "fullWidth": true,
       },
       "ref": null,
       "rendered": Array [
