@@ -13,5 +13,6 @@ export const getMockStore = (): Store<StoreContents> => createStore<StoreContent
   {
     options: initialOptionsState,
     passEntries: initialPassEntriesState,
+    hostApp: {},
   },
 );

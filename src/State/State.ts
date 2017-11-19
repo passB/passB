@@ -8,6 +8,7 @@ import {lazyInject} from 'Decorators/lazyInject';
 import {getExecutionContext} from 'Decorators/ExecuteInContext';
 import {StoreContents} from 'InjectableInterfaces/State';
 import {storageSyncListener, storageSyncMiddleware} from './syncMiddleware';
+import {reducer as HostAppReducer} from './HostApp';
 import {reducer as OptionsReducer} from './Options';
 import {reducer as PassEntryReducer} from './PassEntries/Reducers';
 
@@ -30,6 +31,7 @@ export class State {
       combineReducers({
         options: OptionsReducer,
         passEntries: PassEntryReducer,
+        hostApp: HostAppReducer,
       }),
     );
 

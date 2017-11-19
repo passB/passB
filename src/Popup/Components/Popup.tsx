@@ -6,6 +6,8 @@ import Tab = browser.tabs.Tab;
 import {MemoryRouter, Route, RouteComponentProps, RouteProps, Switch} from 'react-router';
 import {Interfaces, Symbols} from 'Container';
 import {lazyInject} from 'Decorators/lazyInject';
+import {ErrorBoundary} from './ErrorBoundary';
+import {HostAppErrorWrapper} from './HostAppErrorWrapper';
 import {ListView} from './Views/ListView';
 
 interface Props {
@@ -38,11 +40,6 @@ class ClassLessPopup extends React.Component<Props & WithStyles<keyof typeof sty
       active: true,
       currentWindow: true,
     }).then((tabs: Tab[]) => this.setState({activeTab: tabs[0]}));
-  }
-
-  public componentDidCatch(error: Error, info: React.ErrorInfo): void {
-    // TODO: better error handling
-    console.error(error, info);
   }
 
   public render(): JSX.Element {
@@ -79,17 +76,21 @@ class ClassLessPopup extends React.Component<Props & WithStyles<keyof typeof sty
           </AppBar>
           <Card>
             <CardContent className={classes.cardSize}>
-              <Switch>
-                {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
-                <Route
-                  render={
-                    ({history}: RouteComponentProps<{}>) => (
-                      <ListView
-                        url={activeTab && activeTab.url ? activeTab.url : ''}
-                      />
-                    )}
-                />
-              </Switch>
+              <ErrorBoundary>
+                <HostAppErrorWrapper>
+                  <Switch>
+                    {this.gatheredRoutes.map((route: RouteProps) => <Route key={String(route.path)}  {...route} />)}
+                    <Route
+                      render={
+                        ({history}: RouteComponentProps<{}>) => (
+                          <ListView
+                            url={activeTab && activeTab.url ? activeTab.url : ''}
+                          />
+                        )}
+                    />
+                  </Switch>
+                </HostAppErrorWrapper>
+              </ErrorBoundary>
             </CardContent>
           </Card>
         </div>
