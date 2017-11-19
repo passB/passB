@@ -1,6 +1,8 @@
 import {injectable} from 'inversify';
-import {Interfaces} from 'Container';
+import {Interfaces, Symbols} from 'Container';
+import {lazyInject} from 'Decorators/lazyInject';
 import {memoizeWithTTL} from 'Decorators/memoizeWithTTL';
+import {setLastError, ErrorType} from './State/HostApp/index';
 
 interface PassReply {
   stdout: string[];
@@ -10,6 +12,9 @@ interface PassReply {
 
 @injectable()
 export class PassCli implements Interfaces.PassCli {
+  @lazyInject(Symbols.State)
+  protected state: Interfaces.State;
+
   @memoizeWithTTL(5000) // cache list calls for 5 seconds
   public async list(): Promise<string[]> {
     const response = await this.executeCommand('list-entries');
@@ -22,10 +27,16 @@ export class PassCli implements Interfaces.PassCli {
   }
 
   private async executeCommand(command: string, args: string[] = []): Promise<PassReply> {
-    const response = await browser.runtime.sendNativeMessage('passb', {command, args}) as PassReply;
-    if (response.returnCode !== 0) {
-      throw new Error(response.stderr.join('\n'));
+    try {
+      const response = await browser.runtime.sendNativeMessage('passb', {command, args}) as PassReply;
+
+      if (response.returnCode !== 0) {
+        this.state.getStore().dispatch(setLastError({message: response.stderr.join('\n'), type: ErrorType.PASS_EXECUTION_ERROR}));
+      }
+      return response;
+    } catch (e) {
+      this.state.getStore().dispatch(setLastError({message: e.message, type: ErrorType.HOST_APP_ERROR}));
+      return {stdout: [], stderr: [], returnCode: -1};
     }
-    return response;
   }
 }

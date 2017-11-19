@@ -7,6 +7,37 @@
     "message": "Search...",
     "description": "Placeholder/label for search input in popup"
   },
+  "popup_host_app_error_title": {
+    "message": "An error occured",
+    "description": "title for the error component when there was an error with the hostapp"
+  },
+  "popup_host_app_error_message_internal": {
+    "message": "An error occured communicating with the host application. It might not be installed or configured incorrectly. For troubleshooting choose one of the following:",
+    "description": "message for the error component when there was an internal error with the hostapp"
+  },
+  "popup_host_app_error_option_install": {
+    "message": "install the host application"
+  },
+  "popup_host_app_error_option_restart": {
+    "message": "restart passb"
+  },
+  "popup_host_app_error_message_pass": {
+    "message": "An error has been encountered when executing pass. The error message has been hidden as it may contain sensitive information. For troubleshooting choose one of the following:",
+    "description": "message for the error component when there was an error when executing pass"
+  },
+  "popup_error_message_react": {
+    "message": "An unknown error has been encountered. The error message has been hidden as it may contain sensitive information. For troubleshooting choose one of the following:",
+    "description": "message for the error component when there was an error while rendering"
+  },
+  "popup_error_option_reveal": {
+    "message": "reveal the error message"
+  },
+  "popup_error_option_back": {
+    "message": "go back and do something different"
+  },
+  "popup_error_option_issue": {
+    "message": "open an issue on github"
+  },
   "extensionDescription": {
     "message": "browser addon for the passwordstore password manager",
     "description": "Description of the extension."
