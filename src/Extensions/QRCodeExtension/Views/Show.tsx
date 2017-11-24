@@ -39,7 +39,7 @@ export class Show extends React.Component<RouteComponentProps<{}> & LocationStat
     const {location: {state: {options}}} = this.props;
 
     if (!value) {
-      return <div>loading....</div>;
+      return <div>{browser.i18n.getMessage('popup_message_loading')}</div>;
     }
 
     return (

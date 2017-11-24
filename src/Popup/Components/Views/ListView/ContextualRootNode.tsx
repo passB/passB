@@ -37,7 +37,7 @@ export const ContextualRootNodeComponent = ({root}: { root: EntryNode }) => {
         initiallyExpanded={true}
       >
         <ListItemText
-          primary="Contextual"
+          primary={browser.i18n.getMessage('popup_node_contextual_items')}
         />
       </CollapsibleListItem>
     );

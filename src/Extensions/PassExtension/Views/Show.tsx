@@ -17,7 +17,7 @@ interface State {
 
 export class Show extends React.Component<RouteComponentProps<{}> & LocationStateProps, State> {
   public state: State = {
-    contents: [],
+    contents: [browser.i18n.getMessage('popup_message_loading')],
   };
 
   @lazyInject(Symbols.PassCli)

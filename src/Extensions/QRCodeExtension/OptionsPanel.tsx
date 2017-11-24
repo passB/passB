@@ -18,7 +18,7 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
         <List>
           <ListItem>
             <FormControl>
-              <FormLabel>Error correction level:</FormLabel>
+              <FormLabel>{browser.i18n.getMessage('options_extension_qrcode_error_correction')}</FormLabel>
               <RadioGroup
                 value={options.get('level')}
                 row={true}
@@ -36,7 +36,7 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
           </ListItem>
           <ListItem>
             <FormControl>
-              <FormLabel>Background color:</FormLabel>
+              <FormLabel>{browser.i18n.getMessage('options_extension_qrcode_background_color')}</FormLabel>
               <Input
                 inputProps={{
                   onChange: (event: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('bgColor', event.target.value)),
@@ -48,7 +48,7 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
           </ListItem>
           <ListItem>
             <FormControl>
-              <FormLabel>Foreground color:</FormLabel>
+              <FormLabel>{browser.i18n.getMessage('options_extension_qrcode_foreground_color')}</FormLabel>
               <Input
                 inputProps={{
                   onChange: (event: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('fgColor', event.target.value)),
@@ -63,7 +63,7 @@ export const OptionsPanel = withStyles<'qrcode'>(styles)(
       <QRCode
         className={classes.qrcode}
         {...options.toJS()}
-        value="example. happy testing 😀"
+        value={browser.i18n.getMessage('options_extension_qrcode_test_message')}
       />
     </Grid>
   ));

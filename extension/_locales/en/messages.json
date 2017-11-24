@@ -7,6 +7,12 @@
     "message": "Search...",
     "description": "Placeholder/label for search input in popup"
   },
+  "popup_node_all_items": {
+    "message": "All Items"
+  },
+  "popup_node_contextual_items": {
+    "message": "Contextual"
+  },
   "popup_host_app_error_title": {
     "message": "An error occured",
     "description": "title for the error component when there was an error with the hostapp"
@@ -38,6 +44,9 @@
   "popup_error_option_issue": {
     "message": "open an issue on github"
   },
+  "popup_message_loading": {
+    "message": "loading..."
+  },
   "extensionDescription": {
     "message": "browser addon for the passwordstore password manager",
     "description": "Description of the extension."
@@ -57,6 +66,19 @@
   "options_tab_extensions": {
     "message": "Extensions",
     "description": "Label for 'Extensions' Tab in the Option menu"
+  },
+  "options_extension_qrcode_error_correction": {
+    "message": "Error correction level:"
+  },
+  "options_extension_qrcode_background_color": {
+    "message": "Background color:"
+  },
+  "options_extension_qrcode_foreground_color": {
+    "message": "Foreground color:"
+  },
+  "options_extension_qrcode_test_message": {
+    "message": "example. happy testing 😀",
+    "description": "message encoded in the example qr code on the options page"
   },
   "options_tab_matchers": {
     "message": "Matching Strageties",
@@ -98,12 +120,43 @@
   "options_fuzzaldrinmatcher_label": {
     "message": "FuzzAldrin"
   },
+  "options_fuzzaldrinmatcher_minScore": {
+    "message": "Minimum score:"
+  },
+  "options_fuzzaldrinmatcher_minScore_helperText": {
+    "message": ""
+  },
+  "options_fuzzaldrinmatcher_maxResults": {
+    "message": "Maximum visible results:"
+  },
+  "options_fuzzaldrinmatcher_maxResults_helperText": {
+    "message": "to show all results, enter '0'"
+  },
   "options_prefixfileformat_label": {
     "message": "Prefix-Based"
+  },
+  "options_prefixfileformat_passwordPrefix": {
+    "message": "password prefix"
+  },
+  "options_prefixfileformat_usernamePrefix": {
+    "message": "username prefix"
+  },
+  "options_prefixfileformat_trimWhitespace": {
+    "message": "Trim whitespace"
   },
   "options_firstlinefileformat_label": {
     "message": "First Line"
   },
+    "options_firstlinefileformat_usernameStyle_none": {
+    "message": "None"
+  },
+    "options_firstlinefileformat_usernameStyle_secondLine": {
+    "message": "Second Line"
+  },
+    "options_firstlinefileformat_usernameStyle_lastPathPart": {
+    "message": "Last Path Part"
+  },
+
   "options_fillpasswordinputs_label": {
     "message": "Password Fields"
   },
