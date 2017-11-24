@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HostApp State clearLastError 1`] = `Object {}`;
+
+exports[`HostApp State setLastError 1`] = `
+Object {
+  "lastError": Object {
+    "message": "test",
+    "type": "HOST_APP_ERROR",
+  },
+}
+`;

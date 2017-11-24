@@ -24,8 +24,14 @@ const actionCreator = actionCreatorFactory('HOST_APP');
 export const setLastError = actionCreator<Error>('SET_LAST_ERROR');
 export const clearLastError = actionCreator<void>('CLEAR_LAST_ERROR');
 
+export const Actions = {
+  setLastError,
+  clearLastError,
+};
+
 // reducer
-export const reducer = reducerWithInitialState({})
+export const initialState = {};
+export const reducer = reducerWithInitialState(initialState)
   .case(setLastError, (state: HostAppState, lastError: Error): HostAppState => ({...state, lastError}))
   .case(clearLastError, ({lastError, ...stateRest}: HostAppState): HostAppState => stateRest)
   .build();
