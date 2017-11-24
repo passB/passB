@@ -21,7 +21,7 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
       {!options.get('passwordFirstLine') &&
       <TextField
         id="passwordPrefix"
-        label="password prefix"
+        label={browser.i18n.getMessage('options_prefixfileformat_passwordPrefix')}
         value={options.get('passwordPrefix')}
         onChange={
           (event: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('passwordPrefix', event.target.value))
@@ -30,7 +30,7 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
       }
       <TextField
         id="usernamePrefix"
-        label="username prefix"
+        label={browser.i18n.getMessage('options_prefixfileformat_usernamePrefix')}
         value={options.get('usernamePrefix')}
         onChange={
           (event: React.ChangeEvent<HTMLInputElement>) => updateOptions(options.set('usernamePrefix', event.target.value))
@@ -46,7 +46,7 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
             }
           />
         }
-        label="Trim whitespace"
+        label={browser.i18n.getMessage('options_prefixfileformat_trimWhitespace')}
       />
     </FormControl>
   );

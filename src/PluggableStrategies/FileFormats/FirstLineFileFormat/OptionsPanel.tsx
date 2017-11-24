@@ -15,9 +15,21 @@ export function OptionsPanel({options, updateOptions}: OptionPanelProps<Options>
           updateOptions(options.set('usernameStyle', value))
         }
       >
-        <FormControlLabel value="None" control={<Radio/>} label="None"/>
-        <FormControlLabel value="SecondLine" control={<Radio/>} label="SecondLine"/>
-        <FormControlLabel value="LastPathPart" control={<Radio/>} label="LastPathPart"/>
+        <FormControlLabel
+          value="None"
+          control={<Radio/>}
+          label={browser.i18n.getMessage('options_firstlinefileformat_usernameStyle_none')}
+        />
+        <FormControlLabel
+          value="SecondLine"
+          control={<Radio/>}
+          label={browser.i18n.getMessage('options_firstlinefileformat_usernameStyle_secondLine')}
+        />
+        <FormControlLabel
+          value="LastPathPart"
+          control={<Radio/>}
+          label={browser.i18n.getMessage('options_firstlinefileformat_usernameStyle_lastPathPart')}
+        />
       </RadioGroup>
     </FormControl>
   );

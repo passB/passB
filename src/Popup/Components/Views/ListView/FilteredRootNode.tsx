@@ -35,7 +35,7 @@ export const FilteredRootNodeComponent = ({root, filter}: { root: EntryNode; fil
     initiallyExpanded={!!filter}
   >
     <ListItemText
-      primary="All Items"
+      primary={browser.i18n.getMessage('popup_node_all_items')}
     />
   </CollapsibleListItem>
 );
