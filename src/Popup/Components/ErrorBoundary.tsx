@@ -6,7 +6,7 @@ import {compose} from 'redux';
 import {Interfaces, Symbols} from 'Container';
 import {lazyInject} from 'Decorators/lazyInject';
 
-interface Props {
+export interface Props {
   children: JSX.Element | JSX.Element[];
 }
 
@@ -25,7 +25,7 @@ const styles = {
   },
 };
 
-class ErrorBoundaryComponent extends React.Component<Props & RouteComponentProps<{}> & WithStyles<keyof typeof styles>, State> {
+export class ErrorBoundaryComponent extends React.Component<Props & RouteComponentProps<{}> & WithStyles<keyof typeof styles>, State> {
   public state: State = {
     contentsRevealed: false,
   };
@@ -53,18 +53,19 @@ class ErrorBoundaryComponent extends React.Component<Props & RouteComponentProps
         <Typography>{browser.i18n.getMessage('popup_error_message_react')}</Typography>
         <List>
           {contentsRevealed &&
-          <ListItem>
+          <ListItem className="errorContents">
             <Paper elevation={4} className={`${classes.padding} ${classes.fullWidth}`}>
               <Typography type="body1" component="p">{error.message}</Typography>
               {info && <Typography>{info.componentStack}</Typography>}
             </Paper>
           </ListItem>
           ||
-          <ListItem button={true} onClick={() => this.setState({contentsRevealed: true})}>
+          <ListItem className="showError" button={true} onClick={() => this.setState({contentsRevealed: true})}>
             <ListItemText primary={browser.i18n.getMessage('popup_error_option_reveal')}/>
           </ListItem>
           }
           <ListItem
+            className="goBack"
             button={true}
             onClick={() => {
               this.setState({error: false, info: false, contentsRevealed: false});
@@ -73,7 +74,11 @@ class ErrorBoundaryComponent extends React.Component<Props & RouteComponentProps
           >
             <ListItemText primary={browser.i18n.getMessage('popup_error_option_back')}/>
           </ListItem>
-          <ListItem button={true} onClick={() => browser.tabs.create({url: 'https://github.com/PassB/passB/issues'})}>
+          <ListItem
+            className="openGithub"
+            button={true}
+            onClick={() => browser.tabs.create({url: 'https://github.com/PassB/passB/issues'})}
+          >
             <ListItemText primary={browser.i18n.getMessage('popup_error_option_issue')}/>
           </ListItem>
         </List>

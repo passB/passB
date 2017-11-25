@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorBoundary menu interaction renders correctly 1`] = `
+<div>
+  <withStyles(Typography)
+    gutterBottom={true}
+    key="heading"
+    type="title"
+  >
+    An error occured
+  </withStyles(Typography)>
+  <withStyles(Typography)>
+    An unknown error has been encountered. The error message has been hidden as it may contain sensitive information. For troubleshooting choose one of the following:
+  </withStyles(Typography)>
+  <withStyles(List)>
+    <withStyles(ListItem)
+      button={true}
+      className="showError"
+      onClick={[Function]}
+    >
+      <withStyles(ListItemText)
+        primary="reveal the error message"
+      />
+    </withStyles(ListItem)>
+    <withStyles(ListItem)
+      button={true}
+      className="goBack"
+      onClick={[Function]}
+    >
+      <withStyles(ListItemText)
+        primary="go back and do something different"
+      />
+    </withStyles(ListItem)>
+    <withStyles(ListItem)
+      button={true}
+      className="openGithub"
+      onClick={[Function]}
+    >
+      <withStyles(ListItemText)
+        primary="open an issue on github"
+      />
+    </withStyles(ListItem)>
+  </withStyles(List)>
+</div>
+`;
+
+exports[`ErrorBoundary renders children 1`] = `
+<span>
+  empty
+</span>
+`;
+
+exports[`ErrorBoundary renders error message when child throws error 1`] = `
+<div>
+  <withStyles(Typography)
+    gutterBottom={true}
+    key="heading"
+    type="title"
+  >
+    An error occured
+  </withStyles(Typography)>
+  <withStyles(Typography)>
+    An unknown error has been encountered. The error message has been hidden as it may contain sensitive information. For troubleshooting choose one of the following:
+  </withStyles(Typography)>
+  <withStyles(List)>
+    <withStyles(ListItem)
+      button={true}
+      className="showError"
+      onClick={[Function]}
+    >
+      <withStyles(ListItemText)
+        primary="reveal the error message"
+      />
+    </withStyles(ListItem)>
+    <withStyles(ListItem)
+      button={true}
+      className="goBack"
+      onClick={[Function]}
+    >
+      <withStyles(ListItemText)
+        primary="go back and do something different"
+      />
+    </withStyles(ListItem)>
+    <withStyles(ListItem)
+      button={true}
+      className="openGithub"
+      onClick={[Function]}
+    >
+      <withStyles(ListItemText)
+        primary="open an issue on github"
+      />
+    </withStyles(ListItem)>
+  </withStyles(List)>
+</div>
+`;
