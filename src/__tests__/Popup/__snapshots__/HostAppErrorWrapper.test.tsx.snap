@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HostAppErrorWrapper does not render children when there is an error 1`] = `
+<div>
+  <withStyles(Typography)
+    gutterBottom={true}
+    key="heading"
+    type="title"
+  >
+    An error occured
+  </withStyles(Typography)>
+  <div>
+    <withStyles(Typography)>
+      An error occured communicating with the host application. It might not be installed or configured incorrectly. For troubleshooting choose one of the following:
+    </withStyles(Typography)>
+    <withStyles(List)>
+      <withStyles(ListItem)
+        button={true}
+        className="hostAppInfo"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText)
+          primary="install the host application"
+        />
+      </withStyles(ListItem)>
+      <withStyles(ListItem)
+        button={true}
+        className="reloadExtension"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText)
+          primary="restart passb"
+        />
+      </withStyles(ListItem)>
+      <withStyles(ListItem)
+        button={true}
+        className="openGithub"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText) />
+      </withStyles(ListItem)>
+    </withStyles(List)>
+  </div>
+</div>
+`;
+
+exports[`HostAppErrorWrapper hostApp communication error renders correctly 1`] = `
+<div>
+  <withStyles(Typography)
+    gutterBottom={true}
+    key="heading"
+    type="title"
+  >
+    An error occured
+  </withStyles(Typography)>
+  <div>
+    <withStyles(Typography)>
+      An error occured communicating with the host application. It might not be installed or configured incorrectly. For troubleshooting choose one of the following:
+    </withStyles(Typography)>
+    <withStyles(List)>
+      <withStyles(ListItem)
+        button={true}
+        className="hostAppInfo"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText)
+          primary="install the host application"
+        />
+      </withStyles(ListItem)>
+      <withStyles(ListItem)
+        button={true}
+        className="reloadExtension"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText)
+          primary="restart passb"
+        />
+      </withStyles(ListItem)>
+      <withStyles(ListItem)
+        button={true}
+        className="openGithub"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText) />
+      </withStyles(ListItem)>
+    </withStyles(List)>
+  </div>
+</div>
+`;
+
+exports[`HostAppErrorWrapper pass exection error renders correctly 1`] = `
+<div>
+  <withStyles(Typography)
+    gutterBottom={true}
+    key="heading"
+    type="title"
+  >
+    An error occured
+  </withStyles(Typography)>
+  <div>
+    <withStyles(Typography)>
+      An error has been encountered when executing pass. The error message has been hidden as it may contain sensitive information. For troubleshooting choose one of the following:
+    </withStyles(Typography)>
+    <withStyles(List)>
+      <withStyles(ListItem)
+        button={true}
+        className="showError"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText)
+          primary="reveal the error message"
+        />
+      </withStyles(ListItem)>
+      <withStyles(ListItem)
+        button={true}
+        className="goBack"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText)
+          primary="go back and do something different"
+        />
+      </withStyles(ListItem)>
+      <withStyles(ListItem)
+        button={true}
+        className="openGithub"
+        onClick={[Function]}
+      >
+        <withStyles(ListItemText)
+          primary="open an issue on github"
+        />
+      </withStyles(ListItem)>
+    </withStyles(List)>
+  </div>
+</div>
+`;
+
+exports[`HostAppErrorWrapper renders it's children when there is no error 1`] = `
+<div
+  id="test"
+>
+  test
+</div>
+`;

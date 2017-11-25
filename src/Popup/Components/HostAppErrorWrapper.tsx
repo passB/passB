@@ -11,7 +11,7 @@ import {clearLastError, getLastError, Error as HostAppError, ErrorType} from 'St
 
 interface Props {
   hostAppError?: HostAppError;
-  clearLastError: typeof clearLastError;
+  clearLastError: (x: undefined) => void;
   children: JSX.Element | JSX.Element[];
 }
 
@@ -28,7 +28,10 @@ const styles = {
   },
 };
 
-class HostAppErrorWrapperComponent extends React.Component<Props & RouteComponentProps<{}> & WithStyles<keyof typeof styles>, State> {
+export type HostAppErrorWrapperComponentProps = Props & RouteComponentProps<{}> & WithStyles<keyof typeof styles>;
+
+export class HostAppErrorWrapperComponent
+  extends React.Component<HostAppErrorWrapperComponentProps, State> {
   public state: State = {
     contentsRevealed: false,
   };
@@ -53,13 +56,25 @@ class HostAppErrorWrapperComponent extends React.Component<Props & RouteComponen
           <div>
             <Typography>{browser.i18n.getMessage('popup_host_app_error_message_internal')}</Typography>
             <List>
-              <ListItem button={true} onClick={() => browser.tabs.create({url: 'https://passb.github.io/host_application.html'})}>
+              <ListItem
+                button={true}
+                className="hostAppInfo"
+                onClick={() => browser.tabs.create({url: 'https://passb.github.io/host_application.html'})}
+              >
                 <ListItemText primary={browser.i18n.getMessage('popup_host_app_error_option_install')}/>
               </ListItem>
-              <ListItem button={true} onClick={() => this.passB.reloadExtension()}>
+              <ListItem
+                button={true}
+                className="reloadExtension"
+                onClick={() => this.passB.reloadExtension()}
+              >
                 <ListItemText primary={browser.i18n.getMessage('popup_host_app_error_option_restart')}/>
               </ListItem>
-              <ListItem button={true} onClick={() => browser.tabs.create({url: 'https://github.com/PassB/passB/issues'})}>
+              <ListItem
+                button={true}
+                className="openGithub"
+                onClick={() => browser.tabs.create({url: 'https://github.com/PassB/passB/issues'})}
+              >
                 <ListItemText primary={browser.i18n.getMessage('popup_host_app_error_option_issue')}/>
               </ListItem>
             </List>
@@ -70,17 +85,18 @@ class HostAppErrorWrapperComponent extends React.Component<Props & RouteComponen
             <Typography>{browser.i18n.getMessage('popup_host_app_error_message_pass')}</Typography>
             <List>
               {contentsRevealed &&
-              <ListItem>
+              <ListItem className="errorContents">
                 <Paper elevation={4} className={`${classes.padding} ${classes.fullWidth}`}>
                   <Typography type="body1" component="p">{hostAppError.message}</Typography>
                 </Paper>
               </ListItem>
               ||
-              <ListItem button={true} onClick={() => this.setState({contentsRevealed: true})}>
+              <ListItem className="showError" button={true} onClick={() => this.setState({contentsRevealed: true})}>
                 <ListItemText primary={browser.i18n.getMessage('popup_error_option_reveal')}/>
               </ListItem>
               }
               <ListItem
+                className="goBack"
                 button={true}
                 onClick={() => {
                   clearLastError(void 0);
@@ -89,7 +105,11 @@ class HostAppErrorWrapperComponent extends React.Component<Props & RouteComponen
               >
                 <ListItemText primary={browser.i18n.getMessage('popup_error_option_back')}/>
               </ListItem>
-              <ListItem button={true} onClick={() => browser.tabs.create({url: 'https://github.com/PassB/passB/issues'})}>
+              <ListItem
+                button={true}
+                className="openGithub"
+                onClick={() => browser.tabs.create({url: 'https://github.com/PassB/passB/issues'})}
+              >
                 <ListItemText primary={browser.i18n.getMessage('popup_error_option_issue')}/>
               </ListItem>
             </List>
