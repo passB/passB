@@ -12,6 +12,7 @@ const translations = JSON.parse(readFileSync(`${__dirname}/../../extension/_loca
     reload: jest.fn(),
   },
   tabs: {
+    create: jest.fn(),
     executeScript: jest.fn(),
     getCurrent: jest.fn(() => Promise.resolve()),
     query: jest.fn(() => Promise.resolve([{url: ''}])),
