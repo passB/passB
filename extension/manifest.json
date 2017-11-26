@@ -3,11 +3,8 @@
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "manifest_version": 2,
-  "version": "0.1",
+  "version": "1.0-alpha1",
   "homepage_url": "https://github.com/phryneas/passb",
-  "icons": {
-    "48": "icons/icon-48.png"
-  },
   "applications": {
     "gecko": {
       "id": "passb@phryneas.de",
@@ -16,7 +13,11 @@
   },
   "browser_action": {
     "browser_style": false,
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "passB_16.png",
+      "32": "passB_32.png"
+    }
   },
   "options_ui": {
     "page": "options.html"
