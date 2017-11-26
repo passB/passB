@@ -1,6 +1,6 @@
 {
   "name": "passb",
-  "version": "1.0-alpha1",
+  "version": "1.0.0-alpha2",
   "description": "",
   "scripts": {
     "watch": "cross-env NODE_ENV=development webpack --watch",

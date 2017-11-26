@@ -5,12 +5,10 @@ import {
   Checkbox,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Tab,
   Tabs,
 } from 'material-ui';
-import {Clear} from 'material-ui-icons';
 import {withStyles, StyleRules, WithStyles} from 'material-ui/styles';
 import * as React from 'react';
 import {connect} from 'react-redux';
@@ -33,6 +31,7 @@ import {
   getAllExtensionOptions, getEnabledExtensions, getExtensionOptions,
 } from 'State/Options/Selectors';
 import {TypedMap} from 'State/Types/TypedMap';
+import {OthersTab} from './OthersTab';
 import {StrategyTab} from './StrategyTab';
 
 type TabValue = 'Extensions' | 'Matcher' | 'Filler' | 'FileFormat' | 'other';
@@ -84,7 +83,9 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
   }
 
   public render(): JSX.Element {
-    const {selectedTab} = this.state;
+    const {
+      selectedTab,
+    } = this.state;
     const {
       classes,
       enabledExtensions,
@@ -164,25 +165,7 @@ class ClassLessAddonOptions extends React.Component<Props & MappedProps & WithSt
               />
             ))}
         {selectedTab === 'other' &&
-        <List>
-          <ListItem
-            button={true}
-            onClick={() => {
-              if (window.confirm(browser.i18n.getMessage('options_reset_extension_confirm'))) {
-                browser.storage.local.clear();
-                this.passB.reloadExtension();
-                browser.tabs.getCurrent().then((tab: browser.tabs.Tab) => {
-                  if (tab && tab.id) {
-                    browser.tabs.remove(tab.id);
-                  }
-                });
-              }
-            }}
-          >
-            <ListItemIcon><Clear/></ListItemIcon>
-            <ListItemText primary={browser.i18n.getMessage('options_reset_extension')}/>
-          </ListItem>
-        </List>
+          <OthersTab/>
         }
       </div>
     );
