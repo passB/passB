@@ -3,8 +3,8 @@
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "manifest_version": 2,
-  "version": "1.0alpha2",
-  "homepage_url": "https://github.com/phryneas/passb",
+  "version": "1.0.0",
+  "homepage_url": "https://passb.github.io",
   "applications": {
     "gecko": {
       "id": "passb@phryneas.de",

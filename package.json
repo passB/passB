@@ -1,7 +1,9 @@
 {
   "name": "passb",
-  "version": "1.0.0-alpha2",
-  "description": "",
+  "version": "1.0.0",
+  "homepage": "https://passb.github.io",
+  "bugs": "https://github.com/passB/passB/issues",
+  "description": "passb is a browser addon for the excellent password store command line password manager.",
   "scripts": {
     "watch": "cross-env NODE_ENV=development webpack --watch",
     "start:firefox": "web-ext run --source-dir ./extension",
@@ -9,7 +11,7 @@
     "build": "cross-env NODE_ENV=production webpack && web-ext build --source-dir ./extension --overwrite-dest",
     "remotedev": "remotedev --hostname=localhost --port=8000"
   },
-  "author": "",
+  "author": "Lenz Weber",
   "license": "MIT",
   "devDependencies": {
     "@types/enzyme": "^3.1.0",
