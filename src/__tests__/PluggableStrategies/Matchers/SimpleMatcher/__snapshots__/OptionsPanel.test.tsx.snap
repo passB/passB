@@ -12,7 +12,7 @@ exports[`SimpleMatcher OptionsPanel rendering autoWww false renders 1`] = `
       />
     }
     id="autoWww"
-    label="Ignore wwww. prefix"
+    label="Ignore www. prefix"
   />
   <withStyles(FormControlLabel)
     control={
@@ -59,7 +59,7 @@ exports[`SimpleMatcher OptionsPanel rendering default values renders 1`] = `
       />
     }
     id="autoWww"
-    label="Ignore wwww. prefix"
+    label="Ignore www. prefix"
   />
   <withStyles(FormControlLabel)
     control={
@@ -106,7 +106,7 @@ exports[`SimpleMatcher OptionsPanel rendering ignoreLastPart true renders 1`] = 
       />
     }
     id="autoWww"
-    label="Ignore wwww. prefix"
+    label="Ignore www. prefix"
   />
   <withStyles(FormControlLabel)
     control={
@@ -153,7 +153,7 @@ exports[`SimpleMatcher OptionsPanel rendering matchInSubDirs true renders 1`] = 
       />
     }
     id="autoWww"
-    label="Ignore wwww. prefix"
+    label="Ignore www. prefix"
   />
   <withStyles(FormControlLabel)
     control={
@@ -200,7 +200,7 @@ exports[`SimpleMatcher OptionsPanel rendering requireFullMatch true renders 1`] 
       />
     }
     id="autoWww"
-    label="Ignore wwww. prefix"
+    label="Ignore www. prefix"
   />
   <withStyles(FormControlLabel)
     control={
