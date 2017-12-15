@@ -106,7 +106,7 @@
     "message": "Simple Matcher"
   },
   "options_simplematcher_autoWww": {
-    "message": "Ignore wwww. prefix"
+    "message": "Ignore www. prefix"
   },
   "options_simplematcher_matchInSubDirs": {
     "message": "Also match in subdirectories"
