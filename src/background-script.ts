@@ -1,3 +1,8 @@
+/* tslint:disable */
+const globalAny: any = global;
+globalAny.browser = require('webextension-polyfill');
+
+/* tslint:enable */
 import {executionContext} from 'Constants';
 import {container, Interfaces, Symbols} from 'Container';
 import {setExecutionContext} from 'Decorators/ExecuteInContext';

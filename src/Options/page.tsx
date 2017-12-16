@@ -1,3 +1,8 @@
+/* tslint:disable */
+const globalAny: any = global;
+globalAny.browser = require('webextension-polyfill');
+
+/* tslint:enable */
 import {MuiThemeProvider} from 'material-ui';
 import {createMuiTheme} from 'material-ui/styles';
 import * as React from 'react';
