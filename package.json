@@ -86,7 +86,8 @@
     "tslint-react": "^3.2.0",
     "typeface-roboto": "^0.0.35",
     "typescript-fsa": "^2.5.0",
-    "typescript-fsa-reducers": "^0.4.4"
+    "typescript-fsa-reducers": "^0.4.4",
+    "webextension-polyfill": "^0.2.1"
   },
   "jest": {
     "mapCoverage": true,
@@ -117,6 +118,8 @@
       "<rootDir>/src/__test_helpers__/testSetup.ts"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/src/__test_helpers__/testFrameworkScriptSetup.ts",
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }
