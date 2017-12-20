@@ -2314,6 +2314,10 @@ expirymanager@~0.9.3:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/expirymanager/-/expirymanager-0.9.3.tgz#e5f6b3ba00d8d76cf63311c2b71d7dfc9bde3e4f"
 
+expose-loader@^0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/expose-loader/-/expose-loader-0.7.4.tgz#9bcdd3878b5da9107930b55a03f65afe90b3314a"
+
 express@^4.13.3:
   version "4.16.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.2.tgz#e35c6dfe2d64b7dca0a5cd4f21781be3299e076c"
@@ -7526,6 +7530,10 @@ web-ext@^1.10.1:
     watchpack "1.3.0"
     yargs "6.6.0"
     zip-dir "1.0.2"
+
+webextension-polyfill@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.2.1.tgz#cdfc9126033039f1713553157d35beff1d4d6f4a"
 
 webidl-conversions@^3.0.0:
   version "3.0.1"
