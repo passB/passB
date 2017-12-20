@@ -80,7 +80,7 @@ export const AsynchronousCallable = () =>
             browser.runtime.onMessage.addListener(
               (request: AsynchronousRequest) => {
                 if (request.action !== getActionName(constructor, propertyKey)) {
-                  return false;
+                  return void 0;
                 }
 
                 return (this as any)[propertyKey](...request.params);

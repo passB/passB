@@ -81,11 +81,11 @@
     "description": "message encoded in the example qr code on the options page"
   },
   "options_tab_matchers": {
-    "message": "Matching Strageties",
+    "message": "Matching Strategies",
     "description": "Label for 'Matching Strategies' Tab in the Option menu"
   },
   "options_tab_file_formats": {
-    "message": "File Format Strageties",
+    "message": "File Format Strategies",
     "description": "Label for 'File Format Strategies' Tab in the Option menu"
   },
   "options_tab_fillers": {

@@ -6,12 +6,19 @@ const production = process.env.NODE_ENV === 'production';
 
 module.exports = {
   entry: {
-    'background-script': './src/background-script.ts',
+    'shared': [
+      'webextension-polyfill',
+    ],
+    'background-script': [
+      './src/background-script.ts',
+    ],
     'popup': [
       './src/Popup/popup.tsx',
-      './src/Popup/_focus_hotfix.ts'
+      './src/Popup/_focus_hotfix.ts',
     ],
-    'options': './src/Options/page.tsx',
+    'options': [
+      './src/Options/page.tsx',
+    ],
   },
   output: {
     path: path.resolve(__dirname, 'extension/built'),
@@ -43,6 +50,10 @@ module.exports = {
             },
           },
         ]
+      },
+      {
+        test: require.resolve('webextension-polyfill'),
+        use: [{ loader: 'expose-loader', options: 'browser' }]
       },
       {
         test: /\.scss$/,

@@ -75,7 +75,7 @@ export class HostAppErrorWrapperComponent
                 className="openGithub"
                 onClick={() => browser.tabs.create({url: 'https://github.com/PassB/passB/issues'})}
               >
-                <ListItemText primary={browser.i18n.getMessage('popup_host_app_error_option_issue')}/>
+                <ListItemText primary={browser.i18n.getMessage('popup_error_option_issue')}/>
               </ListItem>
             </List>
           </div>

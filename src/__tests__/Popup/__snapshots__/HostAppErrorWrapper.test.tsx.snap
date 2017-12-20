@@ -37,7 +37,9 @@ exports[`HostAppErrorWrapper does not render children when there is an error 1`]
         className="openGithub"
         onClick={[Function]}
       >
-        <withStyles(ListItemText) />
+        <withStyles(ListItemText)
+          primary="open an issue on github"
+        />
       </withStyles(ListItem)>
     </withStyles(List)>
   </div>
@@ -81,7 +83,9 @@ exports[`HostAppErrorWrapper hostApp communication error renders correctly 1`] =
         className="openGithub"
         onClick={[Function]}
       >
-        <withStyles(ListItemText) />
+        <withStyles(ListItemText)
+          primary="open an issue on github"
+        />
       </withStyles(ListItem)>
     </withStyles(List)>
   </div>
